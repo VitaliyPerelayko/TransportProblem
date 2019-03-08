@@ -5,12 +5,18 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/testdb</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/logistics</property>
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name = "hibernate.connection.username">root</property>
         <property name = "hibernate.connection.password">password</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">validate</property>
         <mapping class="by.vit.model.User"></mapping>
+        <mapping class="by.vit.model.CarModel"></mapping>
+        <mapping class="by.vit.model.Car"></mapping>
+        <mapping class="by.vit.model.Road"></mapping>
+        <mapping class="by.vit.model.Point"></mapping>
+        <mapping class="by.vit.model.Transporter"></mapping>
+        <mapping class="by.vit.model.Role"></mapping>
     </session-factory>
 </hibernate-configuration>

@@ -61,6 +61,7 @@ public abstract class GenericDAOImpl<T, U> implements GenericDAO<T, U> {
             session.save(entity);
             transaction.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
