@@ -13,11 +13,11 @@ public class User {
     private String name;
     private String surname;
     private String phone;
-    @Column(name = "e-mail")
+    @Column(name = "e_mail")
     private String eMail;
 
     @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "role_id",referencedColumnName = "id")
     private Role role;
 
     public User(String name, String surname, String phone, String eMail, Role role) {

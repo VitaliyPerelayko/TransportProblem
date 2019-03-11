@@ -14,8 +14,8 @@ public class Transporter extends User {
     @OneToMany(mappedBy = "transporter")
     private Set<Car> cars;
 
-    public Transporter(String name, String surname, String phone, String eMail, Role role, String license, Set<Car> cars) {
-        super(name, surname, phone, eMail, role);
+    public Transporter(User user, String license) {
+        super(user.getName(), user.getSurname(), user.getPhone(), user.geteMail(),user.getRole());
         this.license = license;
     }
 

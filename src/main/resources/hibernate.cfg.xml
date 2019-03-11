@@ -18,5 +18,6 @@
         <mapping class="by.vit.model.Point"></mapping>
         <mapping class="by.vit.model.Transporter"></mapping>
         <mapping class="by.vit.model.Role"></mapping>
+        <mapping class="by.vit.model.RoadId"></mapping>
     </session-factory>
 </hibernate-configuration>

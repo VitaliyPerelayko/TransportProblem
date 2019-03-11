@@ -2,7 +2,7 @@ package by.vit.dao.impl;
 
 import by.vit.dao.RoadDAO;
 import by.vit.model.Road;
-import by.vit.model.compositekey.RoadId;
+import by.vit.model.RoadId;
 
 public class RoadDAOImpl extends GenericDAOImpl<Road, RoadId> implements RoadDAO {
     private volatile static RoadDAOImpl instance;
@@ -11,6 +11,9 @@ public class RoadDAOImpl extends GenericDAOImpl<Road, RoadId> implements RoadDAO
         super(Road.class);
     }
 
+    /**
+     * @return singleton instance of Dao
+     */
     public static RoadDAOImpl getInstance() {
         if (instance == null) {
             synchronized (RoadDAOImpl.class){

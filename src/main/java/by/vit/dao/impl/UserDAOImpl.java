@@ -10,6 +10,9 @@ public class UserDAOImpl extends GenericDAOImpl<User,Long> implements UserDAO {
         super(User.class);
     }
 
+    /**
+     * @return singleton instance of Dao
+     */
     public static UserDAOImpl getInstance() {
         if (instance == null) {
             synchronized (UserDAOImpl.class){

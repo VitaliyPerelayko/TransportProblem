@@ -10,6 +10,9 @@ public class TransporterDAOImpl extends GenericDAOImpl<Transporter,Long> impleme
         super(Transporter.class);
     }
 
+    /**
+     * @return singleton instance of Dao
+     */
     public static TransporterDAOImpl getInstance() {
         if (instance == null) {
             synchronized (TransporterDAOImpl.class){

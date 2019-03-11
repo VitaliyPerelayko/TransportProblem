@@ -15,6 +15,9 @@ public class PointDAOImpl extends GenericDAOImpl<Point,Long> implements PointDAO
         super(Point.class);
     }
 
+    /**
+     * @return singleton instance of Dao
+     */
     public static PointDAOImpl getInstance() {
         if (instance == null) {
             synchronized (PointDAOImpl.class){
@@ -26,6 +29,11 @@ public class PointDAOImpl extends GenericDAOImpl<Point,Long> implements PointDAO
         return instance;
     }
 
+    /**
+     * Get point by name from DataBase
+     * @param name of point
+     * @return point
+     */
     @Override
     public Point getPointByName(String name) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

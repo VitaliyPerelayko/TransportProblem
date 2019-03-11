@@ -10,6 +10,9 @@ public class CarDAOImpl extends GenericDAOImpl<Car,Long> implements CarDAO {
         super(Car.class);
     }
 
+    /**
+     * @return singleton instance of Dao
+     */
     public static CarDAOImpl getInstance() {
         if (instance == null) {
             synchronized (CarDAOImpl.class){

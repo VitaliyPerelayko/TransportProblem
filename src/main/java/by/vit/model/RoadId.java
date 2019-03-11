@@ -1,4 +1,4 @@
-package by.vit.model.compositekey;
+package by.vit.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,9 +8,9 @@ import java.util.Objects;
 @Embeddable
 public class RoadId implements Serializable {
 
-    @Column
+
     private Long point1Id;
-    @Column
+
     private Long point2Id;
 
     public RoadId() {
@@ -29,12 +29,12 @@ public class RoadId implements Serializable {
         return point2Id;
     }
 
-    public void setPoint1Id(Long point) {
-        point1Id = point;
+    public void setPoint1Id(Long point1Id) {
+        this.point1Id = point1Id;
     }
 
-    public void setPoint2Id(Long point){
-        point2Id = point;
+    public void setPoint2Id(Long point2Id) {
+        this.point2Id = point2Id;
     }
 
     @Override
