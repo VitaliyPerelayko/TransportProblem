@@ -23,4 +23,6 @@ public class UserDAOImpl extends GenericDAOImpl<User,Long> implements UserDAO {
         }
         return instance;
     }
+
+
 }
