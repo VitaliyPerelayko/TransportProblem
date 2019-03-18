@@ -8,5 +8,32 @@
     <artifactId>TransportProblem</artifactId>
     <version>0.0.1</version>
 
+    <dependencies>
+        <dependency>
+            <!-- Apache Software License, Version 2.0 -->
+            <groupId>com.programmerare.shortest-paths</groupId>
+            <artifactId>adapters-shortest-paths-impl-yanqi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.programmerare.shortest-paths/adapters-shortest-paths-core -->
+        <dependency>
+            <groupId>com.programmerare.shortest-paths</groupId>
+            <artifactId>adapters-shortest-paths-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/io.github.oliviercailloux/google-or-tools -->
+        <dependency>
+            <groupId>io.github.oliviercailloux</groupId>
+            <artifactId>google-or-tools</artifactId>
+            <version>6.7.2</version>
+        </dependency>
+
+
+    </dependencies>
+
+
 
 </project>
