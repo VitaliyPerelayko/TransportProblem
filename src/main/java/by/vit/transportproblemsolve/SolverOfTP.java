@@ -1,6 +1,6 @@
 package by.vit.transportproblemsolve;
 
 
-public class Solver {
+public interface SolverOfTP {
 
 }

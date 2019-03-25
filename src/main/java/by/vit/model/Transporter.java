@@ -8,19 +8,11 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "user_id")
 public class Transporter extends User {
 
-
     private String license;
 
     @OneToMany(mappedBy = "transporter")
     private Set<Car> cars;
 
-    public Transporter(User user, String license) {
-        super(user.getName(), user.getSurname(), user.getPhone(), user.geteMail(),user.getRole());
-        this.license = license;
-    }
-
-    public Transporter() {
-    }
 
     public String getLicense() {
         return license;
