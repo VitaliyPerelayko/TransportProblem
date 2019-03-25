@@ -30,13 +30,13 @@ public class Main {
         saveRoad(point, point1, 115D);
 
         roleDAO.save(new Role("transporter"));
-        Role role = roleDAO.getOne(2L);
+        Role role = roleDAO.getOne(1L);
+
+        saveTransporter("Jack","Sparrow","103","bla-bla@yahoo.com",role,"1234567");
+        Transporter transporter = transporterDAO.getOne(1L);
 
         saveUser("Vadim","Vadim","+375 29","@gmail.com",role);
         User user = userDAO.getOne(2L);
-
-        transporterDAO.save(new Transporter(user,"1234567890PP"));
-        Transporter transporter = transporterDAO.getOne(2L);
 
         carModelDAO.save(new CarModel("Renault Master L3H2",2.5D,13D));
         CarModel carModel = carModelDAO.getOne(1L);
@@ -51,7 +51,7 @@ public class Main {
         System.out.println(userDAO.getOne(2L).getName());
 
         //Delete objects
-        userDAO.delete(1L);
+        userDAO.delete(2L);
         // and so one
 
     }
@@ -81,6 +81,18 @@ public class Main {
         car.setTransporter(transporter);
         car.setCost(cost);
         carDAO.save(car);
+    }
+
+    private static void saveTransporter(
+            String name, String surname, String phone, String eMail, Role role, String license){
+        Transporter transporter = new Transporter();
+        transporter.setName(name);
+        transporter.setSurname(surname);
+        transporter.setPhone(phone);
+        transporter.seteMail(eMail);
+        transporter.setRole(role);
+        transporter.setLicense(license);
+        transporterDAO.save(transporter);
     }
 }
 

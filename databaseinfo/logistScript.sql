@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `logistics`.`supplier` (
   `user_id` BIGINT NOT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_supplier_users`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `logistics`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -110,9 +110,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `logistics`.`transporter` (
   `user_id` BIGINT NOT NULL,
   `license` VARCHAR(45) NULL,
-  PRIMARY KEY (`users_id`),
+  PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_transporter_users`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `logistics`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `logistics`.`transporter_car` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_car_transporter_id`
     FOREIGN KEY (`transporter_id`)
-    REFERENCES `logistics`.`transporter` (`users_id`)
+    REFERENCES `logistics`.`transporter` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_car_points_id`
