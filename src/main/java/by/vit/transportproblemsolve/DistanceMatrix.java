@@ -82,7 +82,7 @@ public class DistanceMatrix {
                 this.distanseMatrix[j+1][i+1] = this.distanseMatrix[i+1][j+1];
             }
         }
-        this.distanseMatrix[pointIdLength+1][pointIdLength+1] = 0D;
+        this.distanseMatrix[pointIdLength][pointIdLength] = 0D;
     }
 
 
