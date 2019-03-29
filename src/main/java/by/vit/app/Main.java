@@ -1,97 +1,105 @@
 package by.vit.app;
 
+import by.vit.config.AppConfiguration;
 import by.vit.repository.*;
 import by.vit.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 
+@Component
 public class Main {
     private static final String[] towns = {"Grodno", "Lida", "Volkovysk"};
     @Autowired
-    private static PointDAO pointDAO;
+    private PointRepository pointRepository;
     @Autowired
-    private static RoadDAO roadDAO;
+    private RoadRepository roadRepository;
     @Autowired
-    private static CarModelDAO carModelDAO;
+    private CarModelRepository carModelRepository;
     @Autowired
-    private static CarDAO carDAO;
+    private CarRepository carRepository;
     @Autowired
-    private static UserDAO userDAO;
+    private UserRepository userRepository;
     @Autowired
-    private static TransporterDAO transporterDAO;
+    private TransporterRepository transporterRepository;
     @Autowired
-    private static RoleDAO roleDAO;
+    private RoleRepository roleRepository;
+
+
 
     public static void main(String[] args) {
-        //Create add read  objects
+        AnnotationConfigApplicationContext annotatedClassApplicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        Main main = annotatedClassApplicationContext.getBean("main", Main.class);
 
+        //Create add read  objects
         for (int i = 0; i < towns.length; i++) {
             Point temp = new Point(towns[i]);
-            Long l = new Long(i);
-            temp.setId(l);
-            pointDAO.save(temp);
+            main.pointRepository.save(temp);
         }
-        Point point = pointDAO.findByName("Lida");
-        Point point1 = pointDAO.findByName("Grodno");
+        Point point = main.pointRepository.findByName("Lida");
+        Point point1 = main.pointRepository.findByName("Grodno");
 
-        saveRoad(point, point1, 115D);
+        saveRoad(point, point1, 115D,main);
 
-        roleDAO.save(new Role("transporter"));
-        Role role = roleDAO.getOne(1L);
+        main.roleRepository.save(new Role("transporter"));
+        Role role = main.roleRepository.getOne(1L);
 
-        saveTransporter("Jack","Sparrow","103","bla-bla@yahoo.com",role,"1234567");
-        Transporter transporter = transporterDAO.getOne(1L);
+        saveTransporter("Jack","Sparrow","103","bla-bla@yahoo.com",role,"1234567",main);
+        Transporter transporter = main.transporterRepository.getOne(1L);
 
-        saveUser("Vadim","Vadim","+375 29","@gmail.com",role);
-        User user = userDAO.getOne(2L);
+        saveUser("Vadim","Vadim","+375 29","@gmail.com",role,main);
+        Optional<User> userTemp = main.userRepository.findById(2L);
+        User user = userTemp.orElseThrow(RuntimeException::new);
 
-        carModelDAO.save(new CarModel("Renault Master L3H2",2.5D,13D));
-        CarModel carModel = carModelDAO.getOne(1L);
+        main.carModelRepository.save(new CarModel("Renault Master L3H2",2.5D,13D));
+        CarModel carModel = main.carModelRepository.getOne(1L);
 
-        saveCar(carModel,point,transporter,1.75D);
-        Car car = carDAO.getOne(1L);
-        System.out.println(carDAO.findCarsByTonnageAfter(2D));
+        saveCar(carModel,point,transporter,1.75D,main);
+        Car car = main.carRepository.getOne(1L);
+        System.out.println(main.carRepository.findCarsByTonnageAfter(2D));
 
         //Update objects
         user.setName("Stalin");
-        userDAO.save(user);
-        System.out.println(userDAO.getOne(2L).getName());
+        main.userRepository.save(user);
+        main.userRepository.findById(2L).ifPresent(System.out::println);
 
         //Delete objects
-        userDAO.delete(user);
+        main.userRepository.delete(user);
         // and so one
 
     }
 
-    private static void saveRoad(Point point1, Point point2, Double distance) {
+    private static void saveRoad(Point point1, Point point2, Double distance, Main main) {
         Road road = new Road();
         road.setPoint1(point1);
         road.setPoint2(point2);
         road.setDistance(distance);
-        roadDAO.save(road);
+        main.roadRepository.save(road);
     }
 
-    private static void saveUser(String name, String surname, String phone, String eMail, Role role) {
+    private static void saveUser(String name, String surname, String phone, String eMail, Role role,Main main) {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user.setPhone(phone);
         user.seteMail(eMail);
         user.setRole(role);
-        userDAO.save(user);
+        main.userRepository.save(user);
     }
 
-    private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost) {
+    private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost, Main main) {
         Car car = new Car();
         car.setCarModel(carModel);
         car.setPoint(point);
         car.setTransporter(transporter);
         car.setCost(cost);
-        carDAO.save(car);
+        main.carRepository.save(car);
     }
 
     private static void saveTransporter(
-            String name, String surname, String phone, String eMail, Role role, String license){
+            String name, String surname, String phone, String eMail, Role role, String license, Main main){
         Transporter transporter = new Transporter();
         transporter.setName(name);
         transporter.setSurname(surname);
@@ -99,7 +107,7 @@ public class Main {
         transporter.seteMail(eMail);
         transporter.setRole(role);
         transporter.setLicense(license);
-        transporterDAO.save(transporter);
+        main.transporterRepository.save(transporter);
     }
 }
 

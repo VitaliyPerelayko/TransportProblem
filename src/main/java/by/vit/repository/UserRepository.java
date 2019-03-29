@@ -1,7 +1,7 @@
 package by.vit.repository;
 
-import by.vit.model.Role;
+import by.vit.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleDAO extends JpaRepository<Role,Long> {
+public interface UserRepository extends JpaRepository<User,Long> {
 }

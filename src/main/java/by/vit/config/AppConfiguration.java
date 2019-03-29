@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -39,21 +41,21 @@ public class AppConfiguration {
     @Value("${connection.password}")
     private String password;
 
-//    @Bean
-//    public DataSource dataSource() {
-//        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-//        return builder.setType(EmbeddedDatabaseType.H2).addScript("/start.sql").build();
-//    }
-
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
-        dataSourceConfig.setDriverClassName(driverClass);
-        dataSourceConfig.setUrl(url);
-        dataSourceConfig.setUsername(username);
-        dataSourceConfig.setPassword(password);
-        return dataSourceConfig;
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        return builder.setType(EmbeddedDatabaseType.H2).build();
     }
+
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
+//        dataSourceConfig.setDriverClassName(driverClass);
+//        dataSourceConfig.setUrl(url);
+//        dataSourceConfig.setUsername(username);
+//        dataSourceConfig.setPassword(password);
+//        return dataSourceConfig;
+//    }
 
 
     @Bean
@@ -76,8 +78,8 @@ public class AppConfiguration {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.dialect", dialect);
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }
