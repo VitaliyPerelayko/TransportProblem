@@ -1,9 +1,9 @@
 package by.vit.config;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -47,9 +47,10 @@ public class AppConfiguration {
 
     @Bean
     public DataSource dataSource() {
-        MysqlDataSource dataSourceConfig = new MysqlDataSource();
+        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
+        dataSourceConfig.setDriverClassName(driverClass);
         dataSourceConfig.setUrl(url);
-        dataSourceConfig.setUser(username);
+        dataSourceConfig.setUsername(username);
         dataSourceConfig.setPassword(password);
         return dataSourceConfig;
     }
