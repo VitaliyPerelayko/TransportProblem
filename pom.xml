@@ -15,13 +15,30 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql.conector.java>8.0.15</mysql.conector.java>
         <org.hibernate.core>5.4.1.Final</org.hibernate.core>
+        <org.spring.core>5.1.5.RELEASE</org.spring.core>
+        <org.spring.data>2.1.5.RELEASE</org.spring.data>
     </properties>
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${org.spring.data}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${org.hibernate.core}</version>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.2.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
@@ -29,7 +46,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.conector.java}</version>
         </dependency>
-
     </dependencies>
 
 </project>

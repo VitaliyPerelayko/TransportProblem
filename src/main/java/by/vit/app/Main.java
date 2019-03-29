@@ -1,19 +1,26 @@
 package by.vit.app;
 
-import by.vit.dao.*;
-import by.vit.dao.impl.*;
+import by.vit.repository.*;
 import by.vit.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class Main {
     private static final String[] towns = {"Grodno", "Lida", "Volkovysk"};
-    private static final PointDAO pointDAO = PointDAOImpl.getInstance();
-    private static final RoadDAO roadDAO = RoadDAOImpl.getInstance();
-    private static final CarModelDAO carModelDAO = CarModelDAOImpl.getInstance();
-    private static final CarDAO carDAO = CarDAOImpl.getInstance();
-    private static final UserDAO userDAO = UserDAOImpl.getInstance();
-    private static final TransporterDAO transporterDAO = TransporterDAOImpl.getInstance();
-    private static final RoleDAO roleDAO = RoleDAOImpl.getInstance();
+    @Autowired
+    private static PointDAO pointDAO;
+    @Autowired
+    private static RoadDAO roadDAO;
+    @Autowired
+    private static CarModelDAO carModelDAO;
+    @Autowired
+    private static CarDAO carDAO;
+    @Autowired
+    private static UserDAO userDAO;
+    @Autowired
+    private static TransporterDAO transporterDAO;
+    @Autowired
+    private static RoleDAO roleDAO;
 
     public static void main(String[] args) {
         //Create add read  objects
@@ -24,8 +31,8 @@ public class Main {
             temp.setId(l);
             pointDAO.save(temp);
         }
-        Point point = pointDAO.getPointByName("Lida");
-        Point point1 = pointDAO.getPointByName("Grodno");
+        Point point = pointDAO.findByName("Lida");
+        Point point1 = pointDAO.findByName("Grodno");
 
         saveRoad(point, point1, 115D);
 
@@ -43,15 +50,15 @@ public class Main {
 
         saveCar(carModel,point,transporter,1.75D);
         Car car = carDAO.getOne(1L);
-        System.out.println(carDAO.carModelByRestriction(CarDAO.restriction.MORE, 2D));
+        System.out.println(carDAO.findCarsByTonnageAfter(2D));
 
         //Update objects
         user.setName("Stalin");
-        userDAO.update(user);
+        userDAO.save(user);
         System.out.println(userDAO.getOne(2L).getName());
 
         //Delete objects
-        userDAO.delete(2L);
+        userDAO.delete(user);
         // and so one
 
     }
