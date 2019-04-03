@@ -11,7 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Solver {
-    static { System.loadLibrary("jniortools"); }
+    static {
+        System.load("C:\\or-tools\\lib\\jniortools.dll");
+        //System.load("E:\\Work\\vitaluga\\PROGRAMMING\\HalpfulAPP\\or-tools_VisualStudio2017-64bit_v7.0.6546\\lib\\protobuf.jar");
+        //System.loadLibrary("jniortools");
+    }
 
 
     private Double[][] matrixOfSolve;
