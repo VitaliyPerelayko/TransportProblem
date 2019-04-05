@@ -1,7 +1,10 @@
 package by.vit.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -17,6 +20,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Configuration class for database module of project
+ */
 @Configuration
 @PropertySource("classpath:database.properties")
 @ComponentScan("by.vit")
@@ -47,6 +53,11 @@ public class AppConfiguration {
         return builder.setType(EmbeddedDatabaseType.H2).build();
     }
 
+    /**
+     * get info for connection to database
+     *
+     * @return configuration of database
+     */
 //    @Bean
 //    public DataSource dataSource() {
 //        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
@@ -57,7 +68,11 @@ public class AppConfiguration {
 //        return dataSourceConfig;
 //    }
 
-
+    /**
+     * Create entityManager which will work with repositories in the ApplicationContext
+     *
+     * @return EntityManagerFactory
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -69,6 +84,12 @@ public class AppConfiguration {
         return localContainerEntityManagerFactoryBean;
     }
 
+    /**
+     * Create transactionManager which will work with repositories in the ApplicationContext
+     *
+     * @param emf entityManagerFactory.
+     * @return transactionManager
+     */
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -78,7 +99,9 @@ public class AppConfiguration {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
+//        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//        properties.setProperty("hibernate.dialect", dialect);
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;

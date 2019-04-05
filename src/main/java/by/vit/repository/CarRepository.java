@@ -7,13 +7,18 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CarRepository extends JpaRepository<Car,Long> {
+/**
+ * Repository layer for Cars
+ */
+
+public interface CarRepository extends JpaRepository<Car, Long> {
 
     /**
      * Find car where carModel has tonnage bigger then mass
+     *
      * @param mass tonnage of car
-     * @return
+     * @return List<Car>
      */
-    @Query("FROM Car car JOIN FETCH car.carModel WHERE car.carModel.tonage > :mass")
+    @Query("FROM Car car JOIN FETCH car.carModel WHERE car.carModel.tonnage > :mass")
     List<Car> findCarsByTonnageAfter(@Param("mass") Double mass);
 }

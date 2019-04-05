@@ -4,6 +4,9 @@ package by.vit.model;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for the entity Role. It's role table in database
+ */
 @Entity
 @Table(name = "role")
 public class Role {
@@ -27,19 +30,19 @@ public class Role {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Set<User> getUser() {
-        return user;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String nane) {
         this.name = nane;
+    }
+
+    public Set<User> getUser() {
+        return user;
     }
 }

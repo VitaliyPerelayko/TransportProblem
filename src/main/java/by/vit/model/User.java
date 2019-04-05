@@ -3,6 +3,9 @@ package by.vit.model;
 
 import javax.persistence.*;
 
+/**
+ * Class for the entity User. It's users table in database
+ */
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -17,7 +20,7 @@ public class User {
     private String eMail;
 
     @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
     public User(String name, String surname, String phone, String eMail, Role role) {

@@ -1,33 +1,27 @@
 package by.vit.app;
 
 import by.vit.config.AppConfiguration;
-import by.vit.repository.*;
 import by.vit.model.*;
+import by.vit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Main class for tasting database module
+ */
 @Component
 public class Main {
     private static final String[] towns = {"Grodno", "Lida", "Volkovysk"};
-    @Autowired
     private PointRepository pointRepository;
-    @Autowired
     private RoadRepository roadRepository;
-    @Autowired
     private CarModelRepository carModelRepository;
-    @Autowired
     private CarRepository carRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private TransporterRepository transporterRepository;
-    @Autowired
     private RoleRepository roleRepository;
-
-
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext annotatedClassApplicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
@@ -36,37 +30,37 @@ public class Main {
         //Create add read  objects
         for (int i = 0; i < towns.length; i++) {
             Point temp = new Point(towns[i]);
-            main.pointRepository.save(temp);
+            main.getPointRepository().save(temp);
         }
-        Point point = main.pointRepository.findByName("Lida");
-        Point point1 = main.pointRepository.findByName("Grodno");
+        Point point = main.getPointRepository().findByName("Lida");
+        Point point1 = main.getPointRepository().findByName("Grodno");
 
-        saveRoad(point, point1, 115D,main);
+        saveRoad(point, point1, 115D, main);
 
-        main.roleRepository.save(new Role("transporter"));
-        Role role = main.roleRepository.getOne(1L);
+        main.getRoleRepository().save(new Role("transporter"));
+        Role role = main.getRoleRepository().getOne(1L);
 
-        saveTransporter("Jack","Sparrow","103","bla-bla@yahoo.com",role,"1234567",main);
-        Transporter transporter = main.transporterRepository.getOne(1L);
+        saveTransporter("Jack", "Sparrow", "103", "bla-bla@yahoo.com", role, "1234567", main);
+        Transporter transporter = main.getTransporterRepository().getOne(1L);
 
-        saveUser("Vadim","Vadim","+375 29","@gmail.com",role,main);
-        Optional<User> userTemp = main.userRepository.findById(2L);
+        saveUser("Vadim", "Vadim", "+375 29", "@gmail.com", role, main);
+        Optional<User> userTemp = main.getUserRepository().findById(2L);
         User user = userTemp.orElseThrow(RuntimeException::new);
 
-        main.carModelRepository.save(new CarModel("Renault Master L3H2",2.5D,13D));
-        CarModel carModel = main.carModelRepository.getOne(1L);
+        main.getCarModelRepository().save(new CarModel("Renault Master L3H2", 2.5D, 13D));
+        CarModel carModel = main.getCarModelRepository().getOne(1L);
 
-        saveCar(carModel,point,transporter,1.75D,main);
-        Car car = main.carRepository.getOne(1L);
-        System.out.println(main.carRepository.findCarsByTonnageAfter(2D));
+        saveCar(carModel, point, transporter, 1.75D, main);
+        Car car = main.getCarRepository().getOne(1L);
+        System.out.println(main.getCarRepository().findCarsByTonnageAfter(2D));
 
         //Update objects
         user.setName("Stalin");
-        main.userRepository.save(user);
-        main.userRepository.findById(2L).ifPresent(System.out::println);
+        main.getUserRepository().save(user);
+        main.getUserRepository().findById(2L).ifPresent(System.out::println);
 
         //Delete objects
-        main.userRepository.delete(user);
+        main.getUserRepository().delete(user);
         // and so one
 
     }
@@ -76,17 +70,17 @@ public class Main {
         road.setPoint1(point1);
         road.setPoint2(point2);
         road.setDistance(distance);
-        main.roadRepository.save(road);
+        main.getRoadRepository().save(road);
     }
 
-    private static void saveUser(String name, String surname, String phone, String eMail, Role role,Main main) {
+    private static void saveUser(String name, String surname, String phone, String eMail, Role role, Main main) {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user.setPhone(phone);
         user.seteMail(eMail);
         user.setRole(role);
-        main.userRepository.save(user);
+        main.getUserRepository().save(user);
     }
 
     private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost, Main main) {
@@ -95,11 +89,11 @@ public class Main {
         car.setPoint(point);
         car.setTransporter(transporter);
         car.setCost(cost);
-        main.carRepository.save(car);
+        main.getCarRepository().save(car);
     }
 
     private static void saveTransporter(
-            String name, String surname, String phone, String eMail, Role role, String license, Main main){
+            String name, String surname, String phone, String eMail, Role role, String license, Main main) {
         Transporter transporter = new Transporter();
         transporter.setName(name);
         transporter.setSurname(surname);
@@ -107,7 +101,70 @@ public class Main {
         transporter.seteMail(eMail);
         transporter.setRole(role);
         transporter.setLicense(license);
-        main.transporterRepository.save(transporter);
+        main.getTransporterRepository().save(transporter);
+    }
+
+    public PointRepository getPointRepository() {
+        return pointRepository;
+    }
+
+    @Autowired
+    public void setPointRepository(PointRepository pointRepository) {
+        this.pointRepository = pointRepository;
+    }
+
+    public RoadRepository getRoadRepository() {
+        return roadRepository;
+    }
+
+    @Autowired
+    public void setRoadRepository(RoadRepository roadRepository) {
+        this.roadRepository = roadRepository;
+    }
+
+    public CarModelRepository getCarModelRepository() {
+        return carModelRepository;
+    }
+
+    @Autowired
+    public void setCarModelRepository(CarModelRepository carModelRepository) {
+        this.carModelRepository = carModelRepository;
+    }
+
+    public CarRepository getCarRepository() {
+        return carRepository;
+    }
+
+    @Autowired
+    public void setCarRepository(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public TransporterRepository getTransporterRepository() {
+        return transporterRepository;
+    }
+
+    @Autowired
+    public void setTransporterRepository(TransporterRepository transporterRepository) {
+        this.transporterRepository = transporterRepository;
+    }
+
+    public RoleRepository getRoleRepository() {
+        return roleRepository;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 }
 

@@ -3,6 +3,9 @@ package by.vit.model;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for the entity CarModel. It's car_model table in database
+ */
 @Entity
 @Table(name = "car_model")
 public class CarModel {
@@ -14,12 +17,12 @@ public class CarModel {
     private Set<Car> cars;
 
     private String name;
-    private Double tonage;
+    private Double tonnage;
     private Double space;
 
-    public CarModel(String name, Double tonage, Double space) {
+    public CarModel(String name, Double tonnage, Double space) {
         this.name = name;
-        this.tonage = tonage;
+        this.tonnage = tonnage;
         this.space = space;
     }
 
@@ -30,6 +33,10 @@ public class CarModel {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Set<Car> getCars() {
         return cars;
     }
@@ -38,24 +45,20 @@ public class CarModel {
         return name;
     }
 
-    public Double getTonage() {
-        return tonage;
-    }
-
-    public Double getSpace() {
-        return space;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setTonage(Double tonage) {
-        this.tonage = tonage;
+    public Double getTonnage() {
+        return tonnage;
+    }
+
+    public void setTonnage(Double tonnage) {
+        this.tonnage = tonnage;
+    }
+
+    public Double getSpace() {
+        return space;
     }
 
     public void setSpace(Double space) {

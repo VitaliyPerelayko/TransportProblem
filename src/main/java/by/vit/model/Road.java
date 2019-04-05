@@ -2,6 +2,9 @@ package by.vit.model;
 
 import javax.persistence.*;
 
+/**
+ * Class for the entity Road. It's road table in database
+ */
 @Entity
 @Table(name = "road")
 public class Road {
@@ -10,13 +13,13 @@ public class Road {
 
     @MapsId("point1Id")
     @ManyToOne
-    @JoinColumn(name = "point1_id",referencedColumnName = "id")
+    @JoinColumn(name = "point1_id", referencedColumnName = "id")
     private Point point1;
 
 
     @MapsId("point2Id")
     @ManyToOne
-    @JoinColumn(name = "point2_id",referencedColumnName = "id")
+    @JoinColumn(name = "point2_id", referencedColumnName = "id")
     private Point point2;
 
     private Double distance;
