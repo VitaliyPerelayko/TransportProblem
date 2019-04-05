@@ -1,6 +1,6 @@
 package by.vit.app;
 
-import by.vit.config.AppConfiguration;
+import by.vit.config.DatabaseConfiguration;
 import by.vit.model.*;
 import by.vit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class Main {
     private RoleRepository roleRepository;
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext annotatedClassApplicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        AnnotationConfigApplicationContext annotatedClassApplicationContext = new AnnotationConfigApplicationContext(DatabaseConfiguration.class);
         Main main = annotatedClassApplicationContext.getBean("main", Main.class);
 
         //Create add read  objects
