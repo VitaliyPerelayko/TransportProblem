@@ -18,19 +18,20 @@
     </properties>
 
     <dependencies>
+        <!--Database-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${org.hibernate.core}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.conector.java}</version>
         </dependency>
 
+        <!--Shortest Path finder-->
         <dependency>
             <!-- Apache Software License, Version 2.0 -->
             <groupId>com.programmerare.shortest-paths</groupId>
@@ -38,18 +39,23 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.programmerare.shortest-paths/adapters-shortest-paths-core -->
         <dependency>
             <groupId>com.programmerare.shortest-paths</groupId>
             <artifactId>adapters-shortest-paths-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.github.oliviercailloux/google-or-tools -->
+        <!--Liner solver-->
         <dependency>
             <groupId>io.github.oliviercailloux</groupId>
             <artifactId>google-or-tools</artifactId>
             <version>6.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.quantego</groupId>
+            <artifactId>clp-java</artifactId>
+            <version>1.16.10</version>
         </dependency>
 
     </dependencies>

@@ -2,25 +2,16 @@ package by.vit.transportproblemsolve;
 
 
 import by.vit.model.*;
-import com.google.ortools.linearsolver.MPConstraint;
-import com.google.ortools.linearsolver.MPObjective;
-import com.google.ortools.linearsolver.MPSolver;
-import com.google.ortools.linearsolver.MPVariable;
+import com.quantego.clp.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Solver {
-    static {
-        System.load("C:\\or-tools\\lib\\jniortools.dll");
-        //System.load("E:\\Work\\vitaluga\\PROGRAMMING\\HalpfulAPP\\or-tools_VisualStudio2017-64bit_v7.0.6546\\lib\\protobuf.jar");
-        //System.loadLibrary("jniortools");
-    }
-
+public class SolverCLP implements SolverOfTP {
 
     private Double[][] matrixOfSolve;
 
-    public Solver(ConditionTP conditionTP){
+    public SolverCLP(ConditionTP conditionTP){
         solveTP(conditionTP);
     }
 
@@ -32,47 +23,48 @@ public class Solver {
         int linesLength = costMatrix.length;
 
 
-        MPSolver solver = createSolver();
+        CLP solver = new CLP();
 
         //Create variable x[i][j]
-        MPVariable[][] variables = new MPVariable[linesLength][rowsLength];
-        // Create the objective function
-        MPObjective objective = solver.objective();
-        objective.setMinimization();
+        CLPVariable[][] variables = new CLPVariable[linesLength][rowsLength];
         // Create restriction for cars
-        MPConstraint[] constraintsCar = new MPConstraint[restrictionOfCar.length];
+        CLPExpression[] constraintsCar = new CLPExpression[restrictionOfCar.length];
         // Create restriction for order
-        MPConstraint[] constraintsOrder = new MPConstraint[restrictionOfOrder.length];
-        for (int i = 0; i<restrictionOfOrder.length; i++){
-            Double order = restrictionOfOrder[i];
-            constraintsCar[i] = solver.makeConstraint(order,order);
-        }
+        CLPExpression[] constraintsOrder = new CLPExpression[restrictionOfOrder.length];
 
         for (int i = 0; i < linesLength; i++){
             Double bound = restrictionOfCar[i];
+            constraintsCar[i] = solver.createExpression();
             for (int j = 0; j < rowsLength; j++){
+                if (constraintsOrder[j]==null){
+                    constraintsOrder[j] = solver.createExpression();
+                }
                 //variable
-                variables[i][j] = solver.makeIntVar(0d,bound,"x"+i+j);
+                variables[i][j] = solver.addVariable().bounds(0D,bound);
                 //coefficient
-                objective.setCoefficient(variables[i][j],costMatrix[i][j]);
+                solver.setObjectiveCoefficient(variables[i][j],costMatrix[i][j]);
                 //restriction
-                constraintsCar[i] = solver.makeConstraint(bound,bound);
-                constraintsCar[i].setCoefficient(variables[i][j],1);
-                constraintsOrder[j].setCoefficient(variables[i][j],1);
+                constraintsCar[i].add(variables[i][j],1);
+                constraintsOrder[j].add(variables[i][j],1);
             }
         }
+        for (int i = 0; i<restrictionOfCar.length; i++){
+            Double tonnage = restrictionOfCar[i];
+            constraintsCar[i].eq(tonnage);
+        }
 
-        solver.solve();
+        for (int i = 0; i<restrictionOfOrder.length; i++){
+            Double order = restrictionOfOrder[i];
+            constraintsOrder[i].eq(order);
+        }
+
+        solver.minimization();
+        matrixOfSolve = new Double[linesLength][rowsLength];
         for (int i = 0; i < linesLength; i++){
             for (int j = 0; j < rowsLength; j++){
-                matrixOfSolve[i][j] = variables[i][j].solutionValue();
+                matrixOfSolve[i][j] = variables[i][j].getSolution();
             }
         }
-    }
-
-    private static MPSolver createSolver () {
-        return new MPSolver("Solver",
-                MPSolver.OptimizationProblemType.valueOf("GLOP_LINEAR_PROGRAMMING"));
     }
 
     public static void main(String[] args) {
@@ -107,9 +99,9 @@ public class Solver {
 
         Double[] order = {20D,25D,15D};
 
-        DistanceMatrix distanceMatrix = new DistanceMatrix(roads,points);
+        DistanceMatrixYanQi distanceMatrix = new DistanceMatrixYanQi(roads,points);
 
-        Double [][] distance = distanceMatrix.getDistanseMatrix();
+        Double [][] distance = distanceMatrix.getDistanceMatrix();
 
         for (int i = 0; i<distance.length;i++){
             for (int j = 0; j<distance.length;j++) {
@@ -148,7 +140,7 @@ public class Solver {
             System.out.print(d+"  ");
         }
 
-        Solver solver = new Solver(conditionTP);
+        SolverCLP solver = new SolverCLP(conditionTP);
 
         Double[][] solveMatrix = solver.matrixOfSolve;
 

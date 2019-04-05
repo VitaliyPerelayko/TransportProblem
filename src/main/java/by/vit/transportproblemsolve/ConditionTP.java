@@ -1,11 +1,8 @@
 package by.vit.transportproblemsolve;
 
 import by.vit.model.*;
-import com.programmerare.shortestpaths.core.api.Graph;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ConditionTP {
 
@@ -20,11 +17,11 @@ public class ConditionTP {
     //big cost for unreachable road
     private static final Double UNREACHABLE = 999999D;
 
-    public ConditionTP(DistanceMatrix distanceMatrix, List<Car> cars, boolean flag, Double[] ordrer){
+    public ConditionTP(DistanceMatrixYanQi distanceMatrix, List<Car> cars, boolean flag, Double[] ordrer){
         this.lengthOfListCars = cars.size();
-        this.lengthOfListPoints = distanceMatrix.getDistanseMatrix().length-1;
+        this.lengthOfListPoints = distanceMatrix.getDistanceMatrix().length-1;
         decideAboutFlag(cars,ordrer);
-        this.costMatrix = getCostMatrix(distanceMatrix.getDistanseMatrix(),getCarCost(cars));
+        this.costMatrix = getCostMatrix(distanceMatrix.getDistanceMatrix(),getCarCost(cars));
         this.restrictionOfCars = getRestrictionOfCars(cars);
         this.restrictionOfOrder = getRestrictionOfOrder(ordrer,flag);
     }
@@ -172,9 +169,9 @@ public class ConditionTP {
 //
 //        Double[] order = {20D,25D,15D};
 //
-//        DistanceMatrix distanceMatrix = new DistanceMatrix(roads,points);
+//        DistanceMatrixYanQi distanceMatrix = new DistanceMatrixYanQi(roads,points);
 //
-//        Double [][] distance = distanceMatrix.getDistanseMatrix();
+//        Double [][] distance = distanceMatrix.getDistanceMatrix();
 //
 //        for (int i = 0; i<distance.length;i++){
 //            for (int j = 0; j<distance.length;j++) {
