@@ -20,6 +20,7 @@
     </properties>
 
     <dependencies>
+        <!--Spring-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -30,6 +31,7 @@
             <artifactId>spring-context</artifactId>
             <version>${org.spring.core}</version>
         </dependency>
+        <!--Database-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -40,17 +42,16 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.4.2.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.conector.java}</version>
-        </dependency><dependency>
+        </dependency>
+        <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>1.4.197</version>
-    </dependency>
-
+        </dependency>
     </dependencies>
 
 </project>
