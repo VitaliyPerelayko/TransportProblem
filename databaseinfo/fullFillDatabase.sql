@@ -1,9 +1,9 @@
 -- INSERT POINTS
 
 INSERT INTO points (name)
-VALUES --('Grodno'),
-       --('Lida'),
-       --('Volkovysk'),
+VALUES ('Grodno'),
+       ('Lida'),
+       ('Volkovysk'),
        ('Skidel'),
        ('Schuchin'),
        ('Mosty'),
@@ -17,7 +17,7 @@ VALUES --('Grodno'),
 -- INSERT ROADS
 
 INSERT INTO road (point1_id,point2_id,distance)
-VALUES #('Grodno'),
+VALUES --('Grodno'),
     #('Lida'),
     #('Volkovysk'),
        ('Skidel'),
