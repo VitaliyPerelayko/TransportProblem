@@ -9,7 +9,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
-@ComponentScan(basePackages = "by.vit")
 @EnableWebMvc
 public class WebConfiguration {
     @Bean

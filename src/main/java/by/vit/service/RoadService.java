@@ -1,4 +1,4 @@
 package by.vit.service;
 
-public class RoadService {
+public interface RoadService {
 }

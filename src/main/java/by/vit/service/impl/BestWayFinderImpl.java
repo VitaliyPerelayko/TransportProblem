@@ -1,6 +1,5 @@
 package by.vit.service.impl;
 
-import by.vit.config.SolverConfiguration;
 import by.vit.model.Car;
 import by.vit.model.Point;
 import by.vit.model.Road;
@@ -14,16 +13,15 @@ import by.vit.service.transportproblemsolve.SolverOfTP;
 import by.vit.service.transportproblemsolve.factory.DistanceMatrixFactory;
 import by.vit.service.transportproblemsolve.factory.SolverFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class BestWayFinderImpl implements BestWayFinder {
 
-    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SolverConfiguration.class);
     private Point[] points;
     private Double[] order;
     private RoadRepository roadRepository;

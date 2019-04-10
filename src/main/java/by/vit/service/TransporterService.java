@@ -1,4 +1,4 @@
 package by.vit.service;
 
-public class TransporterService {
+public interface TransporterService {
 }

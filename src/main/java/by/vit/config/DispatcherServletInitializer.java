@@ -6,7 +6,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{WebConfiguration.class};
+        return new Class[]{AppConfiguration.class};
     }
 
     @Override

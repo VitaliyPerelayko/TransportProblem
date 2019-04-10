@@ -1,4 +1,4 @@
-package by.vit.controler;
+package by.vit.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
