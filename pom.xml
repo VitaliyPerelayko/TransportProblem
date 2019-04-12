@@ -93,6 +93,14 @@
             <artifactId>clp-java</artifactId>
             <version>1.16.10</version>
         </dependency>
+
+        <!--Logger-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -6,6 +6,8 @@ import by.vit.service.transportproblemsolve.DistanceMatrix;
 import com.programmerare.shortestpaths.adapter.yanqi.PathFinderFactoryYanQi;
 import com.programmerare.shortestpaths.core.api.*;
 import com.programmerare.shortestpaths.core.validation.GraphEdgesValidationDesired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -15,6 +17,7 @@ import static com.programmerare.shortestpaths.core.impl.VertexImpl.createVertex;
 import static com.programmerare.shortestpaths.core.impl.WeightImpl.createWeight;
 
 public class YanQiDistanceMatrixImpl implements DistanceMatrix {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YanQiDistanceMatrixImpl.class);
 
     private static final PathFinderFactory pathFinderFactory = new PathFinderFactoryYanQi();
 
@@ -65,15 +68,15 @@ public class YanQiDistanceMatrixImpl implements DistanceMatrix {
         return pointsId;
     }
 
-    private static Vertex getVertexById(Graph graph,Long id){
+    private static Vertex getVertexById(Graph graph,Long id) throws IllegalArgumentException{
 
         for(Vertex vertex:graph.getVertices()){
             if (vertex.getVertexId().equals(id.toString())){
                 return vertex;
             }
         }
-        return null;
-        //throw Exception add write to the Log
+        //massage
+        throw new IllegalArgumentException("no such pointId");
     }
 
     private void createDistanceMatrix(Graph graph, Long[] pointsId) {

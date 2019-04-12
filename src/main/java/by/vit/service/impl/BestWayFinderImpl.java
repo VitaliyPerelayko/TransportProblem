@@ -101,7 +101,6 @@ public class BestWayFinderImpl implements BestWayFinder {
 
     private List<String> getInfo(Map<Long, Double> pointAndMass) {
         List<String> info = new ArrayList<>();
-        //Exception ???
         for (Long pointId : pointAndMass.keySet()) {
             info.add(pointRepository.findById(pointId).get().getName());
             info.add(pointAndMass.get(pointId).toString());
