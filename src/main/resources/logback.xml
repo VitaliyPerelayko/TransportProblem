@@ -1,12 +1,11 @@
 <configuration>
 
-    <property name="HOME_LOG" value="${CATALINA_HOME}/app.log"/>
+    <property name="HOME_LOG" value="${catalina.home}/logs/rest.log"/>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${HOME_LOG}</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <!-- each archived file, size max 10MB -->
             <maxFileSize>10MB</maxFileSize>
             <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
@@ -16,7 +15,7 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -24,13 +23,9 @@
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-    </appender>z
+    </appender>
 
-    <logger name="com.mkyong" level="debug" additivity="false">
-        <appender-ref ref="FILE-ROLLING"/>
-    </logger>
-
-    <root level="error">
+    <root>
         <appender-ref ref="FILE-ROLLING"/>
         <appender-ref ref="STDOUT"/>
     </root>

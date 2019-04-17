@@ -20,6 +20,9 @@
         <org.spring.data>2.1.5.RELEASE</org.spring.data>
         <javax.servlet>4.0.1</javax.servlet>
         <javax.jstl>1.2</javax.jstl>
+        <jackson.core>2.9.8</jackson.core>
+        <dozer>5.5.1</dozer>
+        <hibernate.validator>6.0.16.Final</hibernate.validator>
     </properties>
 
     <dependencies>
@@ -46,11 +49,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${javax.jstl}</version>
         </dependency>
 
         <!--Database-->
@@ -85,6 +83,32 @@
             <groupId>com.programmerare.shortest-paths</groupId>
             <artifactId>adapters-shortest-paths-core</artifactId>
             <version>1.0.0</version>
+        </dependency>
+
+        <!--Jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.core}</version>
+        </dependency>
+
+        <!-- Dozer -->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer}</version>
+        </dependency>
+
+        <!--Validation-->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator}</version>
         </dependency>
 
         <!--Liner solver-->
