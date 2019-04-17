@@ -144,7 +144,7 @@ public class CLPSolverImpl implements SolverOfTP {
 
         Double[] order = {20D,25D,15D};
 
-        YanQiDistanceMatrixImpl distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
+        YanQiDistanceMatrixFinderImpl distanceMatrix = new YanQiDistanceMatrixFinderImpl(roads,points);
 
         Double [][] distance = distanceMatrix.getDistanceMatrix();
 

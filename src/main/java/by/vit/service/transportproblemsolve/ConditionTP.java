@@ -1,7 +1,6 @@
 package by.vit.service.transportproblemsolve;
 
 import by.vit.model.*;
-import by.vit.service.transportproblemsolve.impl.YanQiDistanceMatrixImpl;
 
 import java.util.List;
 
@@ -20,18 +19,18 @@ public class ConditionTP {
     //big cost for unreachable road
     private static final Double UNREACHABLE = 999999D;
 
-    public ConditionTP(DistanceMatrix distanceMatrix, List<Car> cars, Double[] order){
+    public ConditionTP(DistanceMatrixFinder distanceMatrixFinder, List<Car> cars, Double[] order){
         this.lengthOfListCars = cars.size();
-        this.lengthOfListPoints = distanceMatrix.getDistanceMatrix().length-1;
+        this.lengthOfListPoints = distanceMatrixFinder.getDistanceMatrix().length-1;
         decideAboutFlag(cars,order);
-        this.costMatrix = getCostMatrix(distanceMatrix.getDistanceMatrix(),getCarCost(cars));
+        this.costMatrix = getCostMatrix(distanceMatrixFinder.getDistanceMatrix(),getCarCost(cars));
         this.restrictionOfCars = getRestrictionOfCars(cars);
         this.restrictionOfOrder = getRestrictionOfOrder(order,flagOfPseudoPoint);
         carsId = new Long[cars.size()];
         for (int i = 0; i < carsId.length; i++){
             carsId[i] = cars.get(i).getId();
         }
-        this.pointsId = distanceMatrix.getPointsId();
+        this.pointsId = distanceMatrixFinder.getPointsId();
     }
 
     public Double[] getRestrictionOfCars() {
@@ -151,114 +150,4 @@ public class ConditionTP {
         }
         return carRestriction;
     }
-
-
-    public static void main(String[] args) {
-//        Road[] roads = {
-//                getRoad(getRoadId(1l, 2l), 4D),
-//                getRoad(getRoadId(1l, 5l), 1D),
-//                getRoad(getRoadId(2l, 3l), 2D),
-//                getRoad(getRoadId(2l, 5l), 2D),
-//                getRoad(getRoadId(2l, 6l), 1D),
-//                getRoad(getRoadId(3l, 6l), 2D),
-//                getRoad(getRoadId(3l, 4l), 2D),
-//                getRoad(getRoadId(4l, 7l), 3D)
-//        };
-//
-//        Point[] points = {getPoint(2L),
-//                getPoint(1L),
-//                getPoint(4L),
-//                getPoint(7L),
-//        };
-//
-//        CarModel[] carModels = {
-//                getCarModel(1L,"Renault",50D,150D),
-//                getCarModel(2L,"Renault",20D,150D),
-//                getCarModel(3L,"Renault",30D,150D)
-//        };
-//
-//        List<Car> cars = Arrays.asList(
-//                getCar(1L,carModels[0],1.9),
-//                getCar(2L,carModels[1],1.3),
-//                getCar(3L,carModels[2],1.5)
-//         );
-//
-//        Double[] order = {20D,25D,15D};
-//
-//        YanQiDistanceMatrixImpl distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
-//
-//        Double [][] distance = distanceMatrix.getDistanceMatrix();
-//
-//        for (int i = 0; i<distance.length;i++){
-//            for (int j = 0; j<distance.length;j++) {
-//                System.out.print(distance[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
-//
-//        System.out.println("=====================================================");
-//
-//        ConditionTP conditionTP = new ConditionTP(distanceMatrix,cars,true,order);
-//
-//        Double[][] costMatrix = conditionTP.getCostMatrix();
-//
-//        for (int i = 0; i<costMatrix.length;i++){
-//            for (int j = 0; j<costMatrix.length+1;j++) {
-//                System.out.print(costMatrix[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
-//
-//        System.out.println("=====================================================");
-//
-//
-//        Double[] restrictionOfCars = conditionTP.getRestrictionOfCars();
-//
-//        for (Double d:restrictionOfCars){
-//            System.out.print(d+"  ");
-//        }
-//
-//        System.out.println("\n=====================================================");
-//
-//        Double[] restrictionOfOrders = conditionTP.getRestrictionOfOrder();
-//
-//        for (Double d:restrictionOfOrders){
-//            System.out.print(d+"  ");
-//        }
-
-
-
-    }
-
-    private static RoadId getRoadId(Long p1, Long p2) {
-        return new RoadId(p1, p2);
-    }
-
-    private static Road getRoad(RoadId roadId, Double distance) {
-        Road road = new Road();
-        road.setId(roadId);
-        road.setDistance(distance);
-        return road;
-    }
-
-    private static Point getPoint(Long id){
-        Point point = new Point();
-        point.setId(id);
-        return point;
-    }
-
-    private static CarModel getCarModel(Long id, String name, Double tonnage, Double space){
-        CarModel carModel = new CarModel(name, tonnage, space);
-        carModel.setId(id);
-        return carModel;
-    }
-
-    private static Car getCar(Long id, CarModel carModel, Double cost){
-        Car car = new Car();
-        car.setId(id);
-        car.setCarModel(carModel);
-        car.setCost(cost);
-        return car;
-    }
-
 }

@@ -2,16 +2,18 @@ package by.vit.service.transportproblemsolve.factory;
 
 import by.vit.model.Point;
 import by.vit.model.Road;
-import by.vit.service.transportproblemsolve.DistanceMatrix;
-import by.vit.service.transportproblemsolve.impl.YanQiDistanceMatrixImpl;
+import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
+import by.vit.service.transportproblemsolve.impl.YanQiDistanceMatrixFinderImpl;
 
 public class DistanceMatrixFactory {
     public enum Type {YanQi}
 
 
 
-    public static DistanceMatrix createDistanseMatrix(Type type, Road[] roads, Point[] points){
-        DistanceMatrix distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
-        return distanceMatrix;
+    public static DistanceMatrixFinder
+    createDistanceMatrix(Type type, Road[] roads, Point[] points)
+    throws Exception{
+        DistanceMatrixFinder distanceMatrixFinder = new YanQiDistanceMatrixFinderImpl(roads,points);
+        return distanceMatrixFinder;
     }
 }

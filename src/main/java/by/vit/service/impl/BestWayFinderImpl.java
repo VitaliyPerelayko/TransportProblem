@@ -8,10 +8,13 @@ import by.vit.repository.PointRepository;
 import by.vit.repository.RoadRepository;
 import by.vit.service.BestWayFinder;
 import by.vit.service.transportproblemsolve.ConditionTP;
-import by.vit.service.transportproblemsolve.DistanceMatrix;
+import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
 import by.vit.service.transportproblemsolve.SolverOfTP;
 import by.vit.service.transportproblemsolve.factory.DistanceMatrixFactory;
 import by.vit.service.transportproblemsolve.factory.SolverFactory;
+import by.vit.service.transportproblemsolve.impl.YanQiDistanceMatrixFinderImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ import java.util.TreeMap;
  */
 @Service
 public class BestWayFinderImpl implements BestWayFinder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YanQiDistanceMatrixFinderImpl.class);
 
     /**
      * Point of deliver
@@ -43,7 +47,7 @@ public class BestWayFinderImpl implements BestWayFinder {
     /**
      * Method of working out the distance
      */
-    private DistanceMatrix distanceMatrix;
+    private DistanceMatrixFinder distanceMatrixFinder;
     private SolverOfTP solver;
 
     @Autowired
@@ -61,14 +65,18 @@ public class BestWayFinderImpl implements BestWayFinder {
         this.pointRepository = pointRepository;
     }
 
-    public void setDistanceMatrix(DistanceMatrixFactory.Type type) {
-        this.distanceMatrix = DistanceMatrixFactory.
-                createDistanseMatrix(type, (Road[]) roadRepository.findAll().toArray(), points);
+    public void setDistanceMatrixFinder(DistanceMatrixFactory.Type type)  {
+        try {
+            this.distanceMatrixFinder = DistanceMatrixFactory.
+                    createDistanceMatrix(type, (Road[]) roadRepository.findAll().toArray(), points);
+        }catch (Exception e){
+            LOGGER.error("one of point has no road",e);
+        }
     }
 
     public void setSolver(SolverFactory.Type type) {
         List<Car> cars = new ArrayList(points[0].getCars());
-        ConditionTP conditionTP = new ConditionTP(distanceMatrix, cars, order);
+        ConditionTP conditionTP = new ConditionTP(distanceMatrixFinder, cars, order);
         this.solver = SolverFactory.createSolver(type, conditionTP);
     }
 
