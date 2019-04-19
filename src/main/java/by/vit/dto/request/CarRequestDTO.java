@@ -1,11 +1,22 @@
 package by.vit.dto.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
+/**
+ * DTO for request entity Car
+ */
 public class CarRequestDTO {
 
     private Long id;
+    @NotNull(message = "{car.carModelId.notNull}")
     private Long carModelId;
+    @NotNull(message = "{car.pointId.notNull}")
     private Long pointId;
+    @NotNull(message = "{car.transporterId.notNull}")
     private Long transporterId;
+    @NotNull(message = "{car.cost.notNull}")
+    @Positive(message = "{car.cost.notPositive}")
     private Double cost;
 
     public Long getId() {

@@ -1,11 +1,56 @@
 package by.vit.dto.response;
 
+import by.vit.dto.CarModelDTO;
+import by.vit.dto.PointDTO;
+
+/**
+ * DTO for response entity Car
+ */
 public class CarResponseDTO {
+
     private Long id;
+    private CarModelDTO carModel;
+    private PointDTO point;
+    private TransporterResponseDTO transporter;
+    private Double cost;
 
-    private String name;
+    public Long getId() {
+        return id;
+    }
 
-    private Double tonnage;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    private Double space;
+    public CarModelDTO getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(CarModelDTO carModel) {
+        this.carModel = carModel;
+    }
+
+    public PointDTO getPoint() {
+        return point;
+    }
+
+    public void setPoint(PointDTO point) {
+        this.point = point;
+    }
+
+    public TransporterResponseDTO getTransporter() {
+        return transporter;
+    }
+
+    public void setTransporter(TransporterResponseDTO transporter) {
+        this.transporter = transporter;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
 }

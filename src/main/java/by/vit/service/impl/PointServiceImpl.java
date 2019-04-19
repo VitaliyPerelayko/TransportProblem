@@ -7,6 +7,7 @@ import by.vit.service.PointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +28,15 @@ public class PointServiceImpl implements PointService {
     }
 
     /**
+     * Find all points from database.
+     * @return List<Point>
+     */
+    @Override
+    public List<Point> findAll() {
+        return pointRepository.findAll();
+    }
+
+    /**
      * Save new entity Point.
      *
      * @param point entity
@@ -34,7 +44,7 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public Point save(Point point) {
-        validate(point.getId() != null, localizedMessageSource.getMessage("error.point.notHaveId", new Object[]{}));
+        validate(point.getId() != null, localizedMessageSource.getMessage("error.point.HaveId", new Object[]{}));
         return pointRepository.saveAndFlush(point);
     }
 
@@ -60,15 +70,15 @@ public class PointServiceImpl implements PointService {
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @throws Exception if Point none found
+     * @throws RuntimeException if Point none found
      */
     @Override
-    public Point findPoint(Long id) throws Exception {
+    public Point findById(Long id) {
         Optional<Point> point = pointRepository.findById(id);
         if (point.isPresent()) {
             return point.get();
         }
-        throw new Exception("massage");
+        throw new RuntimeException("massage");
     }
 
     /**
@@ -92,8 +102,20 @@ public class PointServiceImpl implements PointService {
      * @param point
      */
     @Override
-    public void deletePoint(Point point) {
+    public void deleteById(Point point) {
+        validate(point.getId() == null, localizedMessageSource.getMessage("error.point.haveId", new Object[]{}));
         pointRepository.delete(point);
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        pointRepository.deleteById(id);
     }
 
     private void validate(boolean expression, String errorMessage) {

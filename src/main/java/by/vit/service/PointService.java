@@ -2,15 +2,21 @@ package by.vit.service;
 
 import by.vit.model.Point;
 
+import java.util.List;
+
 public interface PointService {
+
+    List<Point> findAll();
 
     Point save(Point point);
 
     Point update(Point point);
 
-    Point findPoint(Long id) throws Exception;
+    Point findById(Long id);
 
     Point getPoint(Long id);
 
-    void deletePoint(Point point);
+    void deleteById(Point point);
+
+    void deleteById(Long id);
 }

@@ -1,16 +1,19 @@
-package by.vit.dto.request;
+package by.vit.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PointRequestDTO {
+/**
+ * DTO for response and request entity Point
+ */
+public class PointDTO {
 
     private Long id;
 
     @NotNull(message = "{point.name.notNull}")
     @NotEmpty(message = "{point.name.notEmpty}")
-    @Size(min = 3, max = 50, message = "{user.name.size}")
+    @Size(min = 3, max = 50, message = "{point.name.size}")
     private String name;
 
     public Long getId() {

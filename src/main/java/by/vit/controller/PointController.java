@@ -1,16 +1,18 @@
 package by.vit.controller;
 
 import by.vit.component.LocalizedMessageSource;
-import by.vit.dto.response.PointResponseDTO;
+import by.vit.dto.PointDTO;
 import by.vit.model.Point;
 import by.vit.service.PointService;
 import org.dozer.Mapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/points")
@@ -30,41 +32,41 @@ public class PointController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<PointResponseDTO>> getAll() {
-        final List<Point> users = pointService.findAll();
-        final List<UserResponseDto> userResponseDtoList = users.stream()
-                .map((user) -> mapper.map(user, UserResponseDto.class))
+    public ResponseEntity<List<PointDTO>> getAll() {
+        final List<Point> points = pointService.findAll();
+        final List<PointDTO> PointDTOList = points.stream()
+                .map((point) -> mapper.map(point, PointDTO.class))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(userResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(PointDTOList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserResponseDto> getOne(@PathVariable Long id) {
-        final UserResponseDto userResponseDto = mapper.map(userService.findById(id), UserResponseDto.class);
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    public ResponseEntity<PointDTO> getOne(@PathVariable Long id) {
+        final PointDTO PointDTO = mapper.map(pointService.findById(id), PointDTO.class);
+        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserResponseDto> save(@Valid @RequestBody UserRequestDto userRequestDto) {
-        userRequestDto.setId(null);
-        final UserResponseDto userResponseDto = mapper.map(userService.save(getUser(userRequestDto)), UserResponseDto.class);
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    public ResponseEntity<PointDTO> save(@Valid @RequestBody PointDTO pointRequestDto) {
+        pointRequestDto.setId(null);
+        final Point point = mapper.map(pointRequestDto, Point.class);
+        final PointDTO PointDTO = mapper.map(pointService.save(point), PointDTO.class);
+        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<UserResponseDto> update(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable Long id) {
-        if (!Objects.equals(id, userRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("controller.user.unexpectedId", new Object[]{}));
+    public ResponseEntity<PointDTO> update(@Valid @RequestBody PointDTO pointRequestDto, @PathVariable Long id) {
+        if (!Objects.equals(id, pointRequestDto.getId())) {
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.point.unexpectedId", new Object[]{}));
         }
-        final UserResponseDto userResponseDto = mapper.map(userService.update(getUser(userRequestDto)), UserResponseDto.class);
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+        final Point point = mapper.map(pointRequestDto, Point.class);
+        final PointDTO PointDTO = mapper.map(pointService.update(point), PointDTO.class);
+        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {
-        userService.deleteById(id);
+        pointService.deleteById(id);
     }
-
-
 }

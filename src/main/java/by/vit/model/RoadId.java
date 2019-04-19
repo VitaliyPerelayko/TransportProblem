@@ -52,4 +52,12 @@ public class RoadId implements Serializable {
     public int hashCode() {
         return Objects.hash(getPoint1Id(), getPoint2Id());
     }
+
+    @Override
+    public String toString() {
+        return "RoadId{" +
+                "point1Id=" + point1Id +
+                ", point2Id=" + point2Id +
+                '}';
+    }
 }
