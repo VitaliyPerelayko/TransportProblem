@@ -1,6 +1,6 @@
 package by.vit.config;
 
-import by.vit.dto.response.ErrorResponseDto;
+import by.vit.dto.response.ErrorResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         String errorMessage = exception.getBindingResult().getAllErrors().stream()
                 .map(objectError -> objectError.getDefaultMessage().concat(SEMICOLON))
                 .reduce(EMPTY, String::concat);
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
         return new ResponseEntity(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
@@ -37,14 +37,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         String errorMessage = exception.getConstraintViolations().stream()
                 .map(constraintViolation -> constraintViolation.getMessage().concat(SEMICOLON))
                 .reduce(EMPTY, String::concat);
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
         return handleExceptionInternal(exception, errorResponseDTO, new HttpHeaders(), errorResponseDTO.getHttpStatus(), request);
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
     protected ResponseEntity<Object> handleRuntimeException(RuntimeException exception, WebRequest request) {
         LOGGER.error(exception.getMessage(), exception);
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
         return handleExceptionInternal(exception, errorResponseDTO, new HttpHeaders(), errorResponseDTO.getHttpStatus(), request);
     }
 }

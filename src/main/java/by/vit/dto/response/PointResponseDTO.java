@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PointResponseDto {
+public class PointResponseDTO {
     private Long id;
 
     @NotNull(message = "{point.name.notNull}")

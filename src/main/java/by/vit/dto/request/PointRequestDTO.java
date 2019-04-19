@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PointRequestDto {
+public class PointRequestDTO {
 
     private Long id;
 

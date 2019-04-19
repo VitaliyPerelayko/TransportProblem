@@ -1,11 +1,7 @@
-package by.vit.dto.request;
+package by.vit.dto.response;
 
-
-
-public class CarModelRequestDto {
-
+public class CarResponseDTO {
     private Long id;
-
 
     private String name;
 

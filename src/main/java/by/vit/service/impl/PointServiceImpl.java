@@ -1,40 +1,59 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Point;
 import by.vit.repository.PointRepository;
 import by.vit.service.PointService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Implementation of service layer for Point entity.
  */
 @Service
+@Transactional
 public class PointServiceImpl implements PointService {
-    private PointRepository pointRepository;
 
-    public PointRepository getPointRepository() {
-        return pointRepository;
-    }
+    private final LocalizedMessageSource localizedMessageSource;
 
-    @Autowired
-    public void setPointRepository(PointRepository pointRepository) {
+    private final PointRepository pointRepository;
+
+    public PointServiceImpl(LocalizedMessageSource localizedMessageSource, PointRepository pointRepository) {
+        this.localizedMessageSource = localizedMessageSource;
         this.pointRepository = pointRepository;
     }
 
     /**
-     * Save new entity and update persist entity Point.
+     * Save new entity Point.
      *
      * @param point entity
-     * @return saved or updated entity from database
+     * @return saved entity from database
      */
     @Override
-    public Point savePoint(Point point) {
-        Point savedEntity = getPointRepository().save(point);
-        return savedEntity;
+    public Point save(Point point) {
+        validate(point.getId() != null, localizedMessageSource.getMessage("error.point.notHaveId", new Object[]{}));
+        return pointRepository.saveAndFlush(point);
     }
+
+    /**
+     * Update entity Point.
+     *
+     * @param point entity
+     * @return updated entity from database
+     */
+    @Override
+    public Point update(Point point) {
+        final Long id = point.getId();
+        validate(id == null, localizedMessageSource.getMessage("error.point.haveId", new Object[]{}));
+        final Point duplicatePoint = pointRepository.findByName(point.getName());
+        final boolean isDuplicateExists = duplicatePoint != null && !Objects.equals(duplicatePoint.getId(), id);
+        validate(isDuplicateExists, localizedMessageSource.getMessage("error.point.name.notUnique", new Object[]{}));
+        return pointRepository.saveAndFlush(point);
+    }
+
 
     /**
      * Retrieves a Point by its id.
@@ -45,7 +64,7 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public Point findPoint(Long id) throws Exception {
-        Optional<Point> point = getPointRepository().findById(id);
+        Optional<Point> point = pointRepository.findById(id);
         if (point.isPresent()) {
             return point.get();
         }
@@ -63,7 +82,7 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public Point getPoint(Long id) {
-        Point point = getPointRepository().getOne(id);
+        Point point = pointRepository.getOne(id);
         return point;
     }
 
@@ -74,6 +93,12 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public void deletePoint(Point point) {
-        getPointRepository().delete(point);
+        pointRepository.delete(point);
+    }
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }
