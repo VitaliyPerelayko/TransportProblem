@@ -1,86 +1,171 @@
 package by.vit.app;
 
-import by.vit.dao.*;
-import by.vit.dao.impl.*;
+import by.vit.config.DatabaseConfiguration;
 import by.vit.model.*;
+import by.vit.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 
+/**
+ * Main class for tasting database module
+ */
+@Component
 public class Main {
     private static final String[] towns = {"Grodno", "Lida", "Volkovysk"};
-    private static final PointDAO pointDAO = PointDAOImpl.getInstance();
-    private static final RoadDAO roadDAO = RoadDAOImpl.getInstance();
-    private static final CarModelDAO carModelDAO = CarModelDAOImpl.getInstance();
-    private static final CarDAO carDAO = CarDAOImpl.getInstance();
-    private static final UserDAO userDAO = UserDAOImpl.getInstance();
-    private static final TransporterDAO transporterDAO = TransporterDAOImpl.getInstance();
-    private static final RoleDAO roleDAO = RoleDAOImpl.getInstance();
+    private PointRepository pointRepository;
+    private RoadRepository roadRepository;
+    private CarModelRepository carModelRepository;
+    private CarRepository carRepository;
+    private UserRepository userRepository;
+    private TransporterRepository transporterRepository;
+    private RoleRepository roleRepository;
 
     public static void main(String[] args) {
-        //Create add read  objects
+        AnnotationConfigApplicationContext annotatedClassApplicationContext = new AnnotationConfigApplicationContext(DatabaseConfiguration.class);
+        Main main = annotatedClassApplicationContext.getBean("main", Main.class);
 
+        //Create add read  objects
         for (int i = 0; i < towns.length; i++) {
             Point temp = new Point(towns[i]);
-            Long l = new Long(i);
-            temp.setId(l);
-            pointDAO.save(temp);
+            main.getPointRepository().save(temp);
         }
-        Point point = pointDAO.getPointByName("Lida");
-        Point point1 = pointDAO.getPointByName("Grodno");
+        Point point = main.getPointRepository().findByName("Lida");
+        Point point1 = main.getPointRepository().findByName("Grodno");
 
-        saveRoad(point, point1, 115D);
+        saveRoad(point, point1, 115D, main);
 
-        roleDAO.save(new Role("transporter"));
-        Role role = roleDAO.getOne(1L);
+        main.getRoleRepository().save(new Role("transporter"));
+        Role role = main.getRoleRepository().getOne(1L);
 
-        saveUser("Vadim","Vadim","+375 29","@gmail.com",role);
-        User user = userDAO.getOne(1L);
+        saveTransporter("Jack", "Sparrow", "103", "bla-bla@yahoo.com", role, "1234567", main);
+        Transporter transporter = main.getTransporterRepository().getOne(1L);
 
-        //transporterDAO.save();
-        Transporter transporter = transporterDAO.getOne(1L);
+        saveUser("Vadim", "Vadim", "+375 29", "@gmail.com", role, main);
+        Optional<User> userTemp = main.getUserRepository().findById(2L);
+        User user = userTemp.orElseThrow(RuntimeException::new);
 
-        carModelDAO.save(new CarModel("Renault Master L3H2",2.5D,13D));
-        CarModel carModel = carModelDAO.getOne(1L);
+        main.getCarModelRepository().save(new CarModel("Renault Master L3H2", 2.5D, 13D));
+        CarModel carModel = main.getCarModelRepository().getOne(1L);
 
-        saveCar(carModel,point,transporter,1.75D);
-        Car car = carDAO.getOne(1L);
-        System.out.println(carDAO.carModelByRestriction(CarDAO.restriction.MORE, 2D));
+        saveCar(carModel, point, transporter, 1.75D, main);
+        Car car = main.getCarRepository().getOne(1L);
+        System.out.println(main.getCarRepository().findCarsByTonnageAfter(2D));
 
         //Update objects
         user.setName("Stalin");
-        userDAO.update(user);
-        System.out.println(userDAO.getOne(1L).getName());
+
+        main.getUserRepository().save(user);
+        main.getUserRepository().findById(2L).ifPresent(System.out::println);
 
         //Delete objects
-        userDAO.delete(1L);
+        main.getUserRepository().delete(user);
         // and so one
 
     }
 
-    private static void saveRoad(Point point1, Point point2, Double distance) {
+    private static void saveRoad(Point point1, Point point2, Double distance, Main main) {
         Road road = new Road();
         road.setPoint1(point1);
         road.setPoint2(point2);
         road.setDistance(distance);
-        roadDAO.save(road);
+        main.getRoadRepository().save(road);
     }
 
-    private static void saveUser(String name, String surname, String phone, String eMail, Role role) {
+    private static void saveUser(String name, String surname, String phone, String eMail, Role role, Main main) {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user.setPhone(phone);
         user.seteMail(eMail);
         user.setRole(role);
-        userDAO.save(user);
+        main.getUserRepository().save(user);
     }
 
-    private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost) {
+    private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost, Main main) {
         Car car = new Car();
         car.setCarModel(carModel);
         car.setPoint(point);
         car.setTransporter(transporter);
         car.setCost(cost);
-        carDAO.save(car);
+        main.getCarRepository().save(car);
+    }
+
+    private static void saveTransporter(
+            String name, String surname, String phone, String eMail, Role role, String license, Main main) {
+        Transporter transporter = new Transporter();
+        transporter.setName(name);
+        transporter.setSurname(surname);
+        transporter.setPhone(phone);
+        transporter.seteMail(eMail);
+        transporter.setRole(role);
+        transporter.setLicense(license);
+        main.getTransporterRepository().save(transporter);
+    }
+
+    public PointRepository getPointRepository() {
+        return pointRepository;
+    }
+
+    @Autowired
+    public void setPointRepository(PointRepository pointRepository) {
+        this.pointRepository = pointRepository;
+    }
+
+    public RoadRepository getRoadRepository() {
+        return roadRepository;
+    }
+
+    @Autowired
+    public void setRoadRepository(RoadRepository roadRepository) {
+        this.roadRepository = roadRepository;
+    }
+
+    public CarModelRepository getCarModelRepository() {
+        return carModelRepository;
+    }
+
+    @Autowired
+    public void setCarModelRepository(CarModelRepository carModelRepository) {
+        this.carModelRepository = carModelRepository;
+    }
+
+    public CarRepository getCarRepository() {
+        return carRepository;
+    }
+
+    @Autowired
+    public void setCarRepository(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public TransporterRepository getTransporterRepository() {
+        return transporterRepository;
+    }
+
+    @Autowired
+    public void setTransporterRepository(TransporterRepository transporterRepository) {
+        this.transporterRepository = transporterRepository;
+    }
+
+    public RoleRepository getRoleRepository() {
+        return roleRepository;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 }
 

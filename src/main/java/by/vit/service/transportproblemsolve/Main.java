@@ -1,11 +1,10 @@
-package by.vit.transportproblemsolve;
+package by.vit.service.transportproblemsolve;
 
 
 import com.programmerare.shortestpaths.adapter.yanqi.PathFinderFactoryYanQi;
 import com.programmerare.shortestpaths.core.api.*;
 import com.programmerare.shortestpaths.core.validation.GraphEdgesValidationDesired;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

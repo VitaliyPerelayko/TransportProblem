@@ -3,6 +3,9 @@ package by.vit.model;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for the entity Point. It's points table in database
+ */
 @Entity
 @Table(name = "points")
 public class Point {
@@ -47,12 +50,12 @@ public class Point {
         return roads1;
     }
 
-    public Set<Road> getRoads2() {
-        return roads2;
-    }
-
     public void setRoads1(Set<Road> roads1) {
         this.roads1 = roads1;
+    }
+
+    public Set<Road> getRoads2() {
+        return roads2;
     }
 
     public void setRoads2(Set<Road> roads2) {

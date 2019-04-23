@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,30 +15,71 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql.conector.java>8.0.15</mysql.conector.java>
         <org.hibernate.core>5.4.1.Final</org.hibernate.core>
+        <org.spring.core>5.1.5.RELEASE</org.spring.core>
+        <org.spring.data>2.1.5.RELEASE</org.spring.data>
+        <javax.servlet>4.0.1</javax.servlet>
+        <javax.jstl>1.2</javax.jstl>
     </properties>
 
     <dependencies>
-        <!--Database-->
+        <!--Spring-->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${org.hibernate.core}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.spring.core}</version>
         </dependency>
 
+        <!--Servlet-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${javax.jstl}</version>
+        </dependency>
+
+        <!--Database-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${org.spring.data}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.conector.java}</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+        </dependency>
 
         <!--Shortest Path finder-->
         <dependency>
-            <!-- Apache Software License, Version 2.0 -->
             <groupId>com.programmerare.shortest-paths</groupId>
             <artifactId>adapters-shortest-paths-impl-yanqi</artifactId>
             <version>1.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.programmerare.shortest-paths</groupId>
             <artifactId>adapters-shortest-paths-core</artifactId>
@@ -47,17 +88,10 @@
 
         <!--Liner solver-->
         <dependency>
-            <groupId>io.github.oliviercailloux</groupId>
-            <artifactId>google-or-tools</artifactId>
-            <version>6.7.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.quantego</groupId>
             <artifactId>clp-java</artifactId>
             <version>1.16.10</version>
         </dependency>
-
     </dependencies>
 
 

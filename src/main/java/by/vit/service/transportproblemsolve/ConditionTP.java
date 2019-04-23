@@ -1,6 +1,7 @@
-package by.vit.transportproblemsolve;
+package by.vit.service.transportproblemsolve;
 
 import by.vit.model.*;
+import by.vit.service.transportproblemsolve.impl.YanQiDistanceMatrixImpl;
 
 import java.util.List;
 
@@ -13,17 +14,24 @@ public class ConditionTP {
     private int lengthOfListCars;
     private int lengthOfListPoints;
     private Double difference;
+    private Long[] carsId;
+    private Long[] pointsId;
 
     //big cost for unreachable road
     private static final Double UNREACHABLE = 999999D;
 
-    public ConditionTP(DistanceMatrixYanQi distanceMatrix, List<Car> cars, boolean flag, Double[] ordrer){
+    public ConditionTP(DistanceMatrix distanceMatrix, List<Car> cars, Double[] order){
         this.lengthOfListCars = cars.size();
         this.lengthOfListPoints = distanceMatrix.getDistanceMatrix().length-1;
-        decideAboutFlag(cars,ordrer);
+        decideAboutFlag(cars,order);
         this.costMatrix = getCostMatrix(distanceMatrix.getDistanceMatrix(),getCarCost(cars));
         this.restrictionOfCars = getRestrictionOfCars(cars);
-        this.restrictionOfOrder = getRestrictionOfOrder(ordrer,flag);
+        this.restrictionOfOrder = getRestrictionOfOrder(order,flagOfPseudoPoint);
+        carsId = new Long[cars.size()];
+        for (int i = 0; i < carsId.length; i++){
+            carsId[i] = cars.get(i).getId();
+        }
+        this.pointsId = distanceMatrix.getPointsId();
     }
 
     public Double[] getRestrictionOfCars() {
@@ -38,10 +46,18 @@ public class ConditionTP {
         return costMatrix;
     }
 
+    public Long[] getCarsId() {
+        return carsId;
+    }
+
+    public Long[] getPointsId() {
+        return pointsId;
+    }
+
     private void decideAboutFlag(List<Car> cars, Double[] order){
         Double carsTonnage = new Double(0);
         for (Car c:cars){
-            carsTonnage += c.getCarModel().getTonage();
+            carsTonnage += c.getCarModel().getTonnage();
         }
         Double sumOfOrder = new Double(0);
         for (Double d:order){
@@ -128,7 +144,7 @@ public class ConditionTP {
     private Double[] getRestrictionOfCars(List<Car> cars) {
         Double[] carRestriction = new Double[lengthOfListPoints*lengthOfListCars];
         for (int i = 0; i < lengthOfListCars; i++) {
-            Double temp = cars.get(i).getCarModel().getTonage();
+            Double temp = cars.get(i).getCarModel().getTonnage();
             for (int j = 0; j < lengthOfListPoints; j++) {
                 carRestriction[j+i*lengthOfListPoints] = temp;
             }
@@ -169,7 +185,7 @@ public class ConditionTP {
 //
 //        Double[] order = {20D,25D,15D};
 //
-//        DistanceMatrixYanQi distanceMatrix = new DistanceMatrixYanQi(roads,points);
+//        YanQiDistanceMatrixImpl distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
 //
 //        Double [][] distance = distanceMatrix.getDistanceMatrix();
 //

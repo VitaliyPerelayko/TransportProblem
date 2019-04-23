@@ -1,7 +1,8 @@
-package by.vit.transportproblemsolve;
+package by.vit.service.transportproblemsolve.impl;
 
 
 import by.vit.model.*;
+import by.vit.service.transportproblemsolve.DistanceMatrix;
 import com.programmerare.shortestpaths.adapter.yanqi.PathFinderFactoryYanQi;
 import com.programmerare.shortestpaths.core.api.*;
 import com.programmerare.shortestpaths.core.validation.GraphEdgesValidationDesired;
@@ -13,17 +14,22 @@ import static com.programmerare.shortestpaths.core.impl.GraphImpl.createGraph;
 import static com.programmerare.shortestpaths.core.impl.VertexImpl.createVertex;
 import static com.programmerare.shortestpaths.core.impl.WeightImpl.createWeight;
 
-public class DistanceMatrixYanQi implements DistanceMatrix {
+public class YanQiDistanceMatrixImpl implements DistanceMatrix {
 
     private static final PathFinderFactory pathFinderFactory = new PathFinderFactoryYanQi();
 
     private Double[][] distanceMatrix;
     private List<Path> pathList;
+    private Long [] pointsId;
 
-    public DistanceMatrixYanQi(Road[] roads, Point[] points) {
+    public YanQiDistanceMatrixImpl(Road[] roads, Point[] points) {
         this.distanceMatrix = new Double[points.length+1][points.length+1];
         this.pathList = new ArrayList();
         createDistanceMatrix(createGraphFromRoads(roads),createArrayOfPointId(points));
+        pointsId = new Long[points.length-1];
+        for (int i = 0; i < pointsId.length; i++){
+            pointsId[i] = points[i+1].getId();
+        }
     }
 
     @Override
@@ -34,6 +40,10 @@ public class DistanceMatrixYanQi implements DistanceMatrix {
     @Override
     public List<Path> getPathList() {
         return pathList;
+    }
+
+    public Long[] getPointsId() {
+        return pointsId;
     }
 
     private static Graph createGraphFromRoads(Road[] roads) {
@@ -115,7 +125,7 @@ public class DistanceMatrixYanQi implements DistanceMatrix {
                 getPoint(4L),
                 getPoint(7L),
         };
-        DistanceMatrixYanQi distanceMatrix = new DistanceMatrixYanQi(roads,points);
+        YanQiDistanceMatrixImpl distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
 
         Double[][] matrix = distanceMatrix.getDistanceMatrix();
 

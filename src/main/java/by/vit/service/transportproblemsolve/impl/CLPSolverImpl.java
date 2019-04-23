@@ -1,19 +1,64 @@
-package by.vit.transportproblemsolve;
+package by.vit.service.transportproblemsolve.impl;
 
 
 import by.vit.model.*;
+import by.vit.service.transportproblemsolve.ConditionTP;
+import by.vit.service.transportproblemsolve.SolverOfTP;
 import com.quantego.clp.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class SolverCLP implements SolverOfTP {
+
+public class CLPSolverImpl implements SolverOfTP {
 
     private Double[][] matrixOfSolve;
+    private Map<Long, Map<Long,Double>> interpretation;
 
-    public SolverCLP(ConditionTP conditionTP){
+    public CLPSolverImpl(ConditionTP conditionTP){
         solveTP(conditionTP);
+        getInterpretation(conditionTP);
     }
+
+    public Double[][] getMatrixOfSolve() {
+        return matrixOfSolve;
+    }
+
+    public Map<Long, Map<Long, Double>> getInterpretation() {
+        return interpretation;
+    }
+
+
+
+    private void getInterpretation(ConditionTP conditionTP){
+        Long[] carsId = conditionTP.getCarsId();
+        Long[] pointsId = conditionTP.getPointsId();
+
+        int n = pointsId.length+1;
+        int s = carsId.length*pointsId.length;
+        Double zero = 0D;
+
+        interpretation = new TreeMap<>();
+
+        for (int a = 0; a<carsId.length; a++){
+            for (int i = a*n; i < (a+1)*n; i++){
+                for (int j = 0; j < n-1; j++){
+                    Double tonne = matrixOfSolve[i][j+s];
+                    if (!tonne.equals(zero)){
+                        if (interpretation.get((long)a)==null){
+                            interpretation.put((long) a,new TreeMap<>());
+                        }
+                        interpretation.get((long)a).put(pointsId[j],tonne);
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
     private void solveTP(ConditionTP conditionTP){
         Double[][] costMatrix = conditionTP.getCostMatrix();
@@ -58,7 +103,7 @@ public class SolverCLP implements SolverOfTP {
             constraintsOrder[i].eq(order);
         }
 
-        solver.minimization();
+        solver.minimize();
         matrixOfSolve = new Double[linesLength][rowsLength];
         for (int i = 0; i < linesLength; i++){
             for (int j = 0; j < rowsLength; j++){
@@ -99,7 +144,7 @@ public class SolverCLP implements SolverOfTP {
 
         Double[] order = {20D,25D,15D};
 
-        DistanceMatrixYanQi distanceMatrix = new DistanceMatrixYanQi(roads,points);
+        YanQiDistanceMatrixImpl distanceMatrix = new YanQiDistanceMatrixImpl(roads,points);
 
         Double [][] distance = distanceMatrix.getDistanceMatrix();
 
@@ -112,7 +157,7 @@ public class SolverCLP implements SolverOfTP {
 
         System.out.println("=====================================================");
 
-        ConditionTP conditionTP = new ConditionTP(distanceMatrix,cars,true,order);
+        ConditionTP conditionTP = new ConditionTP(distanceMatrix,cars,order);
 
         Double[][] costMatrix = conditionTP.getCostMatrix();
 
@@ -140,7 +185,7 @@ public class SolverCLP implements SolverOfTP {
             System.out.print(d+"  ");
         }
 
-        SolverCLP solver = new SolverCLP(conditionTP);
+        CLPSolverImpl solver = new CLPSolverImpl(conditionTP);
 
         Double[][] solveMatrix = solver.matrixOfSolve;
 
@@ -150,6 +195,10 @@ public class SolverCLP implements SolverOfTP {
             }
             System.out.println();
         }
+
+        Map<Long,Map<Long,Double>> interpretation = solver.getInterpretation();
+
+        System.out.println(interpretation);
 
 
     }

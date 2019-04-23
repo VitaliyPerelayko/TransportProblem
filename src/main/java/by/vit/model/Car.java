@@ -2,7 +2,9 @@ package by.vit.model;
 
 import javax.persistence.*;
 
-
+/**
+ * Class for the entity Car. It's transporter_car table in database
+ */
 @Entity
 @Table(name = "transporter_car")
 public class Car {
