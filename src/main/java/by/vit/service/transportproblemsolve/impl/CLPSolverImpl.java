@@ -6,16 +6,14 @@ import by.vit.service.transportproblemsolve.ConditionTP;
 import by.vit.service.transportproblemsolve.SolverOfTP;
 import com.quantego.clp.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.math.BigDecimal;
+import java.util.*;
 
 
 public class CLPSolverImpl implements SolverOfTP {
 
     private Double[][] matrixOfSolve;
-    private Map<Long, Map<Long,Double>> interpretation;
+    private Map<Long,List<String>> interpretation;
 
     public CLPSolverImpl(ConditionTP conditionTP){
         solveTP(conditionTP);
@@ -26,7 +24,7 @@ public class CLPSolverImpl implements SolverOfTP {
         return matrixOfSolve;
     }
 
-    public Map<Long, Map<Long, Double>> getInterpretation() {
+    public Map<Long,List<String>> getInterpretation() {
         return interpretation;
     }
 
@@ -35,6 +33,7 @@ public class CLPSolverImpl implements SolverOfTP {
     private void getInterpretation(ConditionTP conditionTP){
         Long[] carsId = conditionTP.getCarsId();
         Long[] pointsId = conditionTP.getPointsId();
+        BigDecimal[][] costMatrix =  conditionTP.getCostMatrix();
 
         int n = pointsId.length+1;
         int s = carsId.length*pointsId.length;
@@ -46,11 +45,21 @@ public class CLPSolverImpl implements SolverOfTP {
             for (int i = a*n; i < (a+1)*n; i++){
                 for (int j = 0; j < n-1; j++){
                     Double tonne = matrixOfSolve[i][j+s];
+                    BigDecimal cost = null;
+                    if (costMatrix[i][j+s].equals(BigDecimal.ZERO)){
+                        cost = costMatrix[i][j+s];
+                    }else{
+                        cost = costMatrix[a*n][j*carsId.length+a];
+                    }
+
                     if (!tonne.equals(zero)){
                         if (interpretation.get((long)a)==null){
-                            interpretation.put((long) a,new TreeMap<>());
+                            interpretation.put((long) a,new ArrayList<>());
                         }
-                        interpretation.get((long)a).put(pointsId[j],tonne);
+                        List<String> infoForCar = interpretation.get((long)a);
+                        infoForCar.add(pointsId[j].toString());
+                        infoForCar.add(tonne.toString());
+                        infoForCar.add(cost.multiply(BigDecimal.valueOf(tonne)).toString());
                     }
                 }
             }
@@ -61,7 +70,7 @@ public class CLPSolverImpl implements SolverOfTP {
 
 
     private void solveTP(ConditionTP conditionTP){
-        Double[][] costMatrix = conditionTP.getCostMatrix();
+        BigDecimal[][] costMatrix = conditionTP.getCostMatrix();
         Double[] restrictionOfCar = conditionTP.getRestrictionOfCars();
         Double[] restrictionOfOrder = conditionTP.getRestrictionOfOrder();
         int rowsLength = costMatrix[0].length;
@@ -87,7 +96,7 @@ public class CLPSolverImpl implements SolverOfTP {
                 //variable
                 variables[i][j] = solver.addVariable().bounds(0D,bound);
                 //coefficient
-                solver.setObjectiveCoefficient(variables[i][j],costMatrix[i][j]);
+                solver.setObjectiveCoefficient(variables[i][j],costMatrix[i][j].doubleValue());
                 //restriction
                 constraintsCar[i].add(variables[i][j],1);
                 constraintsOrder[j].add(variables[i][j],1);
@@ -159,7 +168,7 @@ public class CLPSolverImpl implements SolverOfTP {
 
         ConditionTP conditionTP = new ConditionTP(distanceMatrix,cars,order);
 
-        Double[][] costMatrix = conditionTP.getCostMatrix();
+        BigDecimal[][] costMatrix = conditionTP.getCostMatrix();
 
         for (int i = 0; i<costMatrix.length;i++){
             for (int j = 0; j<costMatrix.length+1;j++) {
@@ -196,7 +205,7 @@ public class CLPSolverImpl implements SolverOfTP {
             System.out.println();
         }
 
-        Map<Long,Map<Long,Double>> interpretation = solver.getInterpretation();
+        Map<Long,List<String>> interpretation = solver.getInterpretation();
 
         System.out.println(interpretation);
 

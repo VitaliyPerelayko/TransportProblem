@@ -10,11 +10,4 @@ import java.util.List;
  * Repository layer for Cars
  */
 public interface RoadRepository extends JpaRepository<Road, RoadId> {
-
-    /**
-     * Find all Roads from database
-     *
-     * @return List<Road>
-     */
-    List<Road> findAll();
 }

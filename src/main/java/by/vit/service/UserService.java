@@ -2,12 +2,20 @@ package by.vit.service;
 
 import by.vit.model.User;
 
+import java.util.List;
+
 public interface UserService {
-    User saveUser(User user);
+    List<User> findAll();
 
-    User findUser(Long id) throws Exception;
+    User save(User user);
 
-    User getUser(Long id);
+    User update(User user);
 
-    void deleteUser(User user);
+    User findById(Long id);
+
+    User getById(Long id);
+
+    void delete(User user);
+
+    void deleteById(Long id);
 }

@@ -2,12 +2,21 @@ package by.vit.service;
 
 import by.vit.model.Car;
 
+import java.util.List;
+
 public interface CarService {
-    Car saveCar(Car car);
 
-    Car findCar(Long id) throws Exception;
+    List<Car> findAll();
 
-    Car getCar(Long id);
+    Car save(Car car);
 
-    void deleteCar(Car car);
+    Car update(Car car);
+
+    Car findById(Long id);
+
+    Car getById(Long id);
+
+    void delete(Car car);
+
+    void deleteById(Long id);
 }

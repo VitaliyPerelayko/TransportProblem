@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "road")
 public class Road {
     @EmbeddedId
-    private RoadId id = new RoadId();
+    private RoadId id;
 
     @MapsId("point1Id")
     @ManyToOne
@@ -25,12 +25,14 @@ public class Road {
     private Double distance;
 
     public Road(Point point1, Point point2, Double distance) {
+        id = new RoadId();
         this.point1 = point1;
         this.point2 = point2;
         this.distance = distance;
     }
 
     public Road() {
+        id = new RoadId();
     }
 
     public RoadId getId() {

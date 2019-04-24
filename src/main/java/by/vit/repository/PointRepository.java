@@ -7,8 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Repository layer for Points
  */
 public interface PointRepository extends JpaRepository<Point, Long> {
+
     /**
-     * Get point by name from DataBase
+     * Return true, if point with this name exist in database,
+     * and false otherwise.
+     *
+     * @param name
+     * @return true or false
+     */
+    boolean existsByName(String name);
+
+    /**
+     * Find point by name from DataBase
      *
      * @param name of point
      * @return point

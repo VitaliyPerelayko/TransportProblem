@@ -34,24 +34,24 @@ public class PointController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<PointDTO>> getAll() {
         final List<Point> points = pointService.findAll();
-        final List<PointDTO> PointDTOList = points.stream()
+        final List<PointDTO> pointDTOList = points.stream()
                 .map((point) -> mapper.map(point, PointDTO.class))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(PointDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(pointDTOList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<PointDTO> getOne(@PathVariable Long id) {
-        final PointDTO PointDTO = mapper.map(pointService.findById(id), PointDTO.class);
-        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
+        final PointDTO pointDTO = mapper.map(pointService.findById(id), PointDTO.class);
+        return new ResponseEntity<>(pointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<PointDTO> save(@Valid @RequestBody PointDTO pointRequestDto) {
         pointRequestDto.setId(null);
         final Point point = mapper.map(pointRequestDto, Point.class);
-        final PointDTO PointDTO = mapper.map(pointService.save(point), PointDTO.class);
-        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
+        final PointDTO pointDTO = mapper.map(pointService.save(point), PointDTO.class);
+        return new ResponseEntity<>(pointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -60,8 +60,8 @@ public class PointController {
             throw new RuntimeException(localizedMessageSource.getMessage("controller.point.unexpectedId", new Object[]{}));
         }
         final Point point = mapper.map(pointRequestDto, Point.class);
-        final PointDTO PointDTO = mapper.map(pointService.update(point), PointDTO.class);
-        return new ResponseEntity<>(PointDTO, HttpStatus.OK);
+        final PointDTO pointDTO = mapper.map(pointService.update(point), PointDTO.class);
+        return new ResponseEntity<>(pointDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

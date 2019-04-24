@@ -26,7 +26,7 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
     private List<Path> pathList;
     private Long[] pointsId;
 
-    public YanQiDistanceMatrixFinderImpl(Road[] roads, Point[] points) throws Exception {
+    public YanQiDistanceMatrixFinderImpl(Road[] roads, Point[] points){
         this.distanceMatrix = new Double[points.length + 1][points.length + 1];
         this.pathList = new ArrayList();
         createDistanceMatrix(createGraphFromRoads(roads), createArrayOfPointId(points));
@@ -70,17 +70,17 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
         return pointsId;
     }
 
-    private Vertex getVertexById(Graph graph, Long id) throws Exception {
+    private Vertex getVertexById(Graph graph, Long id){
 
         for (Vertex vertex : graph.getVertices()) {
             if (vertex.getVertexId().equals(id.toString())) {
                 return vertex;
             }
         }
-        throw new Exception("no such pointId massage");
+        throw new RuntimeException("no such pointId massage");
     }
 
-    private void createDistanceMatrix(Graph graph, Long[] pointsId) throws Exception {
+    private void createDistanceMatrix(Graph graph, Long[] pointsId){
         PathFinder pathFinder = pathFinderFactory.createPathFinder(graph);
         int pointIdLength = pointsId.length;
         for (int i = 0; i < pointIdLength; i++) {

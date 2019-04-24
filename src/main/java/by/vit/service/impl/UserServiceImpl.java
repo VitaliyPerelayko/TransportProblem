@@ -1,39 +1,67 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.User;
 import by.vit.repository.UserRepository;
+import by.vit.service.RoleService;
 import by.vit.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Implementation of service layer for User entity.
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final LocalizedMessageSource localizedMessageSource;
+    private final RoleService roleService;
 
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, LocalizedMessageSource localizedMessageSource,
+                           RoleService roleService) {
         this.userRepository = userRepository;
+        this.localizedMessageSource = localizedMessageSource;
+        this.roleService = roleService;
     }
 
     /**
-     * Save new entity and update persist entity User.
+     * Find all users from database.
      *
-     * @param user entity
-     * @return saved or updated entity from database
+     * @return List<User>
      */
     @Override
-    public User saveUser(User user) {
-        User savedEntity = getUserRepository().save(user);
-        return savedEntity;
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    /**
+     * Save new entity User.
+     *
+     * @param user entity
+     * @return saved entity from database
+     */
+    @Override
+    public User save(User user) {
+        validate(user.getId() != null,
+                localizedMessageSource.getMessage("error.user.haveId", new Object[]{}));
+        return saveAndFlush(user);
+    }
+
+    /**
+     * Update entity User.
+     *
+     * @param user entity
+     * @return updated entity from database
+     */
+    @Override
+    public User update(User user) {
+        validate(user.getId() == null,
+                localizedMessageSource.getMessage("error.user.haveNoId", new Object[]{}));
+        return saveAndFlush(user);
     }
 
     /**
@@ -41,15 +69,13 @@ public class UserServiceImpl implements UserService {
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @throws Exception if User none found
+     * @throws RuntimeException if User none found
      */
     @Override
-    public User findUser(Long id) throws Exception {
-        Optional<User> user = getUserRepository().findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        throw new Exception("massage");
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        validate(!(user.isPresent()), localizedMessageSource.getMessage("error.user.notExist", new Object[]{}));
+        return user.get();
     }
 
     /**
@@ -62,8 +88,8 @@ public class UserServiceImpl implements UserService {
      * @return a reference to the entity with the given identifier.
      */
     @Override
-    public User getUser(Long id) {
-        User user = getUserRepository().getOne(id);
+    public User getById(Long id) {
+        User user = userRepository.getOne(id);
         return user;
     }
 
@@ -73,7 +99,35 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public void deleteUser(User user) {
-        getUserRepository().delete(user);
+    public void delete(User user) {
+        final Long id = user.getId();
+        validate(id == null, localizedMessageSource.getMessage("error.user.haveId", new Object[]{}));
+        findById(id);
+        userRepository.delete(user);
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        userRepository.deleteById(id);
+    }
+
+    private User saveAndFlush(User user) {
+        validate(user.getRole() == null || user.getRole().getId() == null,
+                localizedMessageSource.getMessage("error.user.role.isNull", new Object[]{}));
+        user.setRole(roleService.findById(user.getRole().getId()));
+        return userRepository.saveAndFlush(user);
+    }
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }

@@ -1,55 +1,88 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Role;
 import by.vit.repository.RoleRepository;
 import by.vit.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Implementation of service layer for Role entity.
  */
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
-    private RoleRepository roleRepository;
 
-    public RoleRepository getRoleRepository() {
-        return roleRepository;
-    }
+    private final LocalizedMessageSource localizedMessageSource;
 
-    @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
+    private final RoleRepository roleRepository;
+
+    public RoleServiceImpl(LocalizedMessageSource localizedMessageSource, RoleRepository roleRepository) {
+        this.localizedMessageSource = localizedMessageSource;
         this.roleRepository = roleRepository;
     }
 
     /**
-     * Save new entity and update persist entity Role.
+     * Find all roles from database.
      *
-     * @param role entity
-     * @return saved or updated entity from database
+     * @return List<Role>
      */
     @Override
-    public Role saveRole(Role role) {
-        Role savedEntity = getRoleRepository().save(role);
-        return savedEntity;
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
+
+    /**
+     * Save new entity Role.
+     *
+     * @param role entity
+     * @return saved entity from database
+     */
+    @Override
+    public Role save(Role role) {
+        validate(role.getId() != null,
+                localizedMessageSource.getMessage("error.role.haveId", new Object[]{}));
+        validate(roleRepository.existsByName(role.getName()),
+                localizedMessageSource.getMessage("error.role.name.notUnique", new Object[]{}));
+        return roleRepository.saveAndFlush(role);
+    }
+
+    /**
+     * Update entity Role.
+     *
+     * @param role entity
+     * @return updated entity from database
+     */
+    @Override
+    public Role update(Role role) {
+        final Long id = role.getId();
+        validate(id == null,
+                localizedMessageSource.getMessage("error.role.haveNoId", new Object[]{}));
+        final Role duplicateRole = roleRepository.findByName(role.getName());
+        findById(id);
+        final boolean isDuplicateExists = duplicateRole != null && !Objects.equals(duplicateRole.getId(), id);
+        validate(isDuplicateExists, localizedMessageSource.getMessage("error.role.name.notUnique", new Object[]{}));
+        return roleRepository.saveAndFlush(role);
+    }
+
 
     /**
      * Retrieves a Role by its id.
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @throws Exception if Role none found
+     * @throws RuntimeException if Role none found
      */
     @Override
-    public Role findRole(Long id) throws Exception {
-        Optional<Role> role = getRoleRepository().findById(id);
-        if (role.isPresent()) {
-            return role.get();
-        }
-        throw new Exception("massage");
+    public Role findById(Long id) {
+        Optional<Role> role = roleRepository.findById(id);
+        validate(!(role.isPresent()), localizedMessageSource.getMessage("error.role.notExist", new Object[]{}));
+        return role.get();
     }
 
     /**
@@ -62,8 +95,8 @@ public class RoleServiceImpl implements RoleService {
      * @return a reference to the entity with the given identifier.
      */
     @Override
-    public Role getRole(Long id) {
-        Role role = getRoleRepository().getOne(id);
+    public Role getById(Long id) {
+        Role role = roleRepository.getOne(id);
         return role;
     }
 
@@ -73,7 +106,28 @@ public class RoleServiceImpl implements RoleService {
      * @param role
      */
     @Override
-    public void deleteRole(Role role) {
-        getRoleRepository().delete(role);
+    public void delete(Role role) {
+        final Long id = role.getId();
+        validate(role.getId() == null, localizedMessageSource.getMessage("error.role.haveId", new Object[]{}));
+        findById(id);
+        roleRepository.delete(role);
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        roleRepository.deleteById(id);
+    }
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }

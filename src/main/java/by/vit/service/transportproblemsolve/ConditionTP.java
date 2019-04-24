@@ -2,13 +2,14 @@ package by.vit.service.transportproblemsolve;
 
 import by.vit.model.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ConditionTP {
 
     private Double[] restrictionOfCars;
     private Double[] restrictionOfOrder;
-    private Double[][] costMatrix;
+    private BigDecimal[][] costMatrix;
     private boolean flagOfPseudoPoint;
     private int lengthOfListCars;
     private int lengthOfListPoints;
@@ -17,7 +18,7 @@ public class ConditionTP {
     private Long[] pointsId;
 
     //big cost for unreachable road
-    private static final Double UNREACHABLE = 999999D;
+    private static final BigDecimal UNREACHABLE = new BigDecimal("999999");
 
     public ConditionTP(DistanceMatrixFinder distanceMatrixFinder, List<Car> cars, Double[] order){
         this.lengthOfListCars = cars.size();
@@ -41,7 +42,7 @@ public class ConditionTP {
         return restrictionOfOrder;
     }
 
-    public Double[][] getCostMatrix() {
+    public BigDecimal[][] getCostMatrix() {
         return costMatrix;
     }
 
@@ -72,13 +73,13 @@ public class ConditionTP {
         }
     }
 
-    private Double[][] getCostMatrix(Double[][] distanceMatrix, Double[] carCost) {
+    private BigDecimal[][] getCostMatrix(Double[][] distanceMatrix, Double[] carCost) {
         int n = (lengthOfListPoints-1)*lengthOfListCars;
 
-        Double [][] costMatrix1 = null;
+        BigDecimal [][] costMatrix1 = null;
 
         if (flagOfPseudoPoint) {
-            costMatrix1 = new Double[lengthOfListPoints*lengthOfListCars]
+            costMatrix1 = new BigDecimal[lengthOfListPoints*lengthOfListCars]
                     [lengthOfListPoints*lengthOfListCars+1];
             for (int a = 0; a<lengthOfListCars; a++){
                 for (int i = 0; i<lengthOfListPoints; i++){
@@ -86,19 +87,23 @@ public class ConditionTP {
                     for (int j = 0; j < n;j++){
                         if ((j-a)%lengthOfListCars==0){
                             int p=Math.abs(j-a)/lengthOfListCars;
-                            costMatrix1[foo][j] = distanceMatrix[i+1][2+p]*carCost[a];
+                            BigDecimal cost = new BigDecimal(distanceMatrix[i+1][2+p].toString())
+                                    .multiply(new BigDecimal(carCost[a].toString()));
+                            costMatrix1[foo][j] = cost;
                         } else{
                             costMatrix1[foo][j] = UNREACHABLE;
                         }
                     }
                     for (int j = n,p = 0; j < lengthOfListCars*lengthOfListPoints;j++,p++){
-                        costMatrix1[foo][j] = distanceMatrix[i+1][2+p]*carCost[a];
+                        BigDecimal cost = new BigDecimal(distanceMatrix[i+1][2+p].toString())
+                                .multiply(new BigDecimal(carCost[a].toString()));
+                        costMatrix1[foo][j] = cost;
                     }
-                    costMatrix1[foo][lengthOfListCars*lengthOfListPoints] = 0D;
+                    costMatrix1[foo][lengthOfListCars*lengthOfListPoints] = BigDecimal.ZERO;
                 }
             }
         }else {
-            costMatrix = new Double[lengthOfListPoints*lengthOfListCars]
+            costMatrix = new BigDecimal[lengthOfListPoints*lengthOfListCars]
                     [lengthOfListPoints*lengthOfListCars];
         }
 

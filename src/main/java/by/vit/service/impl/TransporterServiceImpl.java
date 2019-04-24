@@ -1,39 +1,77 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Transporter;
 import by.vit.repository.TransporterRepository;
+import by.vit.service.RoleService;
 import by.vit.service.TransporterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.vit.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Implementation of service layer for Transporter entity.
  */
 @Service
+@Transactional
 public class TransporterServiceImpl implements TransporterService {
-    private TransporterRepository transporterRepository;
+    private final TransporterRepository transporterRepository;
+    private final LocalizedMessageSource localizedMessageSource;
+    private final UserService userService;
 
-    public TransporterRepository getTransporterRepository() {
-        return transporterRepository;
-    }
-
-    @Autowired
-    public void setTransporterRepository(TransporterRepository transporterRepository) {
+    public TransporterServiceImpl(TransporterRepository transporterRepository, LocalizedMessageSource localizedMessageSource,
+                                  UserService userService) {
         this.transporterRepository = transporterRepository;
+        this.localizedMessageSource = localizedMessageSource;
+        this.userService = userService;
     }
 
     /**
-     * Save new entity and update persist entity Transporter.
+     * Find all transporters from database.
      *
-     * @param transporter entity
-     * @return saved or updated entity from database
+     * @return List<Transporter>
      */
     @Override
-    public Transporter saveTransporter(Transporter transporter) {
-        Transporter savedEntity = getTransporterRepository().save(transporter);
-        return savedEntity;
+    public List<Transporter> findAll() {
+        return transporterRepository.findAll();
+    }
+
+    /**
+     * Save new entity Transporter.
+     *
+     * @param transporter entity
+     * @return saved entity from database
+     */
+    @Override
+    public Transporter save(Transporter transporter) {
+        validate(transporter.getId() != null,
+                localizedMessageSource.getMessage("error.transporter.haveId", new Object[]{}));
+        validate(transporterRepository.existsByLicense(transporter.getLicense()),
+                localizedMessageSource.getMessage("error.transporter.license.notUnique", new Object[]{}));
+        return transporterRepository.saveAndFlush(transporter);
+    }
+
+    /**
+     * Update entity Transporter.
+     *
+     * @param transporter entity
+     * @return updated entity from database
+     */
+    @Override
+    public Transporter update(Transporter transporter) {
+        final Long id = transporter.getId();
+        validate(id == null,
+                localizedMessageSource.getMessage("error.transporter.haveNoId", new Object[]{}));
+        final Transporter duplicateTransporter = transporterRepository.findByLicense(transporter.getName());
+        findById(id);
+        final boolean isDuplicateExists = duplicateTransporter != null && !Objects.equals(duplicateTransporter.getId(), id);
+        validate(isDuplicateExists,
+                localizedMessageSource.getMessage("error.transporter.license.notUnique", new Object[]{}));
+        return transporterRepository.saveAndFlush(transporter);
     }
 
     /**
@@ -41,15 +79,14 @@ public class TransporterServiceImpl implements TransporterService {
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @throws Exception if Transporter none found
+     * @throws RuntimeException if Transporter none found
      */
     @Override
-    public Transporter findTransporter(Long id) throws Exception {
-        Optional<Transporter> transporter = getTransporterRepository().findById(id);
-        if (transporter.isPresent()) {
-            return transporter.get();
-        }
-        throw new Exception("massage");
+    public Transporter findById(Long id) {
+        Optional<Transporter> transporter = transporterRepository.findById(id);
+        validate(!(transporter.isPresent()),
+                localizedMessageSource.getMessage("error.transporter.notExist", new Object[]{}));
+        return transporter.get();
     }
 
     /**
@@ -62,8 +99,8 @@ public class TransporterServiceImpl implements TransporterService {
      * @return a reference to the entity with the given identifier.
      */
     @Override
-    public Transporter getTransporter(Long id) {
-        Transporter transporter = getTransporterRepository().getOne(id);
+    public Transporter getById(Long id) {
+        Transporter transporter = transporterRepository.getOne(id);
         return transporter;
     }
 
@@ -73,7 +110,30 @@ public class TransporterServiceImpl implements TransporterService {
      * @param transporter
      */
     @Override
-    public void deleteTransporter(Transporter transporter) {
-        getTransporterRepository().delete(transporter);
+    public void delete(Transporter transporter) {
+        final Long id = transporter.getId();
+        validate(id == null,
+                localizedMessageSource.getMessage("error.transporter.haveId", new Object[]{}));
+        findById(id);
+        transporterRepository.delete(transporter);
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        transporterRepository.deleteById(id);
+    }
+
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }

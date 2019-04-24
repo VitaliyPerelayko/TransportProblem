@@ -1,6 +1,9 @@
 package by.vit.model;
 
 
+
+import org.springframework.context.annotation.Configuration;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,6 +17,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
     String name;
 
     @OneToMany(mappedBy = "role")

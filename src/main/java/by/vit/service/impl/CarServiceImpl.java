@@ -1,55 +1,90 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Car;
+import by.vit.repository.CarModelRepository;
 import by.vit.repository.CarRepository;
+import by.vit.repository.PointRepository;
+import by.vit.repository.TransporterRepository;
 import by.vit.service.CarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Implementation of service layer for Car entity.
  */
 @Service
+@Transactional
 public class CarServiceImpl implements CarService {
-    private CarRepository carRepository;
 
-    public CarRepository getCarRepository() {
-        return carRepository;
-    }
+    private final LocalizedMessageSource localizedMessageSource;
 
-    @Autowired
-    public void setCarRepository(CarRepository carRepository) {
+    private final CarRepository carRepository;
+    private final CarModelRepository carModelRepository;
+    private final PointRepository pointRepository;
+    private final TransporterRepository transporterRepository;
+
+    public CarServiceImpl(LocalizedMessageSource localizedMessageSource, CarRepository carRepository,
+                          CarModelRepository carModelRepository, PointRepository pointRepository,
+                          TransporterRepository transporterRepository) {
+        this.localizedMessageSource = localizedMessageSource;
         this.carRepository = carRepository;
+        this.carModelRepository = carModelRepository;
+        this.pointRepository = pointRepository;
+        this.transporterRepository = transporterRepository;
     }
 
     /**
-     * Save new entity and update persist entity Car.
+     * Find all cars from database.
      *
-     * @param car entity
-     * @return saved or updated entity from database
+     * @return List<Car>
      */
     @Override
-    public Car saveCar(Car car) {
-        Car savedEntity = getCarRepository().save(car);
-        return savedEntity;
+    public List<Car> findAll() {
+        return carRepository.findAll();
     }
+
+    /**
+     * Save new entity Car.
+     *
+     * @param car entity
+     * @return saved entity from database
+     */
+    @Override
+    public Car save(Car car) {
+        validate(car.getId() != null,
+                localizedMessageSource.getMessage("error.car.haveId", new Object[]{}));
+        return saveAndFlush(car);
+    }
+
+    /**
+     * Update entity Car.
+     *
+     * @param car entity
+     * @return updated entity from database
+     */
+    @Override
+    public Car update(Car car) {
+        validate(car.getId() == null, localizedMessageSource.getMessage("error.car.haveNoId", new Object[]{}));
+        return saveAndFlush(car);
+    }
+
 
     /**
      * Retrieves a Car by its id.
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @throws Exception if Car none found
+     * @throws RuntimeException if Car none found
      */
     @Override
-    public Car findCar(Long id) throws Exception {
-        Optional<Car> car = getCarRepository().findById(id);
-        if (car.isPresent()) {
-            return car.get();
-        }
-        throw new Exception("massage");
+    public Car findById(Long id) {
+        Optional<Car> car = carRepository.findById(id);
+        validate(!(car.isPresent()), localizedMessageSource.getMessage("error.car.notExist", new Object[]{}));
+        return car.get();
     }
 
     /**
@@ -62,8 +97,8 @@ public class CarServiceImpl implements CarService {
      * @return a reference to the entity with the given identifier.
      */
     @Override
-    public Car getCar(Long id) {
-        Car car = getCarRepository().getOne(id);
+    public Car getById(Long id) {
+        Car car = carRepository.getOne(id);
         return car;
     }
 
@@ -73,7 +108,41 @@ public class CarServiceImpl implements CarService {
      * @param car
      */
     @Override
-    public void deleteCar(Car car) {
-        getCarRepository().delete(car);
+    public void delete(Car car) {
+        final Long id = car.getId();
+        validate(id == null, localizedMessageSource.getMessage("error.car.haveId", new Object[]{}));
+        findById(id);
+        carRepository.delete(car);
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        carRepository.deleteById(id);
+    }
+
+    private Car saveAndFlush(Car car){
+        validate(car.getCarModel() == null || car.getCarModel().getId() == null,
+                localizedMessageSource.getMessage("error.car.carModel.isNull", new Object[]{}));
+        car.setCarModel(carModelRepository.getOne(car.getCarModel().getId()));
+        validate(car.getPoint() == null || car.getPoint().getId() == null,
+                localizedMessageSource.getMessage("error.car.point.isNull", new Object[]{}));
+        car.setPoint(pointRepository.getOne(car.getPoint().getId()));
+        validate(car.getTransporter() == null || car.getTransporter().getId() == null,
+                localizedMessageSource.getMessage("error.car.transporter.isNull", new Object[]{}));
+        car.setTransporter(transporterRepository.getOne(car.getTransporter().getId()));
+        return carRepository.saveAndFlush(car);
+    }
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }

@@ -2,12 +2,20 @@ package by.vit.service;
 
 import by.vit.model.Transporter;
 
+import java.util.List;
+
 public interface TransporterService {
-    Transporter saveTransporter(Transporter transporter);
+    List<Transporter> findAll();
 
-    Transporter findTransporter(Long id) throws Exception;
+    Transporter save(Transporter transporter);
 
-    Transporter getTransporter(Long id);
+    Transporter update(Transporter transporter);
 
-    void deleteTransporter(Transporter transporter);
+    Transporter findById(Long id);
+
+    Transporter getById(Long id);
+
+    void delete(Transporter transporter);
+
+    void deleteById(Long id);
 }

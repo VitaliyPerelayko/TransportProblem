@@ -14,9 +14,9 @@ public interface PointService {
 
     Point findById(Long id);
 
-    Point getPoint(Long id);
+    Point getById(Long id);
 
-    void deleteById(Point point);
+    void delete(Point point);
 
     void deleteById(Long id);
 }

@@ -3,12 +3,21 @@ package by.vit.service;
 import by.vit.model.Road;
 import by.vit.model.RoadId;
 
+import java.util.List;
+
 public interface RoadService {
-    Road saveRoad(Road road);
 
-    Road findRoad(RoadId id) throws Exception;
+    List<Road> findAll();
 
-    Road getRoad(RoadId id);
+    Road save(Road road);
 
-    void deleteRoad(Road road);
+    Road update(Road road);
+
+    Road findById(RoadId id);
+
+    Road getById(RoadId id);
+
+    void delete(Road road);
+
+    void deleteById(RoadId id);
 }

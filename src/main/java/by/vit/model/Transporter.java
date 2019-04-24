@@ -1,9 +1,6 @@
 package by.vit.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -13,7 +10,7 @@ import java.util.Set;
 @Table(name = "transporter")
 @PrimaryKeyJoinColumn(name = "user_id")
 public class Transporter extends User {
-
+    @Column(unique = true)
     private String license;
 
     @OneToMany(mappedBy = "transporter")

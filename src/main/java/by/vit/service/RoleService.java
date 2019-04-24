@@ -2,12 +2,20 @@ package by.vit.service;
 
 import by.vit.model.Role;
 
+import java.util.List;
+
 public interface RoleService {
-    Role saveRole(Role role);
+    List<Role> findAll();
 
-    Role findRole(Long id) throws Exception;
+    Role save(Role role);
 
-    Role getRole(Long id);
+    Role update(Role role);
 
-    void deleteRole(Role role);
+    Role findById(Long id);
+
+    Role getById(Long id);
+
+    void delete(Role role);
+
+    void deleteById(Long id);
 }

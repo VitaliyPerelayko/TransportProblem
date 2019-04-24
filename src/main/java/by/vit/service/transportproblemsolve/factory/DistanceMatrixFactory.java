@@ -11,8 +11,7 @@ public class DistanceMatrixFactory {
 
 
     public static DistanceMatrixFinder
-    createDistanceMatrix(Type type, Road[] roads, Point[] points)
-    throws Exception{
+    createDistanceMatrix(Type type, Road[] roads, Point[] points) {
         DistanceMatrixFinder distanceMatrixFinder = new YanQiDistanceMatrixFinderImpl(roads,points);
         return distanceMatrixFinder;
     }

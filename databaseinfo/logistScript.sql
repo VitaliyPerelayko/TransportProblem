@@ -44,6 +44,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `logistics`.`points` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  UNIQUE (`name`),
   PRIMARY KEY (`id`)
   )
 ENGINE = InnoDB;
@@ -67,6 +68,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `logistics`.`role` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  UNIQUE (`name`),
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -110,6 +112,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `logistics`.`transporter` (
   `user_id` BIGINT NOT NULL,
   `license` VARCHAR(45) NULL,
+  UNIQUE (`license`),
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_transporter_users`
     FOREIGN KEY (`user_id`)
