@@ -1,4 +1,4 @@
-package by.vit.model.solution;
+package by.vit.pojo.solution;
 
 import by.vit.model.Car;
 import by.vit.model.Point;
@@ -9,10 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DTO for solution of Transport problem
+ * Class contains information about solution of Transport problem
  */
 public class Solution {
 
+    /**
+     * Solution contain information:
+     * What route does the car make?
+     */
     private Map<Car, List<Route>> solution;
 
     public Map<Car, List<Route>> getSolution() {
@@ -25,10 +29,11 @@ public class Solution {
 
     /**
      * Put information to the field solution
-     * @param car which will deliver the cargo
+     *
+     * @param car    which will deliver the cargo
      * @param points the delivery points
      * @param masses the weight of cargo in tonnes
-     * @param costs the cost of delivery
+     * @param costs  the cost of delivery
      */
     public void putCarRoute(Car car, List<Point> points, List<Double> masses, List<BigDecimal> costs) {
         List<Route> routes = new ArrayList<>();
@@ -39,6 +44,6 @@ public class Solution {
             route.setCost(costs.get(i));
             routes.add(route);
         }
-        solution.put(car,routes);
+        solution.put(car, routes);
     }
 }

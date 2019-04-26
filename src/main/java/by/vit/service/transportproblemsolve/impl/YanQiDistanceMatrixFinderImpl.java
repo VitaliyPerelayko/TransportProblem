@@ -77,7 +77,7 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
                 return vertex;
             }
         }
-        throw new RuntimeException("no such pointId massage");
+        throw new RuntimeException("{point.noRoads}");
     }
 
     private void createDistanceMatrix(Graph graph, Long[] pointsId){

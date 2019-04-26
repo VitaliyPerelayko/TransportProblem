@@ -1,7 +1,7 @@
 package by.vit.service;
 
 import by.vit.model.Point;
-import by.vit.model.solution.Solution;
+import by.vit.pojo.solution.Solution;
 import by.vit.service.transportproblemsolve.factory.DistanceMatrixFactory;
 import by.vit.service.transportproblemsolve.factory.SolverFactory;
 

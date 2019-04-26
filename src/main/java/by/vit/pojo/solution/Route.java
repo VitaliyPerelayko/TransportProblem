@@ -1,10 +1,16 @@
-package by.vit.model.solution;
+package by.vit.pojo.solution;
 
 
 import by.vit.model.Point;
 
 import java.math.BigDecimal;
 
+/**
+ * Class contains information about route of car:
+ * point (the delivery points)
+ * mass (the weight of cargo in tonnes)
+ * сщые (the cost of delivery)
+ */
 public class Route {
     private Point pointFinish;
     private Double mass;

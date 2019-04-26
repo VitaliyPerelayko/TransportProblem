@@ -3,7 +3,7 @@ package by.vit.service.impl;
 import by.vit.model.Car;
 import by.vit.model.Point;
 import by.vit.model.Road;
-import by.vit.model.solution.Solution;
+import by.vit.pojo.solution.Solution;
 import by.vit.repository.CarRepository;
 import by.vit.repository.PointRepository;
 import by.vit.repository.RoadRepository;
@@ -92,7 +92,7 @@ public class SolutionServiceImpl implements SolutionService {
      * Set condition for solution finder
      *
      * @param points Point of deliver
-     * @param order  How much cargo we must deliver
+     * @param order  Mass of cargo that we need to deliver
      */
     @Override
     public void setConditions(Point[] points, Double[] order) {
