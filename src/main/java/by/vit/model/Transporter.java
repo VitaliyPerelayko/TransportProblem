@@ -1,6 +1,9 @@
 package by.vit.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -10,7 +13,10 @@ import java.util.Set;
 @Table(name = "transporter")
 @PrimaryKeyJoinColumn(name = "user_id")
 public class Transporter extends User {
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
+    @NotNull(message = "{transporter.license.notNull}")
+    @NotEmpty(message = "{transporter.license.notEmpty}")
+    @Size(min = 3, max = 50, message = "{transporter.license.size}")
     private String license;
 
     @OneToMany(mappedBy = "transporter")

@@ -8,6 +8,7 @@ import by.vit.dto.response.solutiondto.SolutionDTO;
 import by.vit.mapping.Mapping;
 import by.vit.model.Car;
 import by.vit.model.Point;
+import by.vit.model.RoadId;
 import by.vit.pojo.solution.Route;
 import by.vit.pojo.solution.Solution;
 import org.dozer.Mapper;
@@ -69,5 +70,17 @@ public class MappingImpl implements Mapping {
         }
         solutionDTO.setSolution(map);
         return solutionDTO;
+    }
+
+    /**
+     * Maps two number to RoadId
+     *
+     * @param id1 pointId
+     * @param id2 pointId
+     * @return RoadId
+     */
+    @Override
+    public RoadId mapToRoadId(Long id1, Long id2) {
+        return new RoadId(id1, id2);
     }
 }

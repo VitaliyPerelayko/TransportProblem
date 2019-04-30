@@ -1,4 +1,4 @@
-<configuration>
+<configuration debug="true">
 
     <property name="HOME_LOG" value="${catalina.home}/logs/rest.log"/>
 

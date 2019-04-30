@@ -1,6 +1,8 @@
 package by.vit.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * Class for the entity Road. It's road table in database
@@ -22,6 +24,8 @@ public class Road {
     @JoinColumn(name = "point2_id", referencedColumnName = "id")
     private Point point2;
 
+    @NotNull(message = "{road.distance.notNull}")
+    @Positive(message = "{road.distance.positive}")
     private Double distance;
 
     public Road(Point point1, Point point2, Double distance) {

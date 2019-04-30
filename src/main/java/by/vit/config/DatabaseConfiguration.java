@@ -47,26 +47,20 @@ public class DatabaseConfiguration {
     @Value("${connection.password}")
     private String password;
 
-    @Bean
-    public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.H2).build();
-    }
-
     /**
      * get info for connection to database
      *
      * @return configuration of database
      */
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
-//        dataSourceConfig.setDriverClassName(driverClass);
-//        dataSourceConfig.setUrl(url);
-//        dataSourceConfig.setUsername(username);
-//        dataSourceConfig.setPassword(password);
-//        return dataSourceConfig;
-//    }
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSourceConfig = new DriverManagerDataSource();
+        dataSourceConfig.setDriverClassName(driverClass);
+        dataSourceConfig.setUrl(url);
+        dataSourceConfig.setUsername(username);
+        dataSourceConfig.setPassword(password);
+        return dataSourceConfig;
+    }
 
     /**
      * Create entityManager which will work with repositories in the ApplicationContext
@@ -99,10 +93,8 @@ public class DatabaseConfiguration {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
-//        properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.dialect", dialect);
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }

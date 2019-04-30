@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
+/**
+ * Solution controller.
+ */
 @Controller
 @RequestMapping("/solution")
 public class SolutionController {
@@ -26,6 +29,12 @@ public class SolutionController {
         this.mapping = mapping;
     }
 
+    /**
+     * Gets solution of transport problem with given conditions.
+     *
+     * @param taskDTO task for solve: points of deliver and mass of cargo
+     * @return Response: solution(car: points, mass, cost) and http status
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SolutionDTO> save(@Valid @RequestBody TaskDTO taskDTO) {
         solutionService.setDistanceMatrixFinder(DistanceMatrixFactory.Type.YanQi);

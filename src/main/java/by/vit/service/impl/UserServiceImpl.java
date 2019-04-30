@@ -79,6 +79,17 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Retrieves a User by its username.
+     *
+     * @param username
+     * @return the entity with the given username
+     */
+    @Override
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    /**
      * Get an instance, whose state may be lazily fetched.
      * If the requested instance does not exist in the database,
      * the <code>EntityNotFoundException</code> is thrown when the instance
@@ -119,9 +130,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private User saveAndFlush(User user) {
-        validate(user.getRole() == null || user.getRole().getId() == null,
-                localizedMessageSource.getMessage("error.user.role.isNull", new Object[]{}));
-        user.setRole(roleService.findById(user.getRole().getId()));
+        user.getRoles().forEach(role -> {
+            validate(role == null || role.getId() == null,
+                    localizedMessageSource.getMessage("error.user.roles.isNull", new Object[]{}));
+            role.setName(roleService.findById(role.getId()).getName());
+        });
         return userRepository.saveAndFlush(user);
     }
 

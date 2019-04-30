@@ -9,7 +9,7 @@ public class MessagesConfiguration {
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("/error");
+        messageSource.setBasename("/applicationMessages");
         return messageSource;
     }
 }

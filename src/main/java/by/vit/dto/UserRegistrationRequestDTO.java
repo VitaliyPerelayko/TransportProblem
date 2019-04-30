@@ -1,7 +1,5 @@
-package by.vit.model;
+package by.vit.dto;
 
-
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -9,14 +7,10 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
- * Class for the entity User. It's users table in database
+ * DTO for request registration entity User
  */
-@Entity
-@Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserRegistrationRequestDTO {
+
     private Long id;
 
     @Size(min = 3, max = 50, message = "{user.name.size}")
@@ -29,40 +23,24 @@ public class User {
     private String phone;
 
     @Email(message = "{user.eMail}")
-    @Column(name = "e_mail")
     private String eMail;
 
-    @Column(nullable = false, unique = true)
+    @NotNull(message = "{user.roles.notNull}")
+    private Set<
+            @NotNull(message = "{user.role.notNull}")
+            @NotEmpty(message = "{user.role.notEmpty}")
+            @Size(min = 3, max = 50, message = "{user.role.size}")
+                    String> roles;
+
     @NotNull(message = "{user.username.notNull}")
     @NotEmpty(message = "{user.username.notEmpty}")
     @Size(min = 3, max = 50, message = "{user.name.size}")
     private String username;
 
-    @Column(nullable = false)
     @NotNull(message = "{user.password.notNull}")
     @NotEmpty(message = "{user.password.notEmpty}")
     @Size(min = 3, max = 100, message = "{user.password.size}")
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_has_role",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @NotNull(message = "{user.roles.notNull}")
-    private Set<
-            @NotNull(message = "{user.role.notNull}")
-                    Role> roles;
-
-    public User(String name, String surname, String phone, String eMail, Set<Role> role) {
-        this.name = name;
-        this.surname = surname;
-        this.phone = phone;
-        this.eMail = eMail;
-        this.roles = role;
-    }
-
-    public User() {
-    }
 
     public Long getId() {
         return id;
@@ -104,6 +82,14 @@ public class User {
         this.eMail = eMail;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -118,13 +104,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }

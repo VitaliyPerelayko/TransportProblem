@@ -3,6 +3,7 @@ package by.vit.mapping;
 import by.vit.dto.request.TaskDTO;
 import by.vit.dto.response.solutiondto.SolutionDTO;
 import by.vit.model.Point;
+import by.vit.model.RoadId;
 import by.vit.pojo.solution.Solution;
 
 public interface Mapping {
@@ -21,4 +22,6 @@ public interface Mapping {
      * @return
      */
     SolutionDTO mapSolution(Solution solution);
+
+    RoadId mapToRoadId(Long id1, Long id2);
 }

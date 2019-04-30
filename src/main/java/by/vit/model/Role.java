@@ -1,10 +1,10 @@
 package by.vit.model;
 
 
-
-import org.springframework.context.annotation.Configuration;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -15,13 +15,16 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(unique = true)
-    String name;
+    @NotNull(message = "{role.name.notNull}")
+    @NotEmpty(message = "{role.name.notEmpty}")
+    @Size(min = 3, max = 50, message = "{role.name.size}")
+    private String name;
 
-    @OneToMany(mappedBy = "role")
-    Set<User> user;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     public Role(String name) {
         this.name = name;
@@ -42,11 +45,11 @@ public class Role {
         return name;
     }
 
-    public void setName(String nane) {
-        this.name = nane;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Set<User> getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 }

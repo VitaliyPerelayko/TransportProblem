@@ -86,6 +86,18 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
+     * Retrieves a Role by its name.
+     *
+     * @param name
+     * @return the entity with the given name
+     */
+    @Override
+    public Role findByName(String name){
+        return roleRepository.findByName(name);
+    }
+
+
+    /**
      * Get an instance, whose state may be lazily fetched.
      * If the requested instance does not exist in the database,
      * the <code>EntityNotFoundException</code> is thrown when the instance

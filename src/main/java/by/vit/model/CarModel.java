@@ -1,6 +1,10 @@
 package by.vit.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -16,8 +20,18 @@ public class CarModel {
     @OneToMany(mappedBy = "carModel")
     private Set<Car> cars;
 
+    @Column(nullable = false, unique = true)
+    @NotNull(message = "{carModel.name.notNull}")
+    @NotEmpty(message = "{carModel.name.notEmpty}")
+    @Size(min = 1, max = 50, message = "{carModel.name.size}")
     private String name;
+
+    @NotNull(message = "{carModel.tonnage.notNull}")
+    @Positive(message = "{carModel.tonnage.notPositive}")
     private Double tonnage;
+
+    @NotNull(message = "{carModel.space.notNull}")
+    @Positive(message = "{carModel.space.notPositive}")
     private Double space;
 
     public CarModel(String name, Double tonnage, Double space) {

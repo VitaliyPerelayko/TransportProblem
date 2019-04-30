@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -80,7 +81,7 @@ public class Main {
         user.setSurname(surname);
         user.setPhone(phone);
         user.seteMail(eMail);
-        user.setRole(role);
+        user.setRoles(Collections.singleton(role));
         main.getUserRepository().save(user);
     }
 
@@ -100,7 +101,7 @@ public class Main {
         transporter.setSurname(surname);
         transporter.setPhone(phone);
         transporter.seteMail(eMail);
-        transporter.setRole(role);
+        transporter.setRoles(Collections.singleton(role));
         transporter.setLicense(license);
         main.getTransporterRepository().save(transporter);
     }

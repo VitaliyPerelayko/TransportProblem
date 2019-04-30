@@ -1,6 +1,8 @@
 package by.vit.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * Class for the entity Car. It's transporter_car table in database
@@ -14,17 +16,22 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "car_model_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "{car.carModelId.notNull}")
     private CarModel carModel;
 
     @ManyToOne
     @JoinColumn(name = "point_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "{car.pointId.notNull}")
     private Point point;
 
     @ManyToOne
     @JoinColumn(name = "transporter_id", referencedColumnName = "user_id", nullable = false)
+    @NotNull(message = "{car.transporterId.notNull}")
     private Transporter transporter;
 
     @Column(name = "cost_mult", nullable = false)
+    @NotNull(message = "{car.cost.notNull}")
+    @Positive(message = "{car.cost.notPositive}")
     private Double cost;
 
     public Car(CarModel carModel, Point point, Transporter transporter, Double cost) {
