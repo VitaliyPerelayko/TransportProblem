@@ -3,11 +3,13 @@ package by.vit.controller;
 import by.vit.component.LocalizedMessageSource;
 import by.vit.dto.request.CarRequestDTO;
 import by.vit.dto.response.CarResponseDTO;
+import by.vit.mapping.Mapping;
 import by.vit.model.Car;
 import by.vit.service.CarService;
 import org.dozer.Mapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,15 +24,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/cars")
 public class CarController {
 
-    private final Mapper mapper;
-
+    private final Mapping mapping;
     private final CarService carService;
-
     private final LocalizedMessageSource localizedMessageSource;
 
-    public CarController(Mapper mapper, CarService carService,
+    public CarController(Mapping mapping, CarService carService,
                          LocalizedMessageSource localizedMessageSource) {
-        this.mapper = mapper;
+        this.mapping = mapping;
         this.carService = carService;
         this.localizedMessageSource = localizedMessageSource;
     }
@@ -44,7 +44,7 @@ public class CarController {
     public ResponseEntity<List<CarResponseDTO>> getAll() {
         final List<Car> cars = carService.findAll();
         final List<CarResponseDTO> carDTOList = cars.stream()
-                .map((car) -> mapper.map(car, CarResponseDTO.class))
+                .map(mapping::mapCarToCarResponseDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(carDTOList, HttpStatus.OK);
     }
@@ -57,7 +57,7 @@ public class CarController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<CarResponseDTO> getOne(@PathVariable Long id) {
-        final CarResponseDTO carResponseDTO = mapper.map(carService.findById(id), CarResponseDTO.class);
+        final CarResponseDTO carResponseDTO = mapping.mapCarToCarResponseDTO(carService.findById(id));
         return new ResponseEntity<>(carResponseDTO, HttpStatus.OK);
     }
 
@@ -67,11 +67,13 @@ public class CarController {
      * @param carRequestDto new car
      * @return Response:saved CarDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(hasRole('TRANSPORTER') and userServiceImpl.findById(#carRequestDto.transporterId).username.equals(authentication.name))")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CarResponseDTO> save(@Valid @RequestBody CarRequestDTO carRequestDto) {
         carRequestDto.setId(null);
-        final Car car = mapper.map(carRequestDto, Car.class);
-        final CarResponseDTO carResponseDTO = mapper.map(carService.save(car), CarResponseDTO.class);
+        final Car car = mapping.mapCarRequestDTOToCar(carRequestDto);
+        final CarResponseDTO carResponseDTO = mapping.mapCarToCarResponseDTO(carService.save(car));
         return new ResponseEntity<>(carResponseDTO, HttpStatus.OK);
     }
 
@@ -82,13 +84,15 @@ public class CarController {
      * @param id of car in database
      * @return Response:updated CarDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(hasRole('TRANSPORTER') and carServiceImpl.findById(#id).transporter.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<CarResponseDTO> update(@Valid @RequestBody CarRequestDTO carRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, carRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.car.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.car.unexpectedId", new Object[]{}));
         }
-        final Car car = mapper.map(carRequestDto, Car.class);
-        final CarResponseDTO carResponseDTO = mapper.map(carService.update(car), CarResponseDTO.class);
+        final Car car = mapping.mapCarRequestDTOToCar(carRequestDto);
+        final CarResponseDTO carResponseDTO = mapping.mapCarToCarResponseDTO(carService.update(car));
         return new ResponseEntity<>(carResponseDTO, HttpStatus.OK);
     }
 
@@ -98,6 +102,8 @@ public class CarController {
      * @param id of car
      * @return http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(hasRole('TRANSPORTER') and carServiceImpl.findById(#id).transporter.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {

@@ -9,14 +9,14 @@ import javax.validation.constraints.Positive;
 public class CarRequestDTO {
 
     private Long id;
-    @NotNull(message = "{car.carModelId.notNull}")
+    @NotNull(message = "car.carModel.notNull")
     private Long carModelId;
-    @NotNull(message = "{car.pointId.notNull}")
+    @NotNull(message = "car.point.notNull")
     private Long pointId;
-    @NotNull(message = "{car.transporterId.notNull}")
+    @NotNull(message = "car.transporter.notNull")
     private Long transporterId;
-    @NotNull(message = "{car.cost.notNull}")
-    @Positive(message = "{car.cost.notPositive}")
+    @NotNull(message = "car.cost.notNull")
+    @Positive(message = "car.cost.notPositive")
     private Double cost;
 
     public Long getId() {

@@ -1,12 +1,14 @@
 package by.vit.service.transportproblemsolve.impl;
 
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Point;
 import by.vit.model.Road;
 import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
 import com.programmerare.shortestpaths.adapter.yanqi.PathFinderFactoryYanQi;
 import com.programmerare.shortestpaths.core.api.*;
 import com.programmerare.shortestpaths.core.validation.GraphEdgesValidationDesired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +21,22 @@ import static com.programmerare.shortestpaths.core.impl.WeightImpl.createWeight;
 /**
  * Implementation DistanceMatrixFinder. It uses Yen's Ranking Loopless Paths Algorithm
  */
+@Service
 public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
     private static final PathFinderFactory pathFinderFactory = new PathFinderFactoryYanQi();
+    private final LocalizedMessageSource localizedMessageSource;
+
 
     private Double[][] distanceMatrix;
     private List<Path> pathList;
     private Long[] pointsId;
 
-    public YanQiDistanceMatrixFinderImpl(Road[] roads, Point[] points){
+    public YanQiDistanceMatrixFinderImpl(LocalizedMessageSource localizedMessageSource) {
+        this.localizedMessageSource = localizedMessageSource;
+    }
+
+    @Override
+    public void setConditions(Road[] roads, Point[] points) {
         this.distanceMatrix = new Double[points.length + 1][points.length + 1];
         this.pathList = new ArrayList();
         createDistanceMatrix(createGraphFromRoads(roads), createArrayOfPointId(points));
@@ -70,17 +80,18 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
         return pointsId;
     }
 
-    private Vertex getVertexById(Graph graph, Long id){
+    private Vertex getVertexById(Graph graph, Long id) {
 
         for (Vertex vertex : graph.getVertices()) {
             if (vertex.getVertexId().equals(id.toString())) {
                 return vertex;
             }
         }
-        throw new RuntimeException("{point.noRoads}");
+        throw new RuntimeException(
+                localizedMessageSource.getMessage("point.hasNo.roads", new Object[]{id}));
     }
 
-    private void createDistanceMatrix(Graph graph, Long[] pointsId){
+    private void createDistanceMatrix(Graph graph, Long[] pointsId) {
         PathFinder pathFinder = pathFinderFactory.createPathFinder(graph);
         int pointIdLength = pointsId.length;
         for (int i = 0; i < pointIdLength; i++) {

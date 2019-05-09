@@ -13,29 +13,30 @@ public class UserRequestDTO {
 
     private Long id;
 
-    @Size(min = 3, max = 50, message = "{user.name.size}")
+    @Size(min = 3, max = 50, message = "user.name.size")
     private String name;
 
-    @Size(min = 3, max = 50, message = "{user.surname.size}")
+    @Size(min = 3, max = 50, message = "user.surname.size")
     private String surname;
 
-    @Size(min = 3, max = 15, message = "{user.phone.size}")
+    @Size(min = 3, max = 15, message = "user.phone.size")
     private String phone;
 
-    @Email(message = "{user.eMail}")
+    @Email(message = "user.eMail")
     private String eMail;
 
-    @NotNull(message = "{user.rolesId.notNull}")
-    private Set<Long> rolesId;
+    @NotNull(message = "user.roles.notNull")
+    @NotEmpty(message = "user.roles.notEmpty")
+    private Set<String> rolesName;
 
-    @NotNull(message = "{user.username.notNull}")
-    @NotEmpty(message = "{user.username.notEmpty}")
-    @Size(min = 3, max = 50, message = "{user.name.size}")
+    @NotNull(message = "user.username.notNull")
+    @NotEmpty(message = "user.username.notEmpty")
+    @Size(min = 3, max = 50, message = "user.username.size")
     private String username;
 
-    @NotNull(message = "{user.password.notNull}")
-    @NotEmpty(message = "{user.password.notEmpty}")
-    @Size(min = 3, max = 100, message = "{user.password.size}")
+    @NotNull(message = "user.password.notNull")
+    @NotEmpty(message = "user.password.notEmpty")
+    @Size(min = 3, max = 100, message = "user.password.size")
     private String password;
 
     public Long getId() {
@@ -78,12 +79,12 @@ public class UserRequestDTO {
         this.eMail = eMail;
     }
 
-    public Set<Long> getRolesId() {
-        return rolesId;
+    public Set<String> getRolesName() {
+        return rolesName;
     }
 
-    public void setRolesId(Set<Long> rolesId) {
-        this.rolesId = rolesId;
+    public void setRolesName(Set<String> rolesName) {
+        this.rolesName = rolesName;
     }
 
     public String getUsername() {

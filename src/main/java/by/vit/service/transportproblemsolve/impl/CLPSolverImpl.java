@@ -6,6 +6,7 @@ import by.vit.service.transportproblemsolve.SolverOfTP;
 import com.quantego.clp.CLP;
 import com.quantego.clp.CLPExpression;
 import com.quantego.clp.CLPVariable;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,18 +18,25 @@ import java.util.TreeMap;
  * CLP implementation of SolverOfTP.
  * It uses CLP java solver of liner programming
  */
+@Service
 public class CLPSolverImpl implements SolverOfTP {
 
     private Double[][] matrixOfSolve;
     private Map<Long, List<String>> interpretation;
 
-    public CLPSolverImpl(ConditionTP conditionTP) {
-        solveTP(conditionTP);
-        getInterpretation(conditionTP);
-    }
-
     public Double[][] getMatrixOfSolve() {
         return matrixOfSolve;
+    }
+
+    /**
+     * set conditions for solve transport problem
+     *
+     * @param conditionTP
+     */
+    @Override
+    public void setConditions(ConditionTP conditionTP){
+        solveTP(conditionTP);
+        getInterpretation(conditionTP);
     }
 
     /**

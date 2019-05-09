@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -48,7 +46,7 @@ public class DatabaseConfiguration {
     private String password;
 
     /**
-     * get info for connection to database
+     * Get info for connection to database
      *
      * @return configuration of database
      */
@@ -63,7 +61,7 @@ public class DatabaseConfiguration {
     }
 
     /**
-     * Create entityManager which will work with repositories in the ApplicationContext
+     * Create entityManager which will work in the application
      *
      * @return EntityManagerFactory
      */
@@ -79,7 +77,10 @@ public class DatabaseConfiguration {
     }
 
     /**
-     * Create transactionManager which will work with repositories in the ApplicationContext
+     * TransactionManager is required for JPA access code
+     * supporting this transaction management mechanism.
+     * This transaction manager is appropriate for applications that use a single
+     * JPA EntityManagerFactory for transactional data access.
      *
      * @param emf entityManagerFactory.
      * @return transactionManager

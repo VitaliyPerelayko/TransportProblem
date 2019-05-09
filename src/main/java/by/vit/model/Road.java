@@ -24,8 +24,8 @@ public class Road {
     @JoinColumn(name = "point2_id", referencedColumnName = "id")
     private Point point2;
 
-    @NotNull(message = "{road.distance.notNull}")
-    @Positive(message = "{road.distance.positive}")
+    @NotNull(message = "road.distance.notNull")
+    @Positive(message = "road.distance.positive")
     private Double distance;
 
     public Road(Point point1, Point point2, Double distance) {
@@ -37,6 +37,14 @@ public class Road {
 
     public Road() {
         id = new RoadId();
+    }
+
+    public Long getPoint1id(){
+        return this.id.getPoint1Id();
+    }
+
+    public Long getPoint2id(){
+        return this.id.getPoint1Id();
     }
 
     public RoadId getId() {

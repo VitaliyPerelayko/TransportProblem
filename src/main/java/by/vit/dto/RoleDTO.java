@@ -9,9 +9,9 @@ import javax.validation.constraints.Size;
  */
 public class RoleDTO {
     Long id;
-    @NotNull(message = "{role.name.notNull}")
-    @NotEmpty(message = "{role.name.notEmpty}")
-    @Size(min = 3, max = 50, message = "{role.name.size}")
+    @NotNull(message = "role.name.notNull")
+    @NotEmpty(message = "role.name.notEmpty")
+    @Size(min = 3, max = 50, message = "role.name.size")
     String name;
 
     public Long getId() {

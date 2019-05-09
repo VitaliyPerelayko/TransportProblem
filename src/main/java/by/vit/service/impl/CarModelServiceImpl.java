@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -44,7 +45,10 @@ public class CarModelServiceImpl implements CarModelService {
      */
     @Override
     public CarModel save(CarModel carModel) {
-        validate(carModel.getId() != null, localizedMessageSource.getMessage("error.carModel.haveId", new Object[]{}));
+        validate(carModel.getId() != null,
+                localizedMessageSource.getMessage("error.carModel.haveId", new Object[]{}));
+        validate(carModelRepository.existsByName(carModel.getName()),
+                localizedMessageSource.getMessage("error.carModel.name.notUnique", new Object[]{}));
         return carModelRepository.saveAndFlush(carModel);
     }
 
@@ -56,7 +60,14 @@ public class CarModelServiceImpl implements CarModelService {
      */
     @Override
     public CarModel update(CarModel carModel) {
-        validate(carModel.getId() == null, localizedMessageSource.getMessage("error.carModel.haveNoId", new Object[]{}));
+        final Long id = carModel.getId();
+        validate(id == null,
+                localizedMessageSource.getMessage("error.carModel.haveNoId", new Object[]{}));
+        final CarModel duplicatePoint = carModelRepository.findByName(carModel.getName());
+        findById(id);
+        final boolean isDuplicateExists = duplicatePoint != null && !Objects.equals(duplicatePoint.getId(), id);
+        validate(isDuplicateExists,
+                localizedMessageSource.getMessage("error.carModel.name.notUnique", new Object[]{}));
         return carModelRepository.saveAndFlush(carModel);
     }
 
@@ -71,7 +82,8 @@ public class CarModelServiceImpl implements CarModelService {
     @Override
     public CarModel findById(Long id) {
         Optional<CarModel> carModel = carModelRepository.findById(id);
-        validate(!(carModel.isPresent()), localizedMessageSource.getMessage("error.carModel.notExist", new Object[]{}));
+        validate(!(carModel.isPresent()),
+                localizedMessageSource.getMessage("error.carModel.id.notExist", new Object[]{}));
         return carModel.get();
     }
 
@@ -98,7 +110,8 @@ public class CarModelServiceImpl implements CarModelService {
     @Override
     public void delete(CarModel carModel) {
         final Long id = carModel.getId();
-        validate(id == null, localizedMessageSource.getMessage("error.carModel.haveId", new Object[]{}));
+        validate(id == null,
+                localizedMessageSource.getMessage("error.carModel.haveNoId", new Object[]{}));
         findById(id);
         carModelRepository.delete(carModel);
     }

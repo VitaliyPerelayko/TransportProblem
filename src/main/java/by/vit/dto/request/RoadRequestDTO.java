@@ -7,12 +7,15 @@ import javax.validation.constraints.Positive;
  * DTO for request entity Road
  */
 public class RoadRequestDTO {
+
+    @NotNull(message = "road.pointId.notNull")
     private Long point1id;
 
+    @NotNull(message = "road.pointId.notNull")
     private Long point2id;
 
-    @NotNull(message = "{road.distance.notNull}")
-    @Positive(message = "{road.distance.positive}")
+    @NotNull(message = "road.distance.notNull")
+    @Positive(message = "road.distance.positive")
     private Double distance;
 
     public Long getPoint1id() {

@@ -82,9 +82,11 @@ public class CarModelController {
      * @return Response:updated CarModelDTO ant http status
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<CarModelDTO> update(@Valid @RequestBody CarModelDTO carModelRequestDto, @PathVariable Long id) {
+    public ResponseEntity<CarModelDTO> update(@Valid @RequestBody CarModelDTO carModelRequestDto,
+                                              @PathVariable Long id) {
         if (!Objects.equals(id, carModelRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.carModel.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(
+                    localizedMessageSource.getMessage("controller.carModel.unexpectedId", new Object[]{}));
         }
         final CarModel carModel = mapper.map(carModelRequestDto, CarModel.class);
         final CarModelDTO carModelDTO = mapper.map(carModelService.update(carModel), CarModelDTO.class);

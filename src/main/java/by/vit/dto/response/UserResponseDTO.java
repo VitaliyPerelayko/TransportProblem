@@ -2,6 +2,8 @@ package by.vit.dto.response;
 
 import by.vit.dto.RoleDTO;
 
+import java.util.Set;
+
 /**
  * DTO for response entity User
  */
@@ -11,7 +13,7 @@ public class UserResponseDTO {
     private String surname;
     private String phone;
     private String eMail;
-    private RoleDTO role;
+    private Set<RoleDTO> role;
     private String username;
     private String password;
 
@@ -56,11 +58,11 @@ public class UserResponseDTO {
         this.eMail = eMail;
     }
 
-    public RoleDTO getRole() {
+    public Set<RoleDTO> getRoles() {
         return role;
     }
 
-    public void setRole(RoleDTO role) {
+    public void setRoles(Set<RoleDTO> role) {
         this.role = role;
     }
 

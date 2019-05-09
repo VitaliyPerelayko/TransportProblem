@@ -83,7 +83,7 @@ public class PointController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<PointDTO> update(@Valid @RequestBody PointDTO pointRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, pointRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.point.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.point.unexpectedId", new Object[]{}));
         }
         final Point point = mapper.map(pointRequestDto, Point.class);
         final PointDTO pointDTO = mapper.map(pointService.update(point), PointDTO.class);

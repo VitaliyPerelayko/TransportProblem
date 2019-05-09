@@ -35,13 +35,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors()
                 .and()
                 .authorizeRequests()
+                // Authentication
                 .mvcMatchers("/authentication/**").permitAll()
-                .mvcMatchers("/points/**").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/cars/**","/roads/**","/carModels/**").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/solution").hasRole("SUPPLIER")
+                .mvcMatchers(HttpMethod.GET,"/cars/**","/roads/**", "/carModels/**","/points/**").permitAll()
+                // Solution
+                .mvcMatchers("/solution/**").hasRole("SUPPLIER")
+                // Car
                 .mvcMatchers("/cars/**").hasRole("TRANSPORTER")
+                // CarModel
                 .mvcMatchers(HttpMethod.POST,"/carModels/**").hasRole("TRANSPORTER")
-                .mvcMatchers(HttpMethod.GET, "/roles/**", "/users/**").hasAnyRole("ADMIN", "USER")
+                // User
+                .mvcMatchers("/users/**").hasAnyRole("TRANSPORTER","SUPPLIER","ADMIN")
                 .anyRequest().hasRole("ADMIN");
         http.addFilterBefore(new AuthenticationTokenFilter(tokenService, userDetailsService),
                 UsernamePasswordAuthenticationFilter.class);

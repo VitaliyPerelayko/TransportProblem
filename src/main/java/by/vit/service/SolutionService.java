@@ -1,20 +1,22 @@
 package by.vit.service;
 
 import by.vit.model.Point;
-import by.vit.pojo.solution.Solution;
-import by.vit.service.transportproblemsolve.factory.DistanceMatrixFactory;
-import by.vit.service.transportproblemsolve.factory.SolverFactory;
+import by.vit.model.solution.Solution;
+
+import java.util.List;
 
 /**
  * Interface for Service
  */
 public interface SolutionService {
 
-    Solution getSolution();
+    Solution getAndSaveSolution();
 
-    void setConditions(Point[] points, Double[] order);
+    List<Solution> findAll();
 
-    void setSolver(SolverFactory.Type type);
+    Solution findById(Long id);
 
-    void setDistanceMatrixFinder(DistanceMatrixFactory.Type type);
+    void deleteById(Long id);
+
+    void setConditions(Point[] points, Double[] order, String username);
 }

@@ -2,16 +2,19 @@ package by.vit.service.impl;
 
 import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Car;
+import by.vit.model.User;
 import by.vit.repository.CarModelRepository;
 import by.vit.repository.CarRepository;
 import by.vit.repository.PointRepository;
-import by.vit.repository.TransporterRepository;
+import by.vit.repository.UserRepository;
 import by.vit.service.CarService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of service layer for Car entity.
@@ -25,16 +28,16 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final CarModelRepository carModelRepository;
     private final PointRepository pointRepository;
-    private final TransporterRepository transporterRepository;
+    private final UserRepository userRepository;
 
     public CarServiceImpl(LocalizedMessageSource localizedMessageSource, CarRepository carRepository,
                           CarModelRepository carModelRepository, PointRepository pointRepository,
-                          TransporterRepository transporterRepository) {
+                          UserRepository userRepository) {
         this.localizedMessageSource = localizedMessageSource;
         this.carRepository = carRepository;
         this.carModelRepository = carModelRepository;
         this.pointRepository = pointRepository;
-        this.transporterRepository = transporterRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -83,7 +86,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car findById(Long id) {
         Optional<Car> car = carRepository.findById(id);
-        validate(!(car.isPresent()), localizedMessageSource.getMessage("error.car.notExist", new Object[]{}));
+        validate(!(car.isPresent()), localizedMessageSource.getMessage("error.car.id.notExist", new Object[]{}));
         return car.get();
     }
 
@@ -110,7 +113,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void delete(Car car) {
         final Long id = car.getId();
-        validate(id == null, localizedMessageSource.getMessage("error.car.haveId", new Object[]{}));
+        validate(id == null, localizedMessageSource.getMessage("error.car.haveNoId", new Object[]{}));
         findById(id);
         carRepository.delete(car);
     }
@@ -134,9 +137,14 @@ public class CarServiceImpl implements CarService {
         validate(car.getPoint() == null || car.getPoint().getId() == null,
                 localizedMessageSource.getMessage("error.car.point.isNull", new Object[]{}));
         car.setPoint(pointRepository.getOne(car.getPoint().getId()));
-        validate(car.getTransporter() == null || car.getTransporter().getId() == null,
+
+        User transporter= car.getTransporter();
+        validate(transporter == null || transporter.getId() == null,
                 localizedMessageSource.getMessage("error.car.transporter.isNull", new Object[]{}));
-        car.setTransporter(transporterRepository.getOne(car.getTransporter().getId()));
+        validate(!transporter.getRoles().stream().filter(role ->
+                role.getName().equals("TRANSPORTER")).findAny().isPresent(),
+                localizedMessageSource.getMessage("error.car.user.role.noTransporter", new Object[]{}));
+        car.setTransporter(userRepository.getOne(car.getTransporter().getId()));
         return carRepository.saveAndFlush(car);
     }
 

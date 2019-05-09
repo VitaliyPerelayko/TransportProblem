@@ -21,7 +21,6 @@ public class Main {
     private CarModelRepository carModelRepository;
     private CarRepository carRepository;
     private UserRepository userRepository;
-    private TransporterRepository transporterRepository;
     private RoleRepository roleRepository;
 
     public static void main(String[] args) {
@@ -41,9 +40,6 @@ public class Main {
         main.getRoleRepository().save(new Role("transporter"));
         Role role = main.getRoleRepository().getOne(1L);
 
-        saveTransporter("Jack", "Sparrow", "103", "bla-bla@yahoo.com", role, "1234567", main);
-        Transporter transporter = main.getTransporterRepository().getOne(1L);
-
         saveUser("Vadim", "Vadim", "+375 29", "@gmail.com", role, main);
         Optional<User> userTemp = main.getUserRepository().findById(2L);
         User user = userTemp.orElseThrow(RuntimeException::new);
@@ -51,7 +47,7 @@ public class Main {
         main.getCarModelRepository().save(new CarModel("Renault Master L3H2", 2.5D, 13D));
         CarModel carModel = main.getCarModelRepository().getOne(1L);
 
-        saveCar(carModel, point, transporter, 1.75D, main);
+        saveCar(carModel, point, user, 1.75D, main);
         Car car = main.getCarRepository().getOne(1L);
         System.out.println(main.getCarRepository().findCarsByTonnageAfter(2D));
 
@@ -85,7 +81,7 @@ public class Main {
         main.getUserRepository().save(user);
     }
 
-    private static void saveCar(CarModel carModel, Point point, Transporter transporter, Double cost, Main main) {
+    private static void saveCar(CarModel carModel, Point point, User transporter, Double cost, Main main) {
         Car car = new Car();
         car.setCarModel(carModel);
         car.setPoint(point);
@@ -94,17 +90,6 @@ public class Main {
         main.getCarRepository().save(car);
     }
 
-    private static void saveTransporter(
-            String name, String surname, String phone, String eMail, Role role, String license, Main main) {
-        Transporter transporter = new Transporter();
-        transporter.setName(name);
-        transporter.setSurname(surname);
-        transporter.setPhone(phone);
-        transporter.seteMail(eMail);
-        transporter.setRoles(Collections.singleton(role));
-        transporter.setLicense(license);
-        main.getTransporterRepository().save(transporter);
-    }
 
     public PointRepository getPointRepository() {
         return pointRepository;
@@ -149,15 +134,6 @@ public class Main {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public TransporterRepository getTransporterRepository() {
-        return transporterRepository;
-    }
-
-    @Autowired
-    public void setTransporterRepository(TransporterRepository transporterRepository) {
-        this.transporterRepository = transporterRepository;
     }
 
     public RoleRepository getRoleRepository() {

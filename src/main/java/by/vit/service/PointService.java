@@ -14,6 +14,8 @@ public interface PointService {
 
     Point findById(Long id);
 
+    Point findByName(String name);
+
     Point getById(Long id);
 
     void delete(Point point);

@@ -10,7 +10,6 @@ import java.util.Objects;
 @Embeddable
 public class RoadId implements Serializable {
 
-
     private Long point1Id;
 
     private Long point2Id;
@@ -44,8 +43,10 @@ public class RoadId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof RoadId)) return false;
         RoadId roadId = (RoadId) o;
-        return Objects.equals(getPoint1Id(), roadId.getPoint1Id()) &&
-                Objects.equals(getPoint2Id(), roadId.getPoint2Id());
+        return (Objects.equals(getPoint1Id(), roadId.getPoint1Id()) &&
+                Objects.equals(getPoint2Id(), roadId.getPoint2Id()))||
+                (Objects.equals(getPoint1Id(), roadId.getPoint2Id()) &&
+                        Objects.equals(getPoint2Id(), roadId.getPoint1Id()));
     }
 
     @Override

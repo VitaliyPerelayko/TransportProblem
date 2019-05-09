@@ -83,8 +83,22 @@ public class PointServiceImpl implements PointService {
     public Point findById(Long id) {
         Optional<Point> point = pointRepository.findById(id);
         validate(!(point.isPresent()),
-                localizedMessageSource.getMessage("error.point.notExist", new Object[]{}));
+                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
         return point.get();
+    }
+
+    /**
+     * Retrieves a Point by its name.
+     *
+     * @param name must not be {@literal null}.
+     * @return the entity with the given name
+     * @throws RuntimeException if Point none found
+     */
+    @Override
+    public Point findByName(String name) {
+        validate(!pointRepository.existsByName(name),
+                localizedMessageSource.getMessage("error.point.name.notExist", new Object[]{}));
+        return pointRepository.findByName(name);
     }
 
     /**

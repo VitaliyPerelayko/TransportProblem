@@ -42,16 +42,17 @@ public class RoadServiceImpl implements RoadService {
     }
 
     /**
-     * Save new entity Road.
+     * Save new entity Road it.
      *
      * @param road entity
      * @return saved entity from database
      */
     @Override
     public Road save(Road road) {
-        validate(road.getId() != null,
-                localizedMessageSource.getMessage("error.road.haveId", new Object[]{}));
-        return saveAndFlush(road);
+        validate(road.getId() == null,
+                localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
+        isRoadValid(road);
+        return roadRepository.saveAndFlush(road);
     }
 
     /**
@@ -64,7 +65,11 @@ public class RoadServiceImpl implements RoadService {
     public Road update(Road road) {
         validate(road.getId() == null,
                 localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
-        return saveAndFlush(road);
+        validate(roadRepository.existsById(road.getId()),
+                localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
+        final Road updatedRoad = roadRepository.update(road.getDistance(), road.getPoint1id(), road.getPoint2id());
+        roadRepository.flush();
+        return updatedRoad;
     }
 
 
@@ -79,7 +84,7 @@ public class RoadServiceImpl implements RoadService {
     public Road findById(RoadId id) {
         Optional<Road> road = roadRepository.findById(id);
         validate(!(road.isPresent()),
-                localizedMessageSource.getMessage("error.road.notExist", new Object[]{}));
+                localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
         return road.get();
     }
 
@@ -106,7 +111,7 @@ public class RoadServiceImpl implements RoadService {
     @Override
     public void delete(Road road) {
         final RoadId id = road.getId();
-        validate(id == null, localizedMessageSource.getMessage("error.road.haveId", new Object[]{}));
+        validate(id == null, localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
         findById(id);
         roadRepository.delete(road);
     }
@@ -123,13 +128,13 @@ public class RoadServiceImpl implements RoadService {
         roadRepository.deleteById(id);
     }
 
-    private Road saveAndFlush(Road road){
-        RoadId id = road.getId();
-        final boolean isPointsExists = pointRepository.existsById(id.getPoint1Id())&&
-                pointRepository.existsById(id.getPoint2Id());
+
+    private void isRoadValid(Road road){
+        final boolean isPointsExists = pointRepository.existsById(road.getPoint1id())&&
+                pointRepository.existsById(road.getPoint2id());
         validate(!isPointsExists,
-                localizedMessageSource.getMessage("error.road.pointsNotExist", new Object[]{}));
-        return road;
+                localizedMessageSource.getMessage("error.road.pointsNotExist",
+                        new Object[]{road.getPoint1id(), road.getPoint2id()}));
     }
 
     private void validate(boolean expression, String errorMessage) {

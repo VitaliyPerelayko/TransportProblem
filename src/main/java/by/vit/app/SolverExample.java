@@ -43,7 +43,7 @@ public class SolverExample {
 
         Double[] order = {20D,25D,15D};
 
-        YanQiDistanceMatrixFinderImpl distanceMatrix = new YanQiDistanceMatrixFinderImpl(roads,points);
+        YanQiDistanceMatrixFinderImpl distanceMatrix = new YanQiDistanceMatrixFinderImpl(localizedMessageSource, roads,points);
 
         Double [][] distance = distanceMatrix.getDistanceMatrix();
 

@@ -13,17 +13,17 @@ public class CarModelDTO {
 
     private Long id;
 
-    @NotNull(message = "{carModel.name.notNull}")
-    @NotEmpty(message = "{carModel.name.notEmpty}")
-    @Size(min = 1, max = 50, message = "{carModel.name.size}")
+    @NotNull(message = "carModel.name.notNull")
+    @NotEmpty(message = "carModel.name.notEmpty")
+    @Size(min = 1, max = 50, message = "carModel.name.size")
     private String name;
 
-    @NotNull(message = "{carModel.tonnage.notNull}")
-    @Positive(message = "{carModel.tonnage.notPositive}")
+    @NotNull(message = "carModel.tonnage.notNull")
+    @Positive(message = "carModel.tonnage.notPositive")
     private Double tonnage;
 
-    @NotNull(message = "{carModel.space.notNull}")
-    @Positive(message = "{carModel.space.notPositive}")
+    @NotNull(message = "carModel.space.notNull")
+    @Positive(message = "carModel.space.notPositive")
     private Double space;
 
     public Long getId() {

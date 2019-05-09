@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -48,6 +49,8 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         validate(user.getId() != null,
                 localizedMessageSource.getMessage("error.user.haveId", new Object[]{}));
+        validate(userRepository.existsByUsername(user.getUsername()),
+                localizedMessageSource.getMessage("error.user.username.notUnique", new Object[]{}));
         return saveAndFlush(user);
     }
 
@@ -59,8 +62,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User update(User user) {
-        validate(user.getId() == null,
+        final Long id = user.getId();
+        validate(id == null,
                 localizedMessageSource.getMessage("error.user.haveNoId", new Object[]{}));
+        final User duplicateUser = userRepository.findByUsername(user.getUsername());
+        findById(id);
+        final boolean isDuplicateExists = duplicateUser != null && !Objects.equals(duplicateUser.getId(), id);
+        validate(isDuplicateExists,
+                localizedMessageSource.getMessage("error.user.username.notUnique", new Object[]{}));
         return saveAndFlush(user);
     }
 
@@ -74,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        validate(!(user.isPresent()), localizedMessageSource.getMessage("error.user.notExist", new Object[]{}));
+        validate(!(user.isPresent()), localizedMessageSource.getMessage("error.user.id.notExist", new Object[]{}));
         return user.get();
     }
 
@@ -112,7 +121,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User user) {
         final Long id = user.getId();
-        validate(id == null, localizedMessageSource.getMessage("error.user.haveId", new Object[]{}));
+        validate(id == null,
+                localizedMessageSource.getMessage("error.user.haveNoId", new Object[]{}));
         findById(id);
         userRepository.delete(user);
     }
@@ -132,7 +142,7 @@ public class UserServiceImpl implements UserService {
     private User saveAndFlush(User user) {
         user.getRoles().forEach(role -> {
             validate(role == null || role.getId() == null,
-                    localizedMessageSource.getMessage("error.user.roles.isNull", new Object[]{}));
+                    localizedMessageSource.getMessage("error.user.role.isNull", new Object[]{}));
             role.setName(roleService.findById(role.getId()).getName());
         });
         return userRepository.saveAndFlush(user);

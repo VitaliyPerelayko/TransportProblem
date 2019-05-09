@@ -84,7 +84,7 @@ public class RoleController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<RoleDTO> update(@Valid @RequestBody RoleDTO roleRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, roleRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.role.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.role.unexpectedId", new Object[]{}));
         }
         final Role role = mapper.map(roleRequestDto, Role.class);
         final RoleDTO roleDTO = mapper.map(roleService.update(role), RoleDTO.class);

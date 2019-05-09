@@ -18,9 +18,9 @@ public class Role {
     private Long id;
 
     @Column(unique = true)
-    @NotNull(message = "{role.name.notNull}")
-    @NotEmpty(message = "{role.name.notEmpty}")
-    @Size(min = 3, max = 50, message = "{role.name.size}")
+    @NotNull(message = "role.name.notNull")
+    @NotEmpty(message = "role.name.notEmpty")
+    @Size(min = 3, max = 50, message = "role.name.size")
     private String name;
 
     @ManyToMany(mappedBy = "roles")

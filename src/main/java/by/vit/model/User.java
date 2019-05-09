@@ -1,6 +1,8 @@
 package by.vit.model;
 
 
+import by.vit.model.solution.Solution;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -19,39 +21,46 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 3, max = 50, message = "{user.name.size}")
+    @Size(min = 3, max = 50, message = "user.name.size")
     private String name;
 
-    @Size(min = 3, max = 50, message = "{user.surname.size}")
+    @Size(min = 3, max = 50, message = "user.surname.size")
     private String surname;
 
-    @Size(min = 3, max = 15, message = "{user.phone.size}")
+    @Size(min = 3, max = 15, message = "user.phone.size")
     private String phone;
 
-    @Email(message = "{user.eMail}")
     @Column(name = "e_mail")
+    @Email(message = "user.eMail")
     private String eMail;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "{user.username.notNull}")
-    @NotEmpty(message = "{user.username.notEmpty}")
-    @Size(min = 3, max = 50, message = "{user.name.size}")
+    @NotNull(message = "user.username.notNull")
+    @NotEmpty(message = "user.username.notEmpty")
+    @Size(min = 3, max = 50, message = "user.username.size")
     private String username;
 
     @Column(nullable = false)
-    @NotNull(message = "{user.password.notNull}")
-    @NotEmpty(message = "{user.password.notEmpty}")
-    @Size(min = 3, max = 100, message = "{user.password.size}")
+    @NotNull(message = "user.password.notNull")
+    @NotEmpty(message = "user.password.notEmpty")
+    @Size(min = 3, max = 100, message = "user.password.size")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_has_role",
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @NotNull(message = "{user.roles.notNull}")
+    @NotNull(message = "user.roles.notNull")
+    @NotEmpty(message = "user.roles.notEmpty" )
     private Set<
-            @NotNull(message = "{user.role.notNull}")
+            @NotNull(message = "user.role.notNull")
                     Role> roles;
+
+    @OneToMany(mappedBy = "transporter")
+    private Set<Car> cars;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    private Set<Solution> solutions;
 
     public User(String name, String surname, String phone, String eMail, Set<Role> role) {
         this.name = name;
@@ -126,5 +135,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public Set<Car> getCars() {
+        return cars;
     }
 }

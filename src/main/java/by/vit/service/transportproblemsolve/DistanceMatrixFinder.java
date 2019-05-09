@@ -1,5 +1,7 @@
 package by.vit.service.transportproblemsolve;
 
+import by.vit.model.Point;
+import by.vit.model.Road;
 import com.programmerare.shortestpaths.core.api.Path;
 
 import java.util.List;
@@ -8,6 +10,17 @@ import java.util.List;
  * Basic interface. It find shortest path between points.
  */
 public interface DistanceMatrixFinder {
+
+    /**
+     * set arrays of points and roads for create distance matrix
+     *
+     * @param roads array of all roads from database
+     * @param points array of points which
+     *               First point is point from which deliver will start.
+     *               The others it's delivery points.
+     */
+    void setConditions(Road[] roads, Point[] points);
+
     /**
      * get method
      * @return matrix of distance between points

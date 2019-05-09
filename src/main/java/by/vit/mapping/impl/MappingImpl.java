@@ -1,23 +1,26 @@
 package by.vit.mapping.impl;
 
+import by.vit.dto.CarModelDTO;
 import by.vit.dto.PointDTO;
+import by.vit.dto.RoleDTO;
+import by.vit.dto.request.CarRequestDTO;
+import by.vit.dto.request.RoadRequestDTO;
 import by.vit.dto.request.TaskDTO;
-import by.vit.dto.response.CarResponseDTO;
-import by.vit.dto.response.solutiondto.RouteDTO;
-import by.vit.dto.response.solutiondto.SolutionDTO;
+import by.vit.dto.request.UserRequestDTO;
+import by.vit.dto.response.*;
 import by.vit.mapping.Mapping;
-import by.vit.model.Car;
-import by.vit.model.Point;
-import by.vit.model.RoadId;
-import by.vit.pojo.solution.Route;
-import by.vit.pojo.solution.Solution;
+import by.vit.model.*;
+import by.vit.model.solution.Solution;
+import by.vit.model.solution.SolutionCar;
+import by.vit.service.CarModelService;
+import by.vit.service.PointService;
+import by.vit.service.RoleService;
+import by.vit.service.UserService;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,50 +29,33 @@ import java.util.stream.Collectors;
 @Service
 public class MappingImpl implements Mapping {
     private final Mapper mapper;
+    private final RoleService roleService;
+    private final PointService pointService;
+    private final CarModelService carModelService;
+    private final UserService userService;
 
-    public MappingImpl(Mapper mapper) {
+
+
+    public MappingImpl(Mapper mapper, RoleService userService, PointService pointService,
+                       CarModelService carModelService, UserService userService1) {
         this.mapper = mapper;
+        this.roleService = userService;
+        this.pointService = pointService;
+        this.carModelService = carModelService;
+        this.userService = userService1;
     }
 
     /**
      * maps the taskDTO to the array of points
      *
      * @param taskDTO it's list of points and list of orders (mass of cargo, that we need to deliver to the point)
-     * @return
+     * @return Point[], first point is point from which deliver will start. The others is delivery points.
      */
     @Override
     public Point[] mapTaskToPoint(TaskDTO taskDTO) {
-        Point[] points = new Point[taskDTO.getPointDTOList().size()];
-        return taskDTO.getPointDTOList().stream().map(
-                (pointDto) -> mapper.map(pointDto, Point.class)).collect(Collectors.toList()).toArray(points);
-    }
-
-    /**
-     * maps the Solution to the SolutionDTO
-     *
-     * @param solution
-     * @return
-     */
-    @Override
-    public SolutionDTO mapSolution(Solution solution) {
-        SolutionDTO solutionDTO = new SolutionDTO();
-        Map<CarResponseDTO, List<RouteDTO>> map = new TreeMap<>();
-        for (Car car : solution.getSolution().keySet()) {
-            CarResponseDTO carResponseDTO = mapper.map(car, CarResponseDTO.class);
-            List<RouteDTO> routeDTOList = new ArrayList<>();
-            List<Route> routeList = solution.getSolution().get(car);
-            for (Route route : routeList) {
-                RouteDTO routeDTO = new RouteDTO();
-                PointDTO pointDTO = mapper.map(route.getPointFinish(), PointDTO.class);
-                routeDTO.setPointFinish(pointDTO);
-                routeDTO.setMass(route.getMass());
-                routeDTO.setCost(route.getCost());
-                routeDTOList.add(routeDTO);
-            }
-            map.put(carResponseDTO, routeDTOList);
-        }
-        solutionDTO.setSolution(map);
-        return solutionDTO;
+        final Point[] points = new Point[taskDTO.getPointName().size()];
+        return taskDTO.getPointName().stream().map(
+                (pointName) -> pointService.findByName(pointName)).collect(Collectors.toList()).toArray(points);
     }
 
     /**
@@ -82,5 +68,132 @@ public class MappingImpl implements Mapping {
     @Override
     public RoadId mapToRoadId(Long id1, Long id2) {
         return new RoadId(id1, id2);
+    }
+
+    /**
+     * map RoadRequestDTO to Road
+     *
+     * @param roadRequestDTO
+     * @return Road
+     */
+    @Override
+    public Road mapRoadRequestDTOToRoad(RoadRequestDTO roadRequestDTO){
+        final Road road = new Road();
+        road.setDistance(roadRequestDTO.getDistance());
+        road.setId(mapToRoadId(roadRequestDTO.getPoint1id(),roadRequestDTO.getPoint2id()));
+        return road;
+    }
+
+    /**
+     * map Road to RoadResponseDTO
+     *
+     * @param road
+     * @return RoadResponseDTO
+     */
+    @Override
+    public RoadResponseDTO mapRoadToRoadResponseDTO(Road road){
+        final RoadResponseDTO roadResponseDTO = new RoadResponseDTO();
+        roadResponseDTO.setPoint1(mapper.map(road.getPoint1(), PointDTO.class));
+        roadResponseDTO.setPoint2(mapper.map(road.getPoint2(), PointDTO.class));
+        roadResponseDTO.setDistance(road.getDistance());
+        return roadResponseDTO;
+    }
+
+    /**
+     * map CarRequestDTO to Car
+     *
+     * @param carRequestDTO
+     * @return Car
+     */
+    @Override
+    public Car mapCarRequestDTOToCar(CarRequestDTO carRequestDTO){
+        final Car car = new Car();
+        if (carRequestDTO.getId()!=null) {
+            car.setId(carRequestDTO.getId());
+        }
+        car.setCarModel(carModelService.findById(carRequestDTO.getCarModelId()));
+        car.setPoint(pointService.findById(carRequestDTO.getPointId()));
+        car.setTransporter(userService.findById(carRequestDTO.getTransporterId()));
+        car.setCost(carRequestDTO.getCost());
+        return car;
+    }
+
+    /**
+     * map Car to CarResponseDTO
+     *
+     * @param car
+     * @return CarResponseDTO
+     */
+    @Override
+    public CarResponseDTO mapCarToCarResponseDTO(Car car){
+        final CarResponseDTO carResponseDTO = new CarResponseDTO();
+        carResponseDTO.setId(car.getId());
+        carResponseDTO.setCarModel(mapper.map(car.getCarModel(), CarModelDTO.class));
+        carResponseDTO.setCost(car.getCost());
+        carResponseDTO.setPoint(mapper.map(car.getPoint(),PointDTO.class));
+        carResponseDTO.setTransporter(mapUserTOUserResponseDTO(car.getTransporter()));
+        return carResponseDTO;
+    }
+
+    /**
+     * maps the Solution to the SolutionDTO
+     *
+     * @param solution
+     * @return SolutionResponseDTO
+     */
+    @Override
+    public SolutionResponseDTO mapSolutionToSolutionResponseDTO(Solution solution) {
+        final SolutionResponseDTO solutionResponseDTO = new SolutionResponseDTO();
+
+        solutionResponseDTO.setId(solution.getId());
+
+        solutionResponseDTO.setDateTime(solution.getDateTime().toString());
+        solutionResponseDTO.setSupplier(mapUserTOUserResponseDTO(solution.getSupplier()));
+        final Set<SolutionCar> solutionCarSet = solution.getCarSet();
+        solutionResponseDTO.setCars(solutionCarSet.stream().map(solutionCar ->
+                mapCarToCarResponseDTO(solutionCar.getCar())).collect(Collectors.toList()));
+        solutionResponseDTO.setRoutes(solutionCarSet.stream().map((solutionCar) ->
+                solutionCar.getRoutes().stream().map((route) ->
+                        mapper.map(route, RouteResponseDTO.class)).collect(Collectors.toList()))
+                .collect(Collectors.toList()));
+        return solutionResponseDTO;
+    }
+
+    /**
+     * maps the UserRequestDTO to the User
+     *
+     * @param userRequestDTO
+     * @return User
+     */
+    @Override
+    public User mapUserRequestDTOTOUser(UserRequestDTO userRequestDTO) {
+        final User user = mapper.map(userRequestDTO, User.class);
+        user.setRoles(mapRolesNameToRoles(userRequestDTO.getRolesName()));
+        return user;
+    }
+
+    /**
+     * maps the User to the UserResponseDTO
+     *
+     * @param user
+     * @return UserResponseDTO
+     */
+    @Override
+    public UserResponseDTO mapUserTOUserResponseDTO(User user) {
+        final UserResponseDTO userResponseDTO = mapper.map(user, UserResponseDTO.class);
+        userResponseDTO.setRoles(mapRoleToRoleDTO(user.getRoles()));
+        return userResponseDTO;
+    }
+
+    private Set<RoleDTO> mapRoleToRoleDTO(Set<Role> roles){
+        return roles.stream().map((role) ->
+                mapper.map(role, RoleDTO.class)).collect(Collectors.toSet());
+    }
+
+    private Set<Role> mapRolesNameToRoles(Set<String> roles){
+        return roles.stream()
+                .map(roleService::findByName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 }

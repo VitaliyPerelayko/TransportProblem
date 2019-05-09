@@ -66,7 +66,8 @@ public class RoleServiceImpl implements RoleService {
         final Role duplicateRole = roleRepository.findByName(role.getName());
         findById(id);
         final boolean isDuplicateExists = duplicateRole != null && !Objects.equals(duplicateRole.getId(), id);
-        validate(isDuplicateExists, localizedMessageSource.getMessage("error.role.name.notUnique", new Object[]{}));
+        validate(isDuplicateExists,
+                localizedMessageSource.getMessage("error.role.name.notUnique", new Object[]{}));
         return roleRepository.saveAndFlush(role);
     }
 
@@ -81,7 +82,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
-        validate(!(role.isPresent()), localizedMessageSource.getMessage("error.role.notExist", new Object[]{}));
+        validate(!(role.isPresent()),
+                localizedMessageSource.getMessage("error.role.id.notExist", new Object[]{}));
         return role.get();
     }
 
@@ -120,7 +122,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void delete(Role role) {
         final Long id = role.getId();
-        validate(role.getId() == null, localizedMessageSource.getMessage("error.role.haveId", new Object[]{}));
+        validate(role.getId() == null,
+                localizedMessageSource.getMessage("error.role.haveNoId", new Object[]{}));
         findById(id);
         roleRepository.delete(role);
     }

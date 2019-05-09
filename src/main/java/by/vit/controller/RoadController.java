@@ -22,16 +22,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/roads")
 public class RoadController {
 
-    private final Mapper mapper;
     private final Mapping mapping;
 
     private final RoadService roadService;
 
     private final LocalizedMessageSource localizedMessageSource;
 
-    public RoadController(Mapper mapper, Mapping mapping, RoadService roadService,
+    public RoadController(Mapping mapping, RoadService roadService,
                           LocalizedMessageSource localizedMessageSource) {
-        this.mapper = mapper;
         this.mapping = mapping;
         this.roadService = roadService;
         this.localizedMessageSource = localizedMessageSource;
@@ -46,7 +44,7 @@ public class RoadController {
     public ResponseEntity<List<RoadResponseDTO>> getAll() {
         final List<Road> roads = roadService.findAll();
         final List<RoadResponseDTO> RoadDTOList = roads.stream()
-                .map((road) -> mapper.map(road, RoadResponseDTO.class))
+                .map(mapping::mapRoadToRoadResponseDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(RoadDTOList, HttpStatus.OK);
     }
@@ -60,9 +58,9 @@ public class RoadController {
      */
     @RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.GET)
     public ResponseEntity<RoadResponseDTO> getOne(@PathVariable Long id1, @PathVariable Long id2) {
-        final RoadResponseDTO RoadDTO = mapper.map(roadService.findById(
-                mapping.mapToRoadId(id1, id2)), RoadResponseDTO.class);
-        return new ResponseEntity<>(RoadDTO, HttpStatus.OK);
+        final RoadResponseDTO roadResponseDTO = mapping.mapRoadToRoadResponseDTO(roadService.findById(
+                mapping.mapToRoadId(id1, id2)));
+        return new ResponseEntity<>(roadResponseDTO, HttpStatus.OK);
     }
 
     /**
@@ -73,10 +71,8 @@ public class RoadController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<RoadResponseDTO> save(@Valid @RequestBody RoadRequestDTO roadRequestDto) {
-        roadRequestDto.setPoint1id(null);
-        roadRequestDto.setPoint2id(null);
-        final Road road = mapper.map(roadRequestDto, Road.class);
-        final RoadResponseDTO RoadDTO = mapper.map(roadService.save(road), RoadResponseDTO.class);
+        final RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.save(
+                mapping.mapRoadRequestDTOToRoad(roadRequestDto)));
         return new ResponseEntity<>(RoadDTO, HttpStatus.OK);
     }
 
@@ -92,10 +88,10 @@ public class RoadController {
     public ResponseEntity<RoadResponseDTO> update(@Valid @RequestBody RoadRequestDTO roadRequestDto,
                                                   @PathVariable Long id1, @PathVariable Long id2) {
         if (!Objects.equals(id1, roadRequestDto.getPoint1id()) || !Objects.equals(id2, roadRequestDto.getPoint2id())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.road.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.road.unexpectedId", new Object[]{}));
         }
-        final Road road = mapper.map(roadRequestDto, Road.class);
-        final RoadResponseDTO RoadDTO = mapper.map(roadService.update(road), RoadResponseDTO.class);
+        final RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.save(
+                mapping.mapRoadRequestDTOToRoad(roadRequestDto)));
         return new ResponseEntity<>(RoadDTO, HttpStatus.OK);
     }
 

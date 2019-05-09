@@ -1,24 +1,21 @@
 package by.vit.service.impl;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Car;
 import by.vit.model.Point;
 import by.vit.model.Road;
-import by.vit.pojo.solution.Solution;
-import by.vit.repository.CarRepository;
-import by.vit.repository.PointRepository;
-import by.vit.repository.RoadRepository;
+import by.vit.model.solution.Route;
+import by.vit.model.solution.Solution;
+import by.vit.model.solution.SolutionCar;
+import by.vit.repository.*;
 import by.vit.service.SolutionService;
 import by.vit.service.transportproblemsolve.ConditionTP;
 import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
 import by.vit.service.transportproblemsolve.SolverOfTP;
-import by.vit.service.transportproblemsolve.factory.DistanceMatrixFactory;
-import by.vit.service.transportproblemsolve.factory.SolverFactory;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Service find best solution of task: To which point will the car go and how much cargo will it deliver?
@@ -29,6 +26,16 @@ public class SolutionServiceImpl implements SolutionService {
     private final RoadRepository roadRepository;
     private final CarRepository carRepository;
     private final PointRepository pointRepository;
+    private final UserRepository userRepository;
+    private final SolutionRepository solutionRepository;
+    private final SolutionCarRepository solutionCarRepository;
+    private final RouteRepository routeRepository;
+    private final LocalizedMessageSource localizedMessageSource;
+    /**
+     * Method of working out the distance
+     */
+    private final DistanceMatrixFinder distanceMatrix;
+    private final SolverOfTP solver;
     /**
      * Point of deliver
      */
@@ -38,94 +45,131 @@ public class SolutionServiceImpl implements SolutionService {
      */
     private Double[] order;
     /**
-     * Method of working out the distance
+     * User who has asked for solution
      */
-    private DistanceMatrixFinder distanceMatrixFinder;
-    private SolverOfTP solver;
+    private String username;
 
-    public SolutionServiceImpl(RoadRepository roadRepository, CarRepository carRepository, PointRepository pointRepository) {
+    public SolutionServiceImpl(RoadRepository roadRepository, CarRepository carRepository,
+                               PointRepository pointRepository, UserRepository userRepository,
+                               SolutionRepository solutionRepository, SolutionCarRepository solutionCarRepository,
+                               RouteRepository routeRepository, LocalizedMessageSource localizedMessageSource,
+                               DistanceMatrixFinder distanceMatrixFinder, SolverOfTP solver) {
         this.roadRepository = roadRepository;
         this.carRepository = carRepository;
         this.pointRepository = pointRepository;
+        this.userRepository = userRepository;
+        this.solutionRepository = solutionRepository;
+        this.solutionCarRepository = solutionCarRepository;
+        this.routeRepository = routeRepository;
+        this.localizedMessageSource = localizedMessageSource;
+        this.distanceMatrix = distanceMatrixFinder;
+        this.solver = solver;
     }
 
     /**
-     * Set method of finding the shortest path
+     * Solve the transport problem and return solution.
+     * Save to database Solution, SolutionCars and Routes
      *
-     * @param type of algorithm
-     */
-    @Override
-    public void setDistanceMatrixFinder(DistanceMatrixFactory.Type type) {
-        this.distanceMatrixFinder = DistanceMatrixFactory.
-                createDistanceMatrix(type, (Road[]) roadRepository.findAll().toArray(), points);
-    }
-
-    /**
-     * Set method of solving linear programming problems
-     *
-     * @param type of algorithm
-     */
-    @Override
-    public void setSolver(SolverFactory.Type type) {
-        List<Car> cars = new ArrayList(points[0].getCars());
-        ConditionTP conditionTP = new ConditionTP(distanceMatrixFinder, cars, order);
-        this.solver = SolverFactory.createSolver(type, conditionTP);
-    }
-
-    /**
      * @return solution
      */
     @Override
-    public Solution getSolution() {
-        Map<Long, List<String>> solution = solver.getInterpretation();
-        Solution solution1 = new Solution();
-        for (Long i : solution.keySet()) {
-            Car car = carRepository.findById(i).get();
-            List<String> routes = solution.get(i);
-            solution1.putCarRoute(car, getPointsFromSolution(routes),
-                    getMassesFromSolution(routes), getCostsFromSolution(routes));
+    public Solution getAndSaveSolution() {
+        Map<Long, List<String>> solutionInterpretation = solver.getInterpretation();
+        Solution solution = new Solution();
+        solution.setDateTime(LocalDateTime.now());
+        solution.setSupplier(userRepository.findByUsername(username));
+        final Solution savedSolution = solutionRepository.save(solution);
+
+        solutionInterpretation.keySet().forEach((i) -> {
+            final Car car = carRepository.findById(i).get();
+            final SolutionCar solutionCar = new SolutionCar();
+            solutionCar.setSolution(solution);
+            solutionCar.setCar(car);
+            final SolutionCar savedSolutionCar = solutionCarRepository.save(solutionCar);
+            final List<String> routes = solutionInterpretation.get(i);
+
+            for (int j = 0; j < routes.size() / 3; j++) {
+                final Route route = new Route();
+                route.setSolutionCar(savedSolutionCar);
+                route.setPoint(pointRepository.findById(Long.
+                        parseLong(routes.get(j * 3))).get());
+                route.setMass(Double.parseDouble(routes.get(j * 3 + 1)));
+                route.setCost(Double.parseDouble(routes.get(j * 3 + 2)));
+                routeRepository.save(route);
+            }
+        });
+        return savedSolution;
+    }
+
+    /**
+     * Find all roles from database.
+     *
+     * @return List<Role>
+     */
+    @Override
+    public List<Solution> findAll() {
+        return solutionRepository.findAll();
+    }
+
+    /**
+     * Retrieves a Solution by its id.
+     *
+     * @param id must not be {@literal null}.
+     * @return the entity with the given id
+     * @throws RuntimeException if Solution none found
+     */
+    @Override
+    public Solution findById(Long id) {
+        Optional<Solution> solution = solutionRepository.findById(id);
+        if (!solution.isPresent()) {
+            throw new RuntimeException(
+                    localizedMessageSource.getMessage("error.solution.id.notExist", new Object[]{})
+            );
         }
-        return solution1;
+        return solution.get();
+    }
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        solutionRepository.deleteById(id);
     }
 
     /**
      * Set condition for solution finder
      *
-     * @param points Point of deliver
-     * @param order  Mass of cargo that we need to deliver
+     * @param points   Point of deliver
+     * @param order    Mass of cargo that we need to deliver
+     * @param username User who has asked for solution
      */
     @Override
-    public void setConditions(Point[] points, Double[] order) {
+    public void setConditions(Point[] points, Double[] order, String username) {
         this.points = points;
         this.order = order;
+        this.username = username;
+        List<Car> cars = new ArrayList(points[0].getCars());
+        Double difference = validOrder(cars, order);
+        boolean flag = difference == 0 ? false : true;
+
+        distanceMatrix.setConditions((Road[]) roadRepository.findAll().toArray(), points);
+        ConditionTP conditionTP = new ConditionTP(distanceMatrix, cars, order, flag, difference);
+        solver.setConditions(conditionTP);
+
     }
 
-
-    private List<Point> getPointsFromSolution(List<String> routes) {
-        List<Point> points = new ArrayList<>();
-        for (int i = 0; i < routes.size() / 3; i++) {
-            Point point = pointRepository.findById(Long.
-                    parseLong(routes.get(i * 3))).get();
-            points.add(point);
+    private Double validOrder(List<Car> cars, Double[] order) {
+        Double carSumTonnage = cars.stream().mapToDouble(car -> car.getCarModel().getTonnage()).sum();
+        Double sumOfOrder = Arrays.stream(order).reduce((a, b) -> a + b).get();
+        if (carSumTonnage - sumOfOrder < 0){
+            throw new RuntimeException(
+                    localizedMessageSource.getMessage("error.solution.notEnough.cars",new Object[]{}));
         }
-        return points;
-    }
-
-    private List<Double> getMassesFromSolution(List<String> routes) {
-        List<Double> masses = new ArrayList<>();
-        for (int i = 0; i < routes.size() / 3; i++) {
-            Double mass = Double.parseDouble(routes.get(i * 3 + 1));
-            masses.add(mass);
-        }
-        return masses;
-    }
-
-    private List<BigDecimal> getCostsFromSolution(List<String> routes) {
-        List<BigDecimal> costs = new ArrayList<>();
-        for (int i = 0; i < routes.size() / 3; i++) {
-            BigDecimal cost = new BigDecimal(routes.get(i * 3 + 2));
-            costs.add(cost);
-        }
-        return costs;
+        return carSumTonnage - sumOfOrder;
     }
 }

@@ -8,6 +8,7 @@ import by.vit.service.UserService;
 import org.dozer.Mapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,6 +41,7 @@ public class UserController {
      *
      * @return Response: UserDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserResponseDTO>> getAll() {
         final List<User> users = userService.findAll();
@@ -55,6 +57,8 @@ public class UserController {
      * @param id of user
      * @return Response: UserDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserResponseDTO> getOne(@PathVariable Long id) {
         final UserResponseDTO userResponseDTO = mapper.map(userService.findById(id), UserResponseDTO.class);
@@ -67,6 +71,7 @@ public class UserController {
      * @param userRequestDto new user
      * @return Response:saved UserDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO userRequestDto) {
         userRequestDto.setId(null);
@@ -82,10 +87,12 @@ public class UserController {
      * @param id             of user in database
      * @return Response:updated UserDTO ant http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, userRequestDto.getId())) {
-            throw new RuntimeException(localizedMessageSource.getMessage("{controller.user.unexpectedId}", new Object[]{}));
+            throw new RuntimeException(localizedMessageSource.getMessage("controller.user.unexpectedId", new Object[]{}));
         }
         final User user = mapper.map(userRequestDto, User.class);
         final UserResponseDTO userResponseDTO = mapper.map(userService.update(user), UserResponseDTO.class);
@@ -98,6 +105,8 @@ public class UserController {
      * @param id of user
      * @return http status
      */
+    @PreAuthorize("hasRole('ADMIN') or " +
+            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {
