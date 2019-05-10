@@ -17,6 +17,7 @@
         <org.hibernate.core>5.4.1.Final</org.hibernate.core>
         <hibernate.validator>6.0.16.Final</hibernate.validator>
         <org.spring.core>5.1.5.RELEASE</org.spring.core>
+        <org.spring.data>2.1.5.RELEASE</org.spring.data>
     </properties>
 
     <dependencies>
@@ -29,6 +30,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${org.spring.data}</version>
         </dependency>
 
         <!--Database-->
