@@ -23,7 +23,6 @@ import java.util.Properties;
  */
 @Configuration
 @PropertySource("classpath:database.properties")
-@ComponentScan("by.vit")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {
         "by.vit.repository"

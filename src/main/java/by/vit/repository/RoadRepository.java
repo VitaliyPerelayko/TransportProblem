@@ -19,6 +19,6 @@ public interface RoadRepository extends JpaRepository<Road, RoadId> {
      * @param id2 point2 id
      * @return
      */
-    @Query("UPDATE Road road SET road.distance = :distance WHERE ((road.point1id = :id1 AND road.point2id = :id2) OR (road.point1id = :id2 AND road.point2id = :id1))")
-    Road update(@Param("distance") Double distance, @Param("id1") Long id1, @Param("id2") Long id2);
+    @Query("UPDATE Road road SET road.distance = :distance WHERE (road.id = :id1) OR (road.id = :id2)")
+    Road update(@Param("distance") Double distance, @Param("id1") RoadId id1, @Param("id2") RoadId id2);
 }

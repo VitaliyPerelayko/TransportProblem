@@ -1,11 +1,31 @@
 package by.vit.app;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class Foo {
+    private final PasswordEncoder encoder;
+
+    public Foo(PasswordEncoder encoder) {
+        this.encoder = encoder;
+    }
+
+
     public static void main(String[] args) {
-        Double d = Stream.of(5d,6d,7d,8d,25d).reduce((a,b) -> a+b).get();
-        System.out.println(d);
+
+
+        Foo foo = new Foo(new BCryptPasswordEncoder());
+
+        foo.print();
+
+    }
+
+    public void print() {
+        System.out.println(encoder.encode("password"));
+        System.out.println(encoder.encode("123"));
+        System.out.println(encoder.encode("1953"));
+        System.out.println(encoder.encode("123qwa"));
+        System.out.println(encoder.encode("qwerty"));
+        System.out.println(encoder.encode("stroyka"));
     }
 }

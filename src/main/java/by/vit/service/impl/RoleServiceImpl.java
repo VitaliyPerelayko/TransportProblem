@@ -82,7 +82,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
-        validate(!(role.isPresent()),
+        validate((role.equals(Optional.empty())),
                 localizedMessageSource.getMessage("error.role.id.notExist", new Object[]{}));
         return role.get();
     }
