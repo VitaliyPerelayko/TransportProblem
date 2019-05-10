@@ -29,13 +29,6 @@ public class TaskDTO {
             @Positive(message = "task.order.positive")
                     Double> orderList;
 
-    /**
-     * Username of user who has asked for solution
-     */
-    @NotNull(message = "task.username.notNull")
-    @NotEmpty(message = "task.username.notEmpty")
-    private String username;
-
     public List<String> getPointName() {
         return pointName;
     }
@@ -50,13 +43,5 @@ public class TaskDTO {
 
     public void setOrderList(List<Double> orderList) {
         this.orderList = orderList;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

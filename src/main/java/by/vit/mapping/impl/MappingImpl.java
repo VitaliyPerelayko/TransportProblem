@@ -131,7 +131,7 @@ public class MappingImpl implements Mapping {
         carResponseDTO.setCarModel(mapper.map(car.getCarModel(), CarModelDTO.class));
         carResponseDTO.setCost(car.getCost());
         carResponseDTO.setPoint(mapper.map(car.getPoint(),PointDTO.class));
-        carResponseDTO.setTransporter(mapUserTOUserResponseDTO(car.getTransporter()));
+        carResponseDTO.setTransporter(mapper.map(car.getTransporter(),ShortUserResponseDTO.class));
         return carResponseDTO;
     }
 

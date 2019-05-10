@@ -53,6 +53,7 @@ public class AuthenticationController {
     @PostMapping("/signUp")
     public User registerUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         final User user = mapping.mapUserRequestDTOTOUser(userRequestDTO);
+        user.setId(null);
         user.setPassword(encoder.encode(userRequestDTO.getPassword()));
 
         return userService.save(user);

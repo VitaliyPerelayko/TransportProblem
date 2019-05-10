@@ -67,11 +67,11 @@ public class RoadServiceImpl implements RoadService {
                 localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
         validate(roadRepository.existsById(road.getId()),
                 localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
-        final RoadId roadId1 = new RoadId(road.getPoint1id(),road.getPoint2id());
-        final RoadId roadId2 = new RoadId(road.getPoint2id(),road.getPoint1id());
-        final Road updatedRoad = roadRepository.update(road.getDistance(), roadId1, roadId2);
-        roadRepository.flush();
-        return updatedRoad;
+//        final RoadId roadId1 = new RoadId(road.getPoint1id(),road.getPoint2id());
+//        final RoadId roadId2 = new RoadId(road.getPoint2id(),road.getPoint1id());
+//        final Road updatedRoad = roadRepository.update(road.getDistance(), roadId1, roadId2);
+//        roadRepository.flush();
+        return roadRepository.saveAndFlush(road);
     }
 
 

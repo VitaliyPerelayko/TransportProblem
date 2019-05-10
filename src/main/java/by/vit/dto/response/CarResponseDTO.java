@@ -11,7 +11,7 @@ public class CarResponseDTO {
     private Long id;
     private CarModelDTO carModel;
     private PointDTO point;
-    private UserResponseDTO transporter;
+    private ShortUserResponseDTO transporter;
     private Double cost;
 
     public Long getId() {
@@ -38,11 +38,11 @@ public class CarResponseDTO {
         this.point = point;
     }
 
-    public UserResponseDTO getTransporter() {
+    public ShortUserResponseDTO getTransporter() {
         return transporter;
     }
 
-    public void setTransporter(UserResponseDTO transporter) {
+    public void setTransporter(ShortUserResponseDTO transporter) {
         this.transporter = transporter;
     }
 

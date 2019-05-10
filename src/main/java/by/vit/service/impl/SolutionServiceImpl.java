@@ -156,8 +156,9 @@ public class SolutionServiceImpl implements SolutionService {
         List<Car> cars = new ArrayList(points[0].getCars());
         Double difference = validOrder(cars, order);
         boolean flag = difference == 0 ? false : true;
-
-        distanceMatrix.setConditions((Road[]) roadRepository.findAll().toArray(), points);
+        final List<Road> roadList = roadRepository.findAll();
+        final Road[] roads = new Road[roadList.size()];
+        distanceMatrix.setConditions(roadList.toArray(roads), points);
         ConditionTP conditionTP = new ConditionTP(distanceMatrix, cars, order, flag, difference);
         solver.setConditions(conditionTP);
 

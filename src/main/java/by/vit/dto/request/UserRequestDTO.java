@@ -36,7 +36,7 @@ public class UserRequestDTO {
 
     @NotNull(message = "user.password.notNull")
     @NotEmpty(message = "user.password.notEmpty")
-    @Size(min = 3, max = 100, message = "user.password.size")
+    @Size(min = 3, max = 50, message = "user.password.size")
     private String password;
 
     public Long getId() {

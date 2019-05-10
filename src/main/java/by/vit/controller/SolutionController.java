@@ -40,7 +40,7 @@ public class SolutionController {
      *
      * @return Response: SolutionResponseDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<SolutionResponseDTO>> getAll() {
         final List<Solution> solutions = solutionService.findAll();
@@ -56,8 +56,8 @@ public class SolutionController {
      * @param id of solution
      * @return Response: SolutionResponseDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN') or " +
-            "(hasRole('SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
+            "(hasRole('ROLE_SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<SolutionResponseDTO> getOne(@PathVariable Long id) {
         final SolutionResponseDTO solutionResponseDTO =
@@ -92,8 +92,8 @@ public class SolutionController {
      * @param id of solution
      * @return http status
      */
-    @PreAuthorize("hasRole('ADMIN') or " +
-            "(hasRole('SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
+            "(hasRole('ROLE_SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {

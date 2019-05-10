@@ -41,7 +41,7 @@ public class UserController {
      *
      * @return Response: UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserResponseDTO>> getAll() {
         final List<User> users = userService.findAll();
@@ -57,7 +57,7 @@ public class UserController {
      * @param id of user
      * @return Response: UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN') or " +
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserResponseDTO> getOne(@PathVariable Long id) {
@@ -71,7 +71,7 @@ public class UserController {
      * @param userRequestDto new user
      * @return Response:saved UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO userRequestDto) {
         userRequestDto.setId(null);
@@ -87,7 +87,7 @@ public class UserController {
      * @param id             of user in database
      * @return Response:updated UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ADMIN') or " +
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userRequestDto, @PathVariable Long id) {
@@ -105,7 +105,7 @@ public class UserController {
      * @param id of user
      * @return http status
      */
-    @PreAuthorize("hasRole('ADMIN') or " +
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)

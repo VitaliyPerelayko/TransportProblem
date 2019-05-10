@@ -82,9 +82,9 @@ public class PointServiceImpl implements PointService {
     @Override
     public Point findById(Long id) {
         Optional<Point> point = pointRepository.findById(id);
-        validate(!point.isPresent(),
-                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
-        return point.get();
+//        validate(!point.isPresent(),
+//                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
+        return point.orElseThrow(() -> new RuntimeException(localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{})));
     }
 
     /**

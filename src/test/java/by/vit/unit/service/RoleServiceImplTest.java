@@ -28,7 +28,7 @@ public class RoleServiceImplTest {
     @Mock
     private LocalizedMessageSource localizedMessageSource;
 
-    @Mock
+    @Mock(name = "roleRepository")
     private RoleRepository roleRepository;
 
 
