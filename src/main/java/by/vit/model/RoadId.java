@@ -1,13 +1,14 @@
 package by.vit.model;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Class for the composite key of entity Road.
+ */
 @Embeddable
 public class RoadId implements Serializable {
-
 
     private Long point1Id;
 
@@ -25,12 +26,12 @@ public class RoadId implements Serializable {
         return point1Id;
     }
 
-    public Long getPoint2Id() {
-        return point2Id;
-    }
-
     public void setPoint1Id(Long point1Id) {
         this.point1Id = point1Id;
+    }
+
+    public Long getPoint2Id() {
+        return point2Id;
     }
 
     public void setPoint2Id(Long point2Id) {
@@ -42,12 +43,22 @@ public class RoadId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof RoadId)) return false;
         RoadId roadId = (RoadId) o;
-        return Objects.equals(getPoint1Id(), roadId.getPoint1Id()) &&
-                Objects.equals(getPoint2Id(), roadId.getPoint2Id());
+        return (Objects.equals(getPoint1Id(), roadId.getPoint1Id()) &&
+                Objects.equals(getPoint2Id(), roadId.getPoint2Id()))||
+                (Objects.equals(getPoint1Id(), roadId.getPoint2Id()) &&
+                        Objects.equals(getPoint2Id(), roadId.getPoint1Id()));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getPoint1Id(), getPoint2Id());
+    }
+
+    @Override
+    public String toString() {
+        return "RoadId{" +
+                "point1Id=" + point1Id +
+                ", point2Id=" + point2Id +
+                '}';
     }
 }
