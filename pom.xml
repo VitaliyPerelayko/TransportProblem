@@ -16,9 +16,21 @@
         <mysql.conector.java>8.0.15</mysql.conector.java>
         <org.hibernate.core>5.4.1.Final</org.hibernate.core>
         <hibernate.validator>6.0.16.Final</hibernate.validator>
+        <org.spring.core>5.1.5.RELEASE</org.spring.core>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.spring.core}</version>
+        </dependency>
+
         <!--Database-->
         <dependency>
             <groupId>org.hibernate</groupId>
