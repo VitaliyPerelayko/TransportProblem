@@ -63,17 +63,17 @@ public class ConditionTP {
 
         if (flagOfPseudoPoint) {
             costMatrix = new BigDecimal[lengthOfListPoints * lengthOfListCars]
-                    [lengthOfListPoints * lengthOfListCars + 1];
+                    [n + lengthOfListPoints];
             for (int a = 0; a < lengthOfListCars; a++) {
                 for (int i = 0; i < lengthOfListPoints; i++) {
                     int foo = i + a * lengthOfListPoints;
                     fillCostMatrix(distanceMatrix, carCost, a, i, n, foo);
-                    costMatrix[foo][lengthOfListCars * lengthOfListPoints] = BigDecimal.ZERO;
+                    costMatrix[foo][n + lengthOfListPoints - 1] = BigDecimal.ZERO;
                 }
             }
         } else {
             costMatrix = new BigDecimal[lengthOfListPoints * lengthOfListCars]
-                    [lengthOfListPoints * lengthOfListCars];
+                    [n + lengthOfListPoints-1];
             for (int a = 0; a < lengthOfListCars; a++) {
                 for (int i = 0; i < lengthOfListPoints; i++) {
                     int foo = i + a * lengthOfListPoints;
@@ -99,11 +99,11 @@ public class ConditionTP {
             carsTonnage[i] = restrictionOfCars[i * lengthOfListPoints];
         }
         if (flagOfPseudoPoint) {
-            restrictionOfOrder = new Double[lengthOfListPoints * lengthOfListCars + 1];
+            restrictionOfOrder = new Double[n * (lengthOfListCars + 1) + 1];
             fillRestrictionOfOrder(carsTonnage, order, n);
             restrictionOfOrder[restrictionOfOrder.length - 1] = difference;
         } else {
-            restrictionOfOrder = new Double[lengthOfListPoints * lengthOfListCars];
+            restrictionOfOrder = new Double[n * (lengthOfListCars + 1)];
             fillRestrictionOfOrder(carsTonnage, order, n);
         }
     }
@@ -131,7 +131,7 @@ public class ConditionTP {
                 costMatrix[foo][j] = UNREACHABLE;
             }
         }
-        for (int j = n, p = 0; j < lengthOfListCars * lengthOfListPoints; j++, p++) {
+        for (int j = n, p = 0; j < n + lengthOfListPoints - 1; j++, p++) {
             BigDecimal cost = new BigDecimal(distanceMatrix[i + 1][2 + p].toString())
                     .multiply(new BigDecimal(carCost[a].toString()));
             costMatrix[foo][j] = cost;

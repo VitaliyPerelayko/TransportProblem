@@ -83,6 +83,11 @@
             <artifactId>clp-java</artifactId>
             <version>1.16.10</version>
         </dependency>
+        <dependency>
+            <groupId>by.vit</groupId>
+            <artifactId>TransportProblem</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
     </dependencies>
 

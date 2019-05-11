@@ -70,10 +70,10 @@ public class CLPSolverImpl implements SolverOfTP {
                     }
 
                     if (!tonne.equals(zero)) {
-                        if (interpretation.get((long) a) == null) {
-                            interpretation.put((long) a, new ArrayList<>());
+                        if (interpretation.get(carsId[a]) == null) {
+                            interpretation.put(carsId[a], new ArrayList<>());
                         }
-                        List<String> infoForCar = interpretation.get((long) a);
+                        List<String> infoForCar = interpretation.get(carsId[a]);
                         infoForCar.add(pointsId[j].toString());
                         infoForCar.add(tonne.toString());
                         infoForCar.add(cost.multiply(BigDecimal.valueOf(tonne)).toString());

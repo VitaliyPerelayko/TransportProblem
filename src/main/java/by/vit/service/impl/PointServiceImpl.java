@@ -97,7 +97,7 @@ public class PointServiceImpl implements PointService {
     @Override
     public Point findByName(String name) {
         validate(!pointRepository.existsByName(name),
-                localizedMessageSource.getMessage("error.point.name.notExist", new Object[]{}));
+                "error.point.name.notExist");
         return pointRepository.findByName(name);
     }
 
