@@ -2,13 +2,16 @@ package by.vit.dto.response;
 
 import java.util.List;
 
+/**
+ * DTO for response entity Solution
+ */
 public class SolutionResponseDTO {
 
     private Long id;
 
     private String dateTime;
 
-    private UserResponseDTO supplier;
+    private ShortUserResponseDTO supplier;
 
     private List<CarResponseDTO> cars;
 
@@ -40,12 +43,12 @@ public class SolutionResponseDTO {
         this.dateTime = dateTime;
     }
 
-    public UserResponseDTO getSupplier() {
+    public ShortUserResponseDTO getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(UserResponseDTO supplierId) {
-        this.supplier = supplierId;
+    public void setSupplier(ShortUserResponseDTO supplier) {
+        this.supplier = supplier;
     }
 
     public List<CarResponseDTO> getCars() {

@@ -67,7 +67,7 @@ public class RoadController {
      * Save road to database
      *
      * @param roadRequestDto new road
-     * @return Response:saved RoadDTO ant http status
+     * @return Response: saved RoadDTO ant http status
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<RoadResponseDTO> save(@Valid @RequestBody RoadRequestDTO roadRequestDto) {
@@ -82,7 +82,7 @@ public class RoadController {
      * @param roadRequestDto new road
      * @param id1 of point in database
      * @param id2 of point in database
-     * @return Response:updated RoadDTO ant http status
+     * @return Response: updated RoadDTO ant http status
      */
     @RequestMapping(value = "/{id1/{id2}", method = RequestMethod.PUT)
     public ResponseEntity<RoadResponseDTO> update(@Valid @RequestBody RoadRequestDTO roadRequestDto,

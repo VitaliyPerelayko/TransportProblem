@@ -1,5 +1,8 @@
 package by.vit.dto.response;
 
+/**
+ * DTO for response entity User (short version)
+ */
 public class ShortUserResponseDTO {
     private String name;
     private String surname;

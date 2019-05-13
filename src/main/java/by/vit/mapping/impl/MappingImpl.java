@@ -55,7 +55,7 @@ public class MappingImpl implements Mapping {
     public Point[] mapTaskToPoint(TaskDTO taskDTO) {
         final Point[] points = new Point[taskDTO.getPointName().size()];
         return taskDTO.getPointName().stream().map(
-                (pointName) -> pointService.findByName(pointName)).collect(Collectors.toList()).toArray(points);
+                pointService::findByName).collect(Collectors.toList()).toArray(points);
     }
 
     /**
@@ -73,7 +73,7 @@ public class MappingImpl implements Mapping {
     /**
      * map RoadRequestDTO to Road
      *
-     * @param roadRequestDTO
+     * @param roadRequestDTO RoadRequestDTO
      * @return Road
      */
     @Override
@@ -87,7 +87,7 @@ public class MappingImpl implements Mapping {
     /**
      * map Road to RoadResponseDTO
      *
-     * @param road
+     * @param road road
      * @return RoadResponseDTO
      */
     @Override
@@ -102,7 +102,7 @@ public class MappingImpl implements Mapping {
     /**
      * map CarRequestDTO to Car
      *
-     * @param carRequestDTO
+     * @param carRequestDTO carRequestDTO
      * @return Car
      */
     @Override
@@ -121,7 +121,7 @@ public class MappingImpl implements Mapping {
     /**
      * map Car to CarResponseDTO
      *
-     * @param car
+     * @param car car
      * @return CarResponseDTO
      */
     @Override
@@ -138,7 +138,7 @@ public class MappingImpl implements Mapping {
     /**
      * maps the Solution to the SolutionDTO
      *
-     * @param solution
+     * @param solution solution
      * @return SolutionResponseDTO
      */
     @Override
@@ -148,7 +148,7 @@ public class MappingImpl implements Mapping {
         solutionResponseDTO.setId(solution.getId());
 
         solutionResponseDTO.setDateTime(solution.getDateTime().toString());
-        solutionResponseDTO.setSupplier(mapUserTOUserResponseDTO(solution.getSupplier()));
+        solutionResponseDTO.setSupplier(mapper.map(solution.getSupplier(),ShortUserResponseDTO.class));
         final Set<SolutionCar> solutionCarSet = solution.getCarSet();
         solutionResponseDTO.setCars(solutionCarSet.stream().map(solutionCar ->
                 mapCarToCarResponseDTO(solutionCar.getCar())).collect(Collectors.toList()));
@@ -162,7 +162,7 @@ public class MappingImpl implements Mapping {
     /**
      * maps the UserRequestDTO to the User
      *
-     * @param userRequestDTO
+     * @param userRequestDTO userRequestDTO
      * @return User
      */
     @Override
@@ -175,11 +175,11 @@ public class MappingImpl implements Mapping {
     /**
      * maps the User to the UserResponseDTO
      *
-     * @param user
+     * @param user user
      * @return UserResponseDTO
      */
     @Override
-    public UserResponseDTO mapUserTOUserResponseDTO(User user) {
+    public UserResponseDTO mapUserToUserResponseDTO(User user) {
         final UserResponseDTO userResponseDTO = mapper.map(user, UserResponseDTO.class);
         userResponseDTO.setRoles(mapRoleToRoleDTO(user.getRoles()));
         return userResponseDTO;

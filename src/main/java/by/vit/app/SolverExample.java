@@ -1,18 +1,5 @@
 package by.vit.app;
 
-import by.vit.config.AppConfiguration;
-import by.vit.model.*;
-import by.vit.service.transportproblemsolve.ConditionTP;
-import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
-import by.vit.service.transportproblemsolve.SolverOfTP;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 
 public class SolverExample {}
 
@@ -70,7 +57,7 @@ public class SolverExample {}
 //
 //        System.out.println("=====================================================");
 //
-//        ConditionTP conditionTP = new ConditionTP(distanceMatrix, cars, order, true, 40d);
+//        ConditionsImpl conditionTP = new ConditionsImpl(distanceMatrix, cars, order, true, 40d);
 //
 //        BigDecimal[][] costMatrix = conditionTP.getCostMatrix();
 //

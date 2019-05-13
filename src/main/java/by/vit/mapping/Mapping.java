@@ -11,7 +11,11 @@ import by.vit.dto.response.UserResponseDTO;
 import by.vit.model.*;
 import by.vit.model.solution.Solution;
 
+/**
+ * Custom mapping service
+ */
 public interface Mapping {
+
     /**
      * maps the taskDTO to the array of points
      *
@@ -20,12 +24,36 @@ public interface Mapping {
      */
     Point[] mapTaskToPoint(TaskDTO taskDTO);
 
+    /**
+     * map RoadRequestDTO to Road
+     *
+     * @param roadRequestDTO RoadRequestDTO
+     * @return Road
+     */
     Road mapRoadRequestDTOToRoad(RoadRequestDTO roadRequestDTO);
 
+    /**
+     * map Road to RoadResponseDTO
+     *
+     * @param road road
+     * @return RoadResponseDTO
+     */
     RoadResponseDTO mapRoadToRoadResponseDTO(Road road);
 
+    /**
+     * map CarRequestDTO to Car
+     *
+     * @param carRequestDTO carRequestDTO
+     * @return Car
+     */
     Car mapCarRequestDTOToCar(CarRequestDTO carRequestDTO);
 
+    /**
+     * map Car to CarResponseDTO
+     *
+     * @param car car
+     * @return CarResponseDTO
+     */
     CarResponseDTO mapCarToCarResponseDTO(Car car);
 
     /**
@@ -57,5 +85,5 @@ public interface Mapping {
      * @param user
      * @return UserResponseDTO
      */
-    UserResponseDTO mapUserTOUserResponseDTO(User user);
+    UserResponseDTO mapUserToUserResponseDTO(User user);
 }

@@ -24,6 +24,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     /**
      * Specify Configuration and/or Component classes for the
      * {@linkplain #createServletApplicationContext() Servlet application context}.
+     *
      * @return the configuration for the Servlet application context, or
      * {@code null} if all configuration is specified through root config classes.
      */
@@ -32,11 +33,20 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         return null;
     }
 
+    /**
+     * Specify the servlet mapping(s) for the {@code DispatcherServlet}
+     * for example {@code "/"}, {@code "/app"}, etc.
+     */
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
 
+    /**
+     * Specify filters to add and map to the {@code DispatcherServlet}.
+     *
+     * @return an array of filters
+     */
     @Override
     protected Filter[] getServletFilters() {
         DelegatingFilterProxy delegateFilterProxy = new DelegatingFilterProxy();

@@ -65,7 +65,7 @@ public class CarController {
      * Save car to database
      *
      * @param carRequestDto new car
-     * @return Response:saved CarDTO ant http status
+     * @return Response: saved CarDTO ant http status
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_TRANSPORTER') and userServiceImpl.findById(#carRequestDto.transporterId).username.equals(authentication.name))")
@@ -82,7 +82,7 @@ public class CarController {
      *
      * @param carRequestDto new car
      * @param id of car in database
-     * @return Response:updated CarDTO ant http status
+     * @return Response: updated CarDTO ant http status
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_TRANSPORTER') and carServiceImpl.findById(#id).transporter.username.equals(authentication.name))")

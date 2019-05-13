@@ -2,42 +2,41 @@ package by.vit.service.impl;
 
 import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Car;
+import by.vit.model.Point;
 import by.vit.model.User;
-import by.vit.repository.CarModelRepository;
 import by.vit.repository.CarRepository;
-import by.vit.repository.PointRepository;
-import by.vit.repository.UserRepository;
-import by.vit.service.CarService;
+import by.vit.service.CarModelService;
+import by.vit.service.PointService;
+import by.vit.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of service layer for Car entity.
  */
 @Service
 @Transactional
-public class CarServiceImpl implements CarService {
+public class CarServiceImpl implements by.vit.service.CarService {
 
     private final LocalizedMessageSource localizedMessageSource;
 
     private final CarRepository carRepository;
-    private final CarModelRepository carModelRepository;
-    private final PointRepository pointRepository;
-    private final UserRepository userRepository;
+
+    private final CarModelService carModelService;
+    private final PointService pointService;
+    private final UserService userService;
 
     public CarServiceImpl(LocalizedMessageSource localizedMessageSource, CarRepository carRepository,
-                          CarModelRepository carModelRepository, PointRepository pointRepository,
-                          UserRepository userRepository) {
+                          CarModelService carModelService, PointService pointService,
+                          UserService userService) {
         this.localizedMessageSource = localizedMessageSource;
         this.carRepository = carRepository;
-        this.carModelRepository = carModelRepository;
-        this.pointRepository = pointRepository;
-        this.userRepository = userRepository;
+        this.carModelService = carModelService;
+        this.pointService = pointService;
+        this.userService = userService;
     }
 
     /**
@@ -51,10 +50,21 @@ public class CarServiceImpl implements CarService {
     }
 
     /**
+     * find all cars in given point
+     *
+     * @param point point, in which we want find all cars
+     * @return list of car
+     */
+    @Override
+    public List<Car> findAllByPoint(Point point){
+        return carRepository.findAllByPoint(point);
+    }
+
+    /**
      * Save new entity Car.
      *
-     * @param car entity
-     * @return saved entity from database
+     * @param car car entity
+     * @return saved entity
      */
     @Override
     public Car save(Car car) {
@@ -66,12 +76,13 @@ public class CarServiceImpl implements CarService {
     /**
      * Update entity Car.
      *
-     * @param car entity
-     * @return updated entity from database
+     * @param car car entity
+     * @return updated entity
      */
     @Override
     public Car update(Car car) {
-        validate(car.getId() == null, localizedMessageSource.getMessage("error.car.haveNoId", new Object[]{}));
+        validate(car.getId() == null,
+                localizedMessageSource.getMessage("error.car.haveNoId", new Object[]{}));
         return saveAndFlush(car);
     }
 
@@ -108,13 +119,13 @@ public class CarServiceImpl implements CarService {
     /**
      * Deletes a given entity.
      *
-     * @param car
+     * @param car car entity
      */
     @Override
     public void delete(Car car) {
         final Long id = car.getId();
         validate(id == null, localizedMessageSource.getMessage("error.car.haveNoId", new Object[]{}));
-        findById(id);
+        isExist(id);
         carRepository.delete(car);
     }
 
@@ -126,25 +137,25 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         carRepository.deleteById(id);
     }
 
-    private Car saveAndFlush(Car car){
+    private Car saveAndFlush(Car car) {
         validate(car.getCarModel() == null || car.getCarModel().getId() == null,
                 localizedMessageSource.getMessage("error.car.carModel.isNull", new Object[]{}));
-        car.setCarModel(carModelRepository.getOne(car.getCarModel().getId()));
+        car.setCarModel(carModelService.getById(car.getCarModel().getId()));
         validate(car.getPoint() == null || car.getPoint().getId() == null,
                 localizedMessageSource.getMessage("error.car.point.isNull", new Object[]{}));
-        car.setPoint(pointRepository.getOne(car.getPoint().getId()));
+        car.setPoint(pointService.getById(car.getPoint().getId()));
 
-        User transporter= car.getTransporter();
+        User transporter = car.getTransporter();
         validate(transporter == null || transporter.getId() == null,
                 localizedMessageSource.getMessage("error.car.transporter.isNull", new Object[]{}));
-        validate(!transporter.getRoles().stream().filter(role ->
-                role.getName().equals("TRANSPORTER")).findAny().isPresent(),
+        validate(transporter.getRoles().stream().noneMatch(role ->
+                        role.getName().equals("ROLE_TRANSPORTER")),
                 localizedMessageSource.getMessage("error.car.user.role.noTransporter", new Object[]{}));
-        car.setTransporter(userRepository.getOne(car.getTransporter().getId()));
+        car.setTransporter(userService.getById(car.getTransporter().getId()));
         return carRepository.saveAndFlush(car);
     }
 
@@ -152,5 +163,10 @@ public class CarServiceImpl implements CarService {
         if (expression) {
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    private void isExist(Long id){
+        validate(!carRepository.existsById(id),
+                localizedMessageSource.getMessage("error.car.id.notExist", new Object[]{}));
     }
 }

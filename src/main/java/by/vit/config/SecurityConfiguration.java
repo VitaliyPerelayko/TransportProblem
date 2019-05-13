@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security Configuration
+ */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -24,12 +27,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Gets the {@link AuthenticationManager} to use.
+     *
+     * @return the {@link AuthenticationManager} to use.
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * configure the {@link HttpSecurity}
+     *
+     * @param http the {@link HttpSecurity} to modify
+     * @throws Exception if an error occurs
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors()

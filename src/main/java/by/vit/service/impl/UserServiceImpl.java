@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Save new entity User.
      *
-     * @param user entity
-     * @return saved entity from database
+     * @param user user entity
+     * @return saved entity
      */
     @Override
     public User save(User user) {
@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Update entity User.
      *
-     * @param user entity
-     * @return updated entity from database
+     * @param user user entity
+     * @return updated entity
      */
     @Override
     public User update(User user) {
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         validate(id == null,
                 localizedMessageSource.getMessage("error.user.haveNoId", new Object[]{}));
         final User duplicateUser = userRepository.findByUsername(user.getUsername());
-        findById(id);
+        isExist(id);
         final boolean isDuplicateExists = duplicateUser != null && !Objects.equals(duplicateUser.getId(), id);
         validate(isDuplicateExists,
                 localizedMessageSource.getMessage("error.user.username.notUnique", new Object[]{}));
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves a User by its username.
      *
-     * @param username
+     * @param username username of user
      * @return the entity with the given username
      */
     @Override
@@ -116,14 +116,14 @@ public class UserServiceImpl implements UserService {
     /**
      * Deletes a given entity.
      *
-     * @param user
+     * @param user user entity
      */
     @Override
     public void delete(User user) {
         final Long id = user.getId();
         validate(id == null,
                 localizedMessageSource.getMessage("error.user.haveNoId", new Object[]{}));
-        findById(id);
+        isExist(id);
         userRepository.delete(user);
     }
 
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         userRepository.deleteById(id);
     }
 
@@ -152,5 +152,9 @@ public class UserServiceImpl implements UserService {
         if (expression) {
             throw new RuntimeException(errorMessage);
         }
+    }
+    private void isExist(Long id){
+        validate(!userRepository.existsById(id),
+                localizedMessageSource.getMessage("error.user.id.notExist", new Object[]{}));
     }
 }

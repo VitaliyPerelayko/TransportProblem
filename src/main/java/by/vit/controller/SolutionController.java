@@ -68,6 +68,7 @@ public class SolutionController {
     /**
      * Gets solution of transport problem with given conditions.
      * Method getAndSaveSolution() save Solution to database.
+     *
      * Remark: if user will not press the button "Save solution", this solution should be
      * deleted from database.
      *

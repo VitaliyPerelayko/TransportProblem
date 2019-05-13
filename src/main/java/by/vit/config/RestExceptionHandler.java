@@ -15,12 +15,25 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 
+/**
+ * class that provides centralized exception handling across all
+ * {@code @RequestMapping} methods through {@code @ExceptionHandler} methods.
+ */
 @ControllerAdvice(annotations = RestController.class)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
     private static final String SEMICOLON = ";";
-    public static final String EMPTY = "";
+    private static final String EMPTY = "";
 
+    /**
+     * Customize the response for MethodArgumentNotValidException.
+     * <p>This method delegates to {@link #handleExceptionInternal}.
+     * @param exception the exception
+     * @param headers the headers to be written to the response
+     * @param status the selected response status
+     * @param request the current request
+     * @return a {@code ResponseEntity} instance
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -31,6 +44,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Customize the response for ConstraintViolationException.
+     *
+     * @param exception the exception
+     * @param request the current request
+     * @return a {@code ResponseEntity} instance
+     */
     @ExceptionHandler(value = {ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException exception, WebRequest request) {
         LOGGER.error(exception.getMessage(), exception);
@@ -41,6 +61,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, errorResponseDTO, new HttpHeaders(), errorResponseDTO.getHttpStatus(), request);
     }
 
+    /**
+     * Customize the response for RuntimeException.
+     *
+     * @param exception the exception
+     * @param request the current request
+     * @return a {@code ResponseEntity} instance
+     */
     @ExceptionHandler(value = {RuntimeException.class})
     protected ResponseEntity<Object> handleRuntimeException(RuntimeException exception, WebRequest request) {
         LOGGER.error(exception.getMessage(), exception);

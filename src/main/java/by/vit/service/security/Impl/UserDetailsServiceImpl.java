@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * implementation of UserDetailsService
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -21,6 +24,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userService = userService;
     }
 
+    /**
+     * Locates the user based on the username.
+     *
+     * @param username the username identifying the user whose data is required.
+     * @return a fully populated user record
+     * @throws UsernameNotFoundException if the user could not be found or the user has no
+     * GrantedAuthority
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = userService.findByUsername(username);

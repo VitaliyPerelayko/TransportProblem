@@ -1,5 +1,8 @@
 package by.vit.dto.response;
 
+/**
+ * DTO for response entity Token
+ */
 public class TokenResponseDTO {
     private String token;
     private String type = "Bearer";

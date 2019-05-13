@@ -2,14 +2,14 @@ package by.vit.dto.response;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * DTO for response errors
+ */
 public class ErrorResponseDTO {
 
     private HttpStatus httpStatus;
 
     private String message;
-
-    public ErrorResponseDTO() {
-    }
 
     public ErrorResponseDTO(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;

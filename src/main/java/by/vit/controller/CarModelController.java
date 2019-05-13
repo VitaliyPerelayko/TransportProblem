@@ -64,7 +64,7 @@ public class CarModelController {
      * Save carModel to database
      *
      * @param carModelRequestDto new carModel
-     * @return Response:saved CarModelDTO ant http status
+     * @return Response: saved CarModelDTO ant http status
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CarModelDTO> save(@Valid @RequestBody CarModelDTO carModelRequestDto) {
@@ -79,7 +79,7 @@ public class CarModelController {
      *
      * @param carModelRequestDto new carModel
      * @param id                 of carModel in database
-     * @return Response:updated CarModelDTO ant http status
+     * @return Response: updated CarModelDTO ant http status
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<CarModelDTO> update(@Valid @RequestBody CarModelDTO carModelRequestDto,

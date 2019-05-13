@@ -2,6 +2,9 @@ package by.vit.dto.response;
 
 import by.vit.dto.PointDTO;
 
+/**
+ * DTO for response entity Route
+ */
 public class RouteResponseDTO {
 
     private Double mass;

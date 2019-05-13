@@ -15,7 +15,6 @@ public class UserResponseDTO {
     private String eMail;
     private Set<RoleDTO> role;
     private String username;
-    private String password;
 
 
     public Long getId() {
@@ -72,13 +71,5 @@ public class UserResponseDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

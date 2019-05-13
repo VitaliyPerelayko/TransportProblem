@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * Service for JWT (JSON Web Token)
+ */
 @Service
 public class TokenServiceImpl implements TokenService {
 
@@ -29,17 +32,35 @@ public class TokenServiceImpl implements TokenService {
 
     private static final Integer JWT_EXPIRATION_MILLIS = 600000;
 
+    /**
+     * generate new token
+     *
+     * @param authentication token for an authentication request
+     * @return token
+     */
     @Override
     public String generate(Authentication authentication) {
         return generate(((AuthenticationUserDetails) authentication.getPrincipal()).getUsername());
     }
 
+    /**
+     * refresh old token
+     *
+     * @param token JWT
+     * @return new token
+     */
     @Override
     public String refresh(String token) {
         return generate(extractUsername(token));
     }
 
 
+    /**
+     * extract username from token
+     *
+     * @param token JWT
+     * @return username
+     */
     @Override
     public String extractUsername(String token) {
         return Jwts.parser()
@@ -48,6 +69,12 @@ public class TokenServiceImpl implements TokenService {
                 .getBody().getSubject();
     }
 
+    /**
+     * validate token
+     *
+     * @param authToken JWT
+     * @return true or trows Exception
+     */
     @Override
     public boolean validate(String authToken) {
         try {

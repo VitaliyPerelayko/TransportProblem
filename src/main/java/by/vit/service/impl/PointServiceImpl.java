@@ -4,6 +4,8 @@ import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Point;
 import by.vit.repository.PointRepository;
 import by.vit.service.PointService;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +32,10 @@ public class PointServiceImpl implements PointService {
     /**
      * Find all points from database.
      *
-     * @return List<Point>
+     * @return List of Point
      */
+    @Cacheable
+    @Caching
     @Override
     public List<Point> findAll() {
         return pointRepository.findAll();
@@ -40,8 +44,8 @@ public class PointServiceImpl implements PointService {
     /**
      * Save new entity Point.
      *
-     * @param point entity
-     * @return saved entity from database
+     * @param point point entity
+     * @return saved entity
      */
     @Override
     public Point save(Point point) {
@@ -55,8 +59,8 @@ public class PointServiceImpl implements PointService {
     /**
      * Update entity Point.
      *
-     * @param point entity
-     * @return updated entity from database
+     * @param point point entity
+     * @return updated entity
      */
     @Override
     public Point update(Point point) {
@@ -64,7 +68,7 @@ public class PointServiceImpl implements PointService {
         validate(id == null,
                 localizedMessageSource.getMessage("error.point.haveNoId", new Object[]{}));
         final Point duplicatePoint = pointRepository.findByName(point.getName());
-        findById(id);
+        isExist(id);
         final boolean isDuplicateExists = duplicatePoint != null && !Objects.equals(duplicatePoint.getId(), id);
         validate(isDuplicateExists,
                 localizedMessageSource.getMessage("error.point.name.notUnique", new Object[]{}));
@@ -82,9 +86,9 @@ public class PointServiceImpl implements PointService {
     @Override
     public Point findById(Long id) {
         Optional<Point> point = pointRepository.findById(id);
-//        validate(!point.isPresent(),
-//                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
-        return point.orElseThrow(() -> new RuntimeException(localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{})));
+        validate(!point.isPresent(),
+                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
+        return point.get();
     }
 
     /**
@@ -119,14 +123,14 @@ public class PointServiceImpl implements PointService {
     /**
      * Deletes a given entity.
      *
-     * @param point
+     * @param point point entity
      */
     @Override
     public void delete(Point point) {
         final Long id = point.getId();
         validate(id == null,
                 localizedMessageSource.getMessage("error.point.haveId", new Object[]{}));
-        findById(id);
+        isExist(id);
         pointRepository.delete(point);
     }
 
@@ -138,7 +142,7 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         pointRepository.deleteById(id);
     }
 
@@ -146,5 +150,10 @@ public class PointServiceImpl implements PointService {
         if (expression) {
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    private void isExist(Long id){
+        validate(!pointRepository.existsById(id),
+                localizedMessageSource.getMessage("error.point.id.notExist", new Object[]{}));
     }
 }

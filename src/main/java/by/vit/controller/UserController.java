@@ -24,14 +24,16 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final Mapper mapper;
+    private final by.vit.mapping.Mapping mapping;
 
     private final UserService userService;
 
     private final LocalizedMessageSource localizedMessageSource;
 
-    public UserController(Mapper mapper, UserService userService,
+    public UserController(Mapper mapper, by.vit.mapping.Mapping mapping, UserService userService,
                           LocalizedMessageSource localizedMessageSource) {
         this.mapper = mapper;
+        this.mapping = mapping;
         this.userService = userService;
         this.localizedMessageSource = localizedMessageSource;
     }
@@ -46,7 +48,7 @@ public class UserController {
     public ResponseEntity<List<UserResponseDTO>> getAll() {
         final List<User> users = userService.findAll();
         final List<UserResponseDTO> userDTOList = users.stream()
-                .map((user) -> mapper.map(user, UserResponseDTO.class))
+                .map(mapping::mapUserToUserResponseDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(userDTOList, HttpStatus.OK);
     }
@@ -61,7 +63,7 @@ public class UserController {
             "(userServiceImpl.findById(#id).username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserResponseDTO> getOne(@PathVariable Long id) {
-        final UserResponseDTO userResponseDTO = mapper.map(userService.findById(id), UserResponseDTO.class);
+        final UserResponseDTO userResponseDTO = mapping.mapUserToUserResponseDTO(userService.findById(id));
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
 
@@ -69,14 +71,14 @@ public class UserController {
      * Save user to database
      *
      * @param userRequestDto new user
-     * @return Response:saved UserDTO ant http status
+     * @return Response: saved UserDTO ant http status
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO userRequestDto) {
         userRequestDto.setId(null);
         final User user = mapper.map(userRequestDto, User.class);
-        final UserResponseDTO userResponseDTO = mapper.map(userService.save(user), UserResponseDTO.class);
+        final UserResponseDTO userResponseDTO = mapping.mapUserToUserResponseDTO(userService.save(user));
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
 
@@ -85,7 +87,7 @@ public class UserController {
      *
      * @param userRequestDto new user
      * @param id             of user in database
-     * @return Response:updated UserDTO ant http status
+     * @return Response: updated UserDTO ant http status
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or " +
             "(userServiceImpl.findById(#id).username.equals(authentication.name))")
@@ -94,8 +96,8 @@ public class UserController {
         if (!Objects.equals(id, userRequestDto.getId())) {
             throw new RuntimeException(localizedMessageSource.getMessage("controller.user.unexpectedId", new Object[]{}));
         }
-        final User user = mapper.map(userRequestDto, User.class);
-        final UserResponseDTO userResponseDTO = mapper.map(userService.update(user), UserResponseDTO.class);
+        final User user = mapping.mapUserRequestDTOTOUser(userRequestDto);
+        final UserResponseDTO userResponseDTO = mapping.mapUserToUserResponseDTO(userService.update(user));
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
 

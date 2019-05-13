@@ -60,7 +60,7 @@ public class DatabaseConfiguration {
     }
 
     /**
-     * Create entityManager which will work in the application
+     * Set up a shared JPA EntityManagerFactory in a Spring application context
      *
      * @return EntityManagerFactory
      */

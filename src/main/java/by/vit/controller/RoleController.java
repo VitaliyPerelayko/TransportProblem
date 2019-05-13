@@ -64,7 +64,7 @@ public class RoleController {
      * Save role to database
      *
      * @param roleRequestDto new role
-     * @return Response:saved RoleDTO ant http status
+     * @return Response: saved RoleDTO ant http status
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<RoleDTO> save(@Valid @RequestBody RoleDTO roleRequestDto) {
@@ -79,7 +79,7 @@ public class RoleController {
      *
      * @param roleRequestDto new role
      * @param id             of role in database
-     * @return Response:updated RoleDTO ant http status
+     * @return Response: updated RoleDTO ant http status
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<RoleDTO> update(@Valid @RequestBody RoleDTO roleRequestDto, @PathVariable Long id) {

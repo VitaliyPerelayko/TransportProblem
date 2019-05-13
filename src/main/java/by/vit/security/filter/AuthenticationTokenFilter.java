@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filter class that aims to guarantee a single execution per request
+ * dispatch, on any servlet container.
+ */
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
@@ -26,6 +30,13 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Same contract as for {@code doFilter}, but guaranteed to be
+     * just invoked once per request within a single request thread.
+     * See {@link #shouldNotFilterAsyncDispatch()} for details.
+     * <p>Provides HttpServletRequest and HttpServletResponse arguments instead of the
+     * default ServletRequest and ServletResponse ones.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse,
                                     FilterChain chain) throws IOException, ServletException {

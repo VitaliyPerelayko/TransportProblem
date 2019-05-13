@@ -7,62 +7,65 @@ import by.vit.model.Road;
 import by.vit.model.solution.Route;
 import by.vit.model.solution.Solution;
 import by.vit.model.solution.SolutionCar;
-import by.vit.repository.*;
-import by.vit.service.SolutionService;
-import by.vit.service.transportproblemsolve.ConditionTP;
+import by.vit.repository.RouteRepository;
+import by.vit.repository.SolutionCarRepository;
+import by.vit.repository.SolutionRepository;
+import by.vit.service.*;
+import by.vit.service.transportproblemsolve.Conditions;
 import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
 import by.vit.service.transportproblemsolve.SolverOfTP;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Service find best solution of task: To which point will the car go and how much cargo will it deliver?
- * If we have many cars at the same point.
+ * Implementation of service layer for Solution entity.
+ * Service finds the best solution to the task:
+ * If we have many cars at the same point,
+ * which car will go to which point and
+ * how much cargo will it deliver?
  */
 @Service
 public class SolutionServiceImpl implements SolutionService {
-    private final RoadRepository roadRepository;
-    private final CarRepository carRepository;
-    private final PointRepository pointRepository;
-    private final UserRepository userRepository;
+    private final RoadService roadService;
+    private final CarService carService;
+    private final PointService pointService;
+    private final UserService userService;
+
     private final SolutionRepository solutionRepository;
     private final SolutionCarRepository solutionCarRepository;
     private final RouteRepository routeRepository;
+
     private final LocalizedMessageSource localizedMessageSource;
-    /**
-     * Method of working out the distance
-     */
+
     private final DistanceMatrixFinder distanceMatrix;
+    private final Conditions conditions;
     private final SolverOfTP solver;
-    /**
-     * Point of deliver
-     */
-    private Point[] points;
-    /**
-     * How much cargo we must deliver
-     */
-    private Double[] order;
+
     /**
      * User who has asked for solution
      */
     private String username;
 
-    public SolutionServiceImpl(RoadRepository roadRepository, CarRepository carRepository,
-                               PointRepository pointRepository, UserRepository userRepository,
-                               SolutionRepository solutionRepository, SolutionCarRepository solutionCarRepository,
+    public SolutionServiceImpl(RoadService roadService, CarService carService, PointService pointService,
+                               UserService userService, SolutionRepository solutionRepository,
+                               SolutionCarRepository solutionCarRepository,
                                RouteRepository routeRepository, LocalizedMessageSource localizedMessageSource,
-                               DistanceMatrixFinder distanceMatrixFinder, SolverOfTP solver) {
-        this.roadRepository = roadRepository;
-        this.carRepository = carRepository;
-        this.pointRepository = pointRepository;
-        this.userRepository = userRepository;
+                               DistanceMatrixFinder distanceMatrixFinder, Conditions conditions, SolverOfTP solver) {
+        this.roadService = roadService;
+        this.carService = carService;
+        this.pointService = pointService;
+        this.userService = userService;
         this.solutionRepository = solutionRepository;
         this.solutionCarRepository = solutionCarRepository;
         this.routeRepository = routeRepository;
         this.localizedMessageSource = localizedMessageSource;
         this.distanceMatrix = distanceMatrixFinder;
+        this.conditions = conditions;
         this.solver = solver;
     }
 
@@ -77,32 +80,32 @@ public class SolutionServiceImpl implements SolutionService {
         Map<Long, List<String>> solutionInterpretation = solver.getInterpretation();
         Solution solution = new Solution();
         solution.setDateTime(LocalDateTime.now());
-        solution.setSupplier(userRepository.findByUsername(username));
-        final Solution savedSolution = solutionRepository.save(solution);
+        solution.setSupplier(userService.findByUsername(username));
+        final Solution savedSolution = solutionRepository.saveAndFlush(solution);
 
         solutionInterpretation.keySet().forEach((i) -> {
-            final Car car = carRepository.findById(i).get();
+            final Car car = carService.findById(i);
             final SolutionCar solutionCar = new SolutionCar();
             solutionCar.setSolution(solution);
             solutionCar.setCar(car);
-            final SolutionCar savedSolutionCar = solutionCarRepository.save(solutionCar);
+            final SolutionCar savedSolutionCar = solutionCarRepository.saveAndFlush(solutionCar);
             final List<String> routes = solutionInterpretation.get(i);
 
             for (int j = 0; j < routes.size() / 3; j++) {
                 final Route route = new Route();
                 route.setSolutionCar(savedSolutionCar);
-                route.setPoint(pointRepository.findById(Long.
-                        parseLong(routes.get(j * 3))).get());
+                route.setPoint(pointService.findById(Long.
+                        parseLong(routes.get(j * 3))));
                 route.setMass(Double.parseDouble(routes.get(j * 3 + 1)));
                 route.setCost(Double.parseDouble(routes.get(j * 3 + 2)));
-                routeRepository.save(route);
+                routeRepository.saveAndFlush(route);
             }
         });
         return savedSolution;
     }
 
     /**
-     * Find all roles from database.
+     * Find all solution from database.
      *
      * @return List<Role>
      */
@@ -121,11 +124,8 @@ public class SolutionServiceImpl implements SolutionService {
     @Override
     public Solution findById(Long id) {
         Optional<Solution> solution = solutionRepository.findById(id);
-        if (!solution.isPresent()) {
-            throw new RuntimeException(
-                    localizedMessageSource.getMessage("error.solution.id.notExist", new Object[]{})
-            );
-        }
+        validate(!solution.isPresent(),
+                localizedMessageSource.getMessage("error.solution.id.notExist", new Object[]{}));
         return solution.get();
     }
 
@@ -137,40 +137,48 @@ public class SolutionServiceImpl implements SolutionService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         solutionRepository.deleteById(id);
     }
 
     /**
      * Set condition for solution finder
      *
-     * @param points   Point of deliver
+     * @param points   List of points. First point is point from which deliver will start.
+     *                 The others it's delivery points.
      * @param order    Mass of cargo that we need to deliver
      * @param username User who has asked for solution
      */
     @Override
     public void setConditions(Point[] points, Double[] order, String username) {
-        this.points = points;
-        this.order = order;
         this.username = username;
-        List<Car> cars = new ArrayList(points[0].getCars());
+        List<Car> cars = carService.findAllByPoint(points[0]);
         Double difference = validOrder(cars, order);
-        boolean flag = difference == 0 ? false : true;
-        final List<Road> roadList = roadRepository.findAll();
+        boolean flag = difference != 0;
+        final List<Road> roadList = roadService.findAll();
         final Road[] roads = new Road[roadList.size()];
         distanceMatrix.setConditions(roadList.toArray(roads), points);
-        ConditionTP conditionTP = new ConditionTP(distanceMatrix, cars, order, flag, difference);
-        solver.setConditions(conditionTP);
-
+        conditions.setParam(cars, order, flag, difference);
     }
 
     private Double validOrder(List<Car> cars, Double[] order) {
         Double carSumTonnage = cars.stream().mapToDouble(car -> car.getCarModel().getTonnage()).sum();
         Double sumOfOrder = Arrays.stream(order).reduce((a, b) -> a + b).get();
-        if (carSumTonnage - sumOfOrder < 0){
+        if (carSumTonnage - sumOfOrder < 0) {
             throw new RuntimeException(
-                    localizedMessageSource.getMessage("error.solution.notEnough.cars",new Object[]{}));
+                    localizedMessageSource.getMessage("error.solution.notEnough.cars", new Object[]{}));
         }
         return carSumTonnage - sumOfOrder;
+    }
+
+    private void isExist(Long id) {
+        validate(!solutionRepository.existsById(id),
+                localizedMessageSource.getMessage("error.solution.id.notExist", new Object[]{}));
+    }
+
+    private void validate(boolean expression, String errorMessage) {
+        if (expression) {
+            throw new RuntimeException(errorMessage);
+        }
     }
 }

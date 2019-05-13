@@ -17,7 +17,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "car_model_id", referencedColumnName = "id", nullable = false)
     @NotNull(message = "car.carModel.notNull")
     private CarModel carModel;

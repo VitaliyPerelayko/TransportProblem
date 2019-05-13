@@ -4,6 +4,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * DTO for request entity Car
+ */
 public class AuthenticationRequestDTO {
     @NotNull(message = "{user.username.notNull}")
     @NotEmpty(message = "{user.username.notEmpty}")
