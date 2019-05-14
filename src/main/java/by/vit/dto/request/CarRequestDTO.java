@@ -1,7 +1,9 @@
 package by.vit.dto.request;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  * DTO for request entity Car
@@ -9,12 +11,18 @@ import javax.validation.constraints.Positive;
 public class CarRequestDTO {
 
     private Long id;
-    @NotNull(message = "car.carModel.notNull")
-    private Long carModelId;
-    @NotNull(message = "car.point.notNull")
-    private Long pointId;
-    @NotNull(message = "car.transporter.notNull")
-    private Long transporterId;
+    @NotNull(message = "car.carModelName.notNull")
+    @NotNull(message = "car.carModelName.notNull")
+    @NotEmpty(message = "car.carModelName.size")
+    private String carModelName;
+    @NotNull(message = "car.pointName.notNull")
+    @NotEmpty(message = "car.pointName.notEmpty")
+    @Size(min = 3, max = 50, message = "car.pointName.size")
+    private String pointName;
+    @NotNull(message = "car.transporterUsername.notNull")
+    @NotEmpty(message = "car.transporterUsername.notEmpty")
+    @Size(min = 3, max = 50, message = "car.transporterUsername.size")
+    private String transporterUsername;
     @NotNull(message = "car.cost.notNull")
     @Positive(message = "car.cost.notPositive")
     private Double cost;
@@ -27,28 +35,28 @@ public class CarRequestDTO {
         this.id = id;
     }
 
-    public Long getCarModelId() {
-        return carModelId;
+    public String getCarModelName() {
+        return carModelName;
     }
 
-    public void setCarModelId(Long carModelId) {
-        this.carModelId = carModelId;
+    public void setCarModelName(String carModelName) {
+        this.carModelName = carModelName;
     }
 
-    public Long getPointId() {
-        return pointId;
+    public String getPointName() {
+        return pointName;
     }
 
-    public void setPointId(Long pointId) {
-        this.pointId = pointId;
+    public void setPointName(String pointName) {
+        this.pointName = pointName;
     }
 
-    public Long getTransporterId() {
-        return transporterId;
+    public String getTransporterUsername() {
+        return transporterUsername;
     }
 
-    public void setTransporterId(Long transporterId) {
-        this.transporterId = transporterId;
+    public void setTransporterUsername(String transporterUsername) {
+        this.transporterUsername = transporterUsername;
     }
 
     public Double getCost() {

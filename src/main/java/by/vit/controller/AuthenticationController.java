@@ -3,6 +3,7 @@ package by.vit.controller;
 import by.vit.dto.request.AuthenticationRequestDTO;
 import by.vit.dto.request.UserRequestDTO;
 import by.vit.dto.response.TokenResponseDTO;
+import by.vit.dto.response.UserResponseDTO;
 import by.vit.mapping.Mapping;
 import by.vit.model.User;
 import by.vit.service.UserService;
@@ -75,11 +76,11 @@ public class AuthenticationController {
      * @return saved User
      */
     @PostMapping("/signUp")
-    public User registerUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO registerUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         final User user = mapping.mapUserRequestDTOTOUser(userRequestDTO);
         user.setPassword(encoder.encode(userRequestDTO.getPassword()));
 
-        return userService.save(user);
+        return mapping.mapUserToUserResponseDTO(userService.save(user));
     }
 
 }

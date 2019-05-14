@@ -41,6 +41,15 @@ public interface CarModelService {
      */
     CarModel findById(Long id);
 
+
+    /**
+     * Retrieves a CarModel by its name.
+     *
+     * @param name must not be {@literal null}.
+     * @return the entity with the given name
+     */
+    CarModel findByName(String name);
+
     /**
      * Get an instance, whose state may be lazily fetched.
      * If the requested instance does not exist in the database,

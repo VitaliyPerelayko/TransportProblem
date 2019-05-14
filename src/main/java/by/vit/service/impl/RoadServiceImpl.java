@@ -65,11 +65,11 @@ public class RoadServiceImpl implements RoadService {
     public Road update(Road road) {
         validate(road.getId() == null,
                 localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
-        isExist(road.getId());
         isRoadValid(road);
+        road.setId(isExist(road.getId()));
         //TODO if it work delete code in comment and delete update method from roadRepository
-//        final RoadId roadId1 = new RoadId(road.getPoint1id(),road.getPoint2id());
-//        final RoadId roadId2 = new RoadId(road.getPoint2id(),road.getPoint1id());
+//        RoadId roadId = new RoadId(road.getPoint1id(),road.getPoint2id());
+//        roadId = new RoadId(road.getPoint2id(),road.getPoint1id());
 //        final Road updatedRoad = roadRepository.update(road.getDistance(), roadId1, roadId2);
 //        roadRepository.flush();
         return roadRepository.saveAndFlush(road);
@@ -85,7 +85,7 @@ public class RoadServiceImpl implements RoadService {
      */
     @Override
     public Road findById(RoadId id) {
-        Optional<Road> road = roadRepository.findById(id);
+        Optional<Road> road = roadRepository.findById(isExist(id));
         validate(!(road.isPresent()),
                 localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
         return road.get();
@@ -114,7 +114,7 @@ public class RoadServiceImpl implements RoadService {
     public void delete(Road road) {
         final RoadId id = road.getId();
         validate(id == null, localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
-        isExist(id);
+        road.setId(isExist(id));
         roadRepository.delete(road);
     }
 
@@ -126,8 +126,7 @@ public class RoadServiceImpl implements RoadService {
      */
     @Override
     public void deleteById(RoadId id) {
-        isExist(id);
-        roadRepository.deleteById(id);
+        roadRepository.deleteById(isExist(id));
     }
 
 
@@ -144,8 +143,13 @@ public class RoadServiceImpl implements RoadService {
             throw new RuntimeException(errorMessage);
         }
     }
-    private void isExist(RoadId id){
-        validate(!roadRepository.existsById(id),
-                localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
+    private RoadId isExist(RoadId id){
+        if (!roadRepository.existsById(id)) {
+            RoadId roadId = new RoadId(id.getPoint2Id(), id.getPoint1Id());
+            validate(!roadRepository.existsById(roadId),
+                    localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
+            return roadId;
+        }
+        return id;
     }
 }

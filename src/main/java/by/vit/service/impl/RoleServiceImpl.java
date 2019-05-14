@@ -2,6 +2,7 @@ package by.vit.service.impl;
 
 import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Role;
+import by.vit.model.User;
 import by.vit.repository.RoleRepository;
 import by.vit.service.RoleService;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Implementation of service layer for Role entity.
@@ -82,7 +84,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
-        validate((role.equals(Optional.empty())),
+        validate(!role.isPresent(),
                 localizedMessageSource.getMessage("error.role.id.notExist", new Object[]{}));
         return role.get();
     }
@@ -96,6 +98,17 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findByName(String name){
         return roleRepository.findByName(name);
+    }
+
+    /**
+     * Find all roles of given user from DataBase
+     *
+     * @param  user user entity
+     * @return set of roles
+     */
+    @Override
+    public Set<Role> findAllRolesByUser(User user){
+        return roleRepository.findAllByUsers(user);
     }
 
 

@@ -88,6 +88,17 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     /**
+     * Retrieves a CarModel by its name.
+     *
+     * @param name must not be {@literal null}.
+     * @return the entity with the given name
+     */
+    @Override
+    public CarModel findByName(String name) {
+        return carModelRepository.findByName(name);
+    }
+
+    /**
      * Get an instance, whose state may be lazily fetched.
      * If the requested instance does not exist in the database,
      * the <code>EntityNotFoundException</code> is thrown when the instance

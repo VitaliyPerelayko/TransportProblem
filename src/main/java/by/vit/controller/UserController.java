@@ -59,8 +59,7 @@ public class UserController {
      * @param id of user
      * @return Response: UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN')  or #id == authentication.principal.id")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserResponseDTO> getOne(@PathVariable Long id) {
         final UserResponseDTO userResponseDTO = mapping.mapUserToUserResponseDTO(userService.findById(id));
@@ -77,7 +76,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO userRequestDto) {
         userRequestDto.setId(null);
-        final User user = mapper.map(userRequestDto, User.class);
+        final User user = mapping.mapUserRequestDTOTOUser(userRequestDto);
         final UserResponseDTO userResponseDTO = mapping.mapUserToUserResponseDTO(userService.save(user));
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }

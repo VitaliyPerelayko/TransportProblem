@@ -1,8 +1,10 @@
 package by.vit.service;
 
 import by.vit.model.Role;
+import by.vit.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service layer for Role entity.
@@ -48,6 +50,14 @@ public interface RoleService {
      * @return the entity with the given name
      */
     Role findByName(String name);
+
+    /**
+     * Find all roles of given user from DataBase
+     *
+     * @param  user user entity
+     * @return set of roles
+     */
+    Set<Role> findAllRolesByUser(User user);
 
     /**
      * Get an instance, whose state may be lazily fetched.

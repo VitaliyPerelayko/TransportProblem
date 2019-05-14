@@ -78,7 +78,8 @@ public class SolutionController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SolutionResponseDTO> getSolve(@Valid @RequestBody TaskDTO taskDTO) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = "kartavy";
 
         Double[] orders = new Double[taskDTO.getOrderList().size()];
         solutionService.setConditions(mapping.mapTaskToPoint(taskDTO),

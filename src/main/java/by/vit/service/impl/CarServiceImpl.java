@@ -144,10 +144,10 @@ public class CarServiceImpl implements by.vit.service.CarService {
     private Car saveAndFlush(Car car) {
         validate(car.getCarModel() == null || car.getCarModel().getId() == null,
                 localizedMessageSource.getMessage("error.car.carModel.isNull", new Object[]{}));
-        car.setCarModel(carModelService.getById(car.getCarModel().getId()));
+        car.setCarModel(carModelService.findById(car.getCarModel().getId()));
         validate(car.getPoint() == null || car.getPoint().getId() == null,
                 localizedMessageSource.getMessage("error.car.point.isNull", new Object[]{}));
-        car.setPoint(pointService.getById(car.getPoint().getId()));
+        car.setPoint(pointService.findById(car.getPoint().getId()));
 
         User transporter = car.getTransporter();
         validate(transporter == null || transporter.getId() == null,
@@ -155,7 +155,7 @@ public class CarServiceImpl implements by.vit.service.CarService {
         validate(transporter.getRoles().stream().noneMatch(role ->
                         role.getName().equals("ROLE_TRANSPORTER")),
                 localizedMessageSource.getMessage("error.car.user.role.noTransporter", new Object[]{}));
-        car.setTransporter(userService.getById(car.getTransporter().getId()));
+        car.setTransporter(userService.findById(car.getTransporter().getId()));
         return carRepository.saveAndFlush(car);
     }
 

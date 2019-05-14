@@ -80,7 +80,8 @@ public class MappingImpl implements Mapping {
     public Road mapRoadRequestDTOToRoad(RoadRequestDTO roadRequestDTO){
         final Road road = new Road();
         road.setDistance(roadRequestDTO.getDistance());
-        road.setId(mapToRoadId(roadRequestDTO.getPoint1id(),roadRequestDTO.getPoint2id()));
+        road.setPoint1(pointService.findById(roadRequestDTO.getPoint1id()));
+        road.setPoint2(pointService.findById(roadRequestDTO.getPoint1id()));
         return road;
     }
 
@@ -111,9 +112,9 @@ public class MappingImpl implements Mapping {
         if (carRequestDTO.getId()!=null) {
             car.setId(carRequestDTO.getId());
         }
-        car.setCarModel(carModelService.findById(carRequestDTO.getCarModelId()));
-        car.setPoint(pointService.findById(carRequestDTO.getPointId()));
-        car.setTransporter(userService.findById(carRequestDTO.getTransporterId()));
+        car.setCarModel(carModelService.findByName(carRequestDTO.getCarModelName()));
+        car.setPoint(pointService.findByName(carRequestDTO.getPointName()));
+        car.setTransporter(userService.findByUsername(carRequestDTO.getTransporterUsername()));
         car.setCost(carRequestDTO.getCost());
         return car;
     }
@@ -181,7 +182,7 @@ public class MappingImpl implements Mapping {
     @Override
     public UserResponseDTO mapUserToUserResponseDTO(User user) {
         final UserResponseDTO userResponseDTO = mapper.map(user, UserResponseDTO.class);
-        userResponseDTO.setRoles(mapRoleToRoleDTO(user.getRoles()));
+        userResponseDTO.setRoles(mapRoleToRoleDTO(roleService.findAllRolesByUser(user)));
         return userResponseDTO;
     }
 

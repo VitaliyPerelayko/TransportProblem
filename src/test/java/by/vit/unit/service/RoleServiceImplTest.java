@@ -1,5 +1,6 @@
 package by.vit.unit.service;
 
+import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Role;
 import by.vit.repository.RoleRepository;
 import by.vit.service.impl.RoleServiceImpl;
@@ -26,6 +27,9 @@ public class RoleServiceImplTest {
 
     @Mock(name = "roleRepository")
     private RoleRepository roleRepository;
+
+    @Mock
+    private LocalizedMessageSource localizedMessageSource;
 
 
     @Test
@@ -73,7 +77,7 @@ public class RoleServiceImplTest {
     public void testUpdate() {
         final Role role = new Role();
         role.setId(1L);
-        when(roleRepository.findById(1L)).thenReturn(Optional.of(role));
+        when(roleRepository.existsById(1L)).thenReturn(true);
         when(roleRepository.saveAndFlush(role)).thenReturn(role);
         assertEquals(roleService.update(role), role);
     }

@@ -49,15 +49,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors()
                 .and()
                 .authorizeRequests()
+                // Swagger
+                .mvcMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
+                        "/swagger-resources/configuration/security", "/api/swagger-ui.html/**", "/webjars/**").permitAll()
                 // Authentication
                 .mvcMatchers("/authentication/**").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/cars/**","/roads/**", "/carModels/**","/points/**").permitAll()
                 // Solution
-                .mvcMatchers("/solution/**").hasRole("SUPPLIER")
+                .mvcMatchers("/solution/**").hasAnyRole("SUPPLIER","ADMIN")
                 // Car
-                .mvcMatchers("/cars/**").hasRole("TRANSPORTER")
+                .mvcMatchers("/cars/**").hasAnyRole("TRANSPORTER","ADMIN")
                 // CarModel
-                .mvcMatchers(HttpMethod.POST,"/carModels/**").hasRole("TRANSPORTER")
+                .mvcMatchers(HttpMethod.POST,"/carModels/**").hasAnyRole("TRANSPORTER","ADMIN")
                 // User
                 .mvcMatchers("/users/**").hasAnyRole("TRANSPORTER","SUPPLIER","ADMIN")
                 .anyRequest().hasRole("ADMIN");
