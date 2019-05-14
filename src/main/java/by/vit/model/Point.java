@@ -30,7 +30,7 @@ public class Point {
     @OneToMany(mappedBy = "point2")
     private Set<Road> roads2;
 
-    @OneToMany(mappedBy = "point", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "point")
     private Set<Car> cars;
 
     @OneToMany(mappedBy = "point")

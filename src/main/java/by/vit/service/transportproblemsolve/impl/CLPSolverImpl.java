@@ -1,7 +1,7 @@
 package by.vit.service.transportproblemsolve.impl;
 
 
-import by.vit.service.transportproblemsolve.ConditionTP;
+import by.vit.service.transportproblemsolve.Conditions;
 import by.vit.service.transportproblemsolve.SolverOfTP;
 import com.quantego.clp.CLP;
 import com.quantego.clp.CLPExpression;
@@ -21,36 +21,41 @@ import java.util.TreeMap;
 @Service
 public class CLPSolverImpl implements SolverOfTP {
 
+    private final Conditions conditions;
+
     private Double[][] matrixOfSolve;
     private Map<Long, List<String>> interpretation;
+
+    public CLPSolverImpl(Conditions conditions) {
+        this.conditions = conditions;
+    }
 
     public Double[][] getMatrixOfSolve() {
         return matrixOfSolve;
     }
 
-    /**
-     * set conditions for solve transport problem
-     *
-     * @param conditionTP
-     */
-    @Override
-    public void setConditions(ConditionTP conditionTP){
-        solveTP(conditionTP);
-        getInterpretation(conditionTP);
-    }
 
     /**
-     * @return Map < Long carId, List< Long pointId,Double mass, BigDecimal cost > >
+     * get interpretation of solution:
+     * carId it's id of car which will make deliver
+     * Each car has own route:
+     *  Delivery point (pointId) 1st in List<String>
+     *  Mass of cargo (mass) 2nd in List<String>
+     *  Cost ot this route (cost) 3th in List<String>
+     *
+     * @return Map < Long carId, List< Long pointId, Double mass, BigDecimal cost > >
      */
     @Override
     public Map<Long, List<String>> getInterpretation() {
+        solveTP();
+        setInterpretation();
         return interpretation;
     }
 
-    private void getInterpretation(ConditionTP conditionTP) {
-        Long[] carsId = conditionTP.getCarsId();
-        Long[] pointsId = conditionTP.getPointsId();
-        BigDecimal[][] costMatrix = conditionTP.getCostMatrix();
+    private void setInterpretation() {
+        Long[] carsId = conditions.getCarsId();
+        Long[] pointsId = conditions.getPointsId();
+        BigDecimal[][] costMatrix = conditions.getCostMatrix();
 
         int n = pointsId.length + 1;
         int s = carsId.length * pointsId.length;
@@ -70,9 +75,7 @@ public class CLPSolverImpl implements SolverOfTP {
                     }
 
                     if (!tonne.equals(zero)) {
-                        if (interpretation.get(carsId[a]) == null) {
-                            interpretation.put(carsId[a], new ArrayList<>());
-                        }
+                        interpretation.computeIfAbsent(carsId[a], k -> new ArrayList<>());
                         List<String> infoForCar = interpretation.get(carsId[a]);
                         infoForCar.add(pointsId[j].toString());
                         infoForCar.add(tonne.toString());
@@ -85,10 +88,10 @@ public class CLPSolverImpl implements SolverOfTP {
     }
 
 
-    private void solveTP(ConditionTP conditionTP) {
-        BigDecimal[][] costMatrix = conditionTP.getCostMatrix();
-        Double[] restrictionOfCar = conditionTP.getRestrictionOfCars();
-        Double[] restrictionOfOrder = conditionTP.getRestrictionOfOrder();
+    private void solveTP() {
+        BigDecimal[][] costMatrix = conditions.getCostMatrix();
+        Double[] restrictionOfCar = conditions.getRestrictionOfCars();
+        Double[] restrictionOfOrder = conditions.getRestrictionOfOrder();
         int rowsLength = costMatrix[0].length;
         int linesLength = costMatrix.length;
 

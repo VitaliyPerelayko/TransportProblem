@@ -2,6 +2,7 @@ package by.vit.app;
 
 import by.vit.config.AppConfiguration;
 import by.vit.model.Point;
+import by.vit.model.Road;
 import by.vit.model.solution.Solution;
 import by.vit.service.PointService;
 import by.vit.service.RoadService;
@@ -32,7 +33,16 @@ public class SolutionDebug {
 
         SolutionDebug solution = applicationContext.getBean("solutionDebug",SolutionDebug.class);
 
-        Point [] points = {solution.findByName("Grodno"),
+//        Road road = new Road();
+//        road.setPoint1(solution.pointService.findById(1l));
+//        road.setPoint2(solution.pointService.findById(14l));
+//        road.setDistance(2D);
+//
+//        System.out.println(solution.roadService.save(road));
+
+//
+//
+ Point [] points = {solution.findByName("Grodno"),
                 solution.findByName("Lida"),
                 solution.findByName("Brest"),
                 solution.findByName("Volkovysk")};
@@ -40,7 +50,7 @@ public class SolutionDebug {
 
         SolutionService service = solution.solutionService;
 
-        service.setConditions(points,order,"vit");
+        service.setConditions(points,order,"kiiv");
         service.getAndSaveSolution();
 
 

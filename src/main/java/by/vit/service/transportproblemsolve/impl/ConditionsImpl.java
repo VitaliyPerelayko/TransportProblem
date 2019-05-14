@@ -1,14 +1,21 @@
-package by.vit.service.transportproblemsolve;
+package by.vit.service.transportproblemsolve.impl;
 
 import by.vit.model.Car;
+import by.vit.service.transportproblemsolve.Conditions;
+import by.vit.service.transportproblemsolve.DistanceMatrixFinder;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Class contains information to solve transport problem.
+ * The initial data is processed for substitution in the classical transport problem.
  */
-public class ConditionTP {
+@Service
+public class ConditionsImpl implements Conditions {
+
+    private final DistanceMatrixFinder distanceMatrixFinder;
 
     //big cost for unreachable road
     private static final BigDecimal UNREACHABLE = new BigDecimal("999999");
@@ -22,8 +29,20 @@ public class ConditionTP {
     private Long[] carsId;
     private Long[] pointsId;
 
-    public ConditionTP(DistanceMatrixFinder distanceMatrixFinder, List<Car> cars,
-                       Double[] order, boolean flagOfPseudoPoint, Double difference) {
+    public ConditionsImpl(DistanceMatrixFinder distanceMatrixFinder) {
+        this.distanceMatrixFinder = distanceMatrixFinder;
+    }
+
+    /**
+     * Set parameters.
+     *
+     * @param cars list of cars from start point
+     * @param order array of order: the weight of the cargo to be delivered to each point
+     * @param flagOfPseudoPoint need whether fictitious delivery point
+     * @param difference the weight of the cargo to be delivered to fictitious point
+     */
+    @Override
+    public void setParam(List<Car> cars, Double[] order, boolean flagOfPseudoPoint, Double difference){
         this.flagOfPseudoPoint = flagOfPseudoPoint;
         this.difference = difference;
         this.lengthOfListCars = cars.size();
@@ -38,22 +57,65 @@ public class ConditionTP {
         this.pointsId = distanceMatrixFinder.getPointsId();
     }
 
+    /**
+     * Restrictions for supplier in classical transport problem
+     * How many cargo supplier can delivers
+     *
+     * @return Restrictions
+     */
+    @Override
     public Double[] getRestrictionOfCars() {
         return restrictionOfCars;
     }
 
+    /**
+     * Restrictions for consumer in classical transport problem
+     * How many cargo consumer needs
+     *
+     * @return Restrictions
+     */
+    @Override
     public Double[] getRestrictionOfOrder() {
         return restrictionOfOrder;
     }
 
+    /**
+     * The matrix contains the cost of delivery of goods from each point to each on each car.
+     * Example (p point, c car):
+     *     p2c1  p2c2  p2c3   P3c1  p3c2  p3c3   P4c1  p4c2  p4c3  p2   p3   p4
+     * p1c1
+     * p1c2
+     * p1c3
+     * p2c1
+     * p2c2           SOME NUMBERS
+     * p2c3
+     * p3c1
+     * p3c2
+     * p3c3
+     * p4c1
+     * p4c2
+     * p4c3
+     *
+     *
+     * @return cost matrix
+     */
+    @Override
     public BigDecimal[][] getCostMatrix() {
         return costMatrix;
     }
 
+    /**
+     * @return array of car's ids
+     */
+    @Override
     public Long[] getCarsId() {
         return carsId;
     }
 
+    /**
+     * @return  array of point's ids
+     */
+    @Override
     public Long[] getPointsId() {
         return pointsId;
     }

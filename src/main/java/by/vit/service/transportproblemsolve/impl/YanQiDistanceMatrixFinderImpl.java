@@ -19,7 +19,7 @@ import static com.programmerare.shortestpaths.core.impl.VertexImpl.createVertex;
 import static com.programmerare.shortestpaths.core.impl.WeightImpl.createWeight;
 
 /**
- * Implementation DistanceMatrixFinder. It uses Yen's Ranking Loopless Paths Algorithm
+ * Implementation DistanceMatrixFinder. It uses Yen's Ranking LoopLess Paths Algorithm
  */
 @Service
 public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
@@ -35,6 +35,13 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
         this.localizedMessageSource = localizedMessageSource;
     }
 
+    /**
+     * set arrays of points and roads for create distance matrix
+     *
+     * @param roads array of all roads from database
+     * @param points array of points which
+     *               First point is point from which deliver will start.
+     */
     @Override
     public void setConditions(Road[] roads, Point[] points) {
         this.distanceMatrix = new Double[points.length + 1][points.length + 1];
@@ -46,16 +53,39 @@ public class YanQiDistanceMatrixFinderImpl implements DistanceMatrixFinder {
         }
     }
 
+    /**
+     * get method
+     * @return matrix of distance between points
+     * example
+     * pointId 1   5   8   13
+     * 1     0    8   10   3
+     * 5     8    0   4    7
+     * 8     10   4   0    1
+     * 13    3    7   1    0
+     *
+     */
     @Override
     public Double[][] getDistanceMatrix() {
         return distanceMatrix;
     }
 
+    /**
+     * get method
+     * @return List of detailed path between points
+     * example
+     * path from point 1 to point 5
+     * 1 ->(weight 3) 4 ->(weight 2) 7 ->(weight 7) 5
+     */
     @Override
     public List<Path> getPathList() {
         return pathList;
     }
 
+    /**
+     * get method
+     * @return Array of PointId.
+     * First point it's point from deliver starts. The rest it's point of deliver.
+     */
     @Override
     public Long[] getPointsId() {
         return pointsId;

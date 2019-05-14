@@ -40,7 +40,7 @@ public class CarModelServiceImpl implements CarModelService {
     /**
      * Save new entity CarModel.
      *
-     * @param carModel entity
+     * @param carModel carModel entity
      * @return saved entity from database
      */
     @Override
@@ -55,8 +55,8 @@ public class CarModelServiceImpl implements CarModelService {
     /**
      * Update entity CarModel.
      *
-     * @param carModel entity
-     * @return updated entity from database
+     * @param carModel carModel entity
+     * @return updated entity
      */
     @Override
     public CarModel update(CarModel carModel) {
@@ -64,7 +64,7 @@ public class CarModelServiceImpl implements CarModelService {
         validate(id == null,
                 localizedMessageSource.getMessage("error.carModel.haveNoId", new Object[]{}));
         final CarModel duplicatePoint = carModelRepository.findByName(carModel.getName());
-        findById(id);
+        isExist(id);
         final boolean isDuplicateExists = duplicatePoint != null && !Objects.equals(duplicatePoint.getId(), id);
         validate(isDuplicateExists,
                 localizedMessageSource.getMessage("error.carModel.name.notUnique", new Object[]{}));
@@ -88,6 +88,17 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     /**
+     * Retrieves a CarModel by its name.
+     *
+     * @param name must not be {@literal null}.
+     * @return the entity with the given name
+     */
+    @Override
+    public CarModel findByName(String name) {
+        return carModelRepository.findByName(name);
+    }
+
+    /**
      * Get an instance, whose state may be lazily fetched.
      * If the requested instance does not exist in the database,
      * the <code>EntityNotFoundException</code> is thrown when the instance
@@ -105,14 +116,14 @@ public class CarModelServiceImpl implements CarModelService {
     /**
      * Deletes a given entity.
      *
-     * @param carModel
+     * @param carModel carModel entity
      */
     @Override
     public void delete(CarModel carModel) {
         final Long id = carModel.getId();
         validate(id == null,
                 localizedMessageSource.getMessage("error.carModel.haveNoId", new Object[]{}));
-        findById(id);
+        isExist(id);
         carModelRepository.delete(carModel);
     }
 
@@ -124,7 +135,7 @@ public class CarModelServiceImpl implements CarModelService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         carModelRepository.deleteById(id);
     }
 
@@ -132,5 +143,10 @@ public class CarModelServiceImpl implements CarModelService {
         if (expression) {
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    private void isExist(Long id){
+        validate(!carModelRepository.existsById(id),
+                localizedMessageSource.getMessage("error.carModel.id.notExist", new Object[]{}));
     }
 }

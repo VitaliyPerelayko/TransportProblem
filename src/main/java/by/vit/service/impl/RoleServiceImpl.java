@@ -2,6 +2,7 @@ package by.vit.service.impl;
 
 import by.vit.component.LocalizedMessageSource;
 import by.vit.model.Role;
+import by.vit.model.User;
 import by.vit.repository.RoleRepository;
 import by.vit.service.RoleService;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Implementation of service layer for Role entity.
@@ -40,8 +42,8 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Save new entity Role.
      *
-     * @param role entity
-     * @return saved entity from database
+     * @param role role entity
+     * @return saved entity
      */
     @Override
     public Role save(Role role) {
@@ -55,8 +57,8 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Update entity Role.
      *
-     * @param role entity
-     * @return updated entity from database
+     * @param role role entity
+     * @return updated entity
      */
     @Override
     public Role update(Role role) {
@@ -64,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
         validate(id == null,
                 localizedMessageSource.getMessage("error.role.haveNoId", new Object[]{}));
         final Role duplicateRole = roleRepository.findByName(role.getName());
-        findById(id);
+        isExist(id);
         final boolean isDuplicateExists = duplicateRole != null && !Objects.equals(duplicateRole.getId(), id);
         validate(isDuplicateExists,
                 localizedMessageSource.getMessage("error.role.name.notUnique", new Object[]{}));
@@ -75,14 +77,14 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Retrieves a Role by its id.
      *
-     * @param id must not be {@literal null}.
+     * @param id id must not be {@literal null}.
      * @return the entity with the given id
      * @throws RuntimeException if Role none found
      */
     @Override
     public Role findById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
-        validate((role.equals(Optional.empty())),
+        validate(!role.isPresent(),
                 localizedMessageSource.getMessage("error.role.id.notExist", new Object[]{}));
         return role.get();
     }
@@ -90,12 +92,23 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Retrieves a Role by its name.
      *
-     * @param name
+     * @param name name of role
      * @return the entity with the given name
      */
     @Override
     public Role findByName(String name){
         return roleRepository.findByName(name);
+    }
+
+    /**
+     * Find all roles of given user from DataBase
+     *
+     * @param  user user entity
+     * @return set of roles
+     */
+    @Override
+    public Set<Role> findAllRolesByUser(User user){
+        return roleRepository.findAllByUsers(user);
     }
 
 
@@ -117,14 +130,14 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Deletes a given entity.
      *
-     * @param role
+     * @param role role entity
      */
     @Override
     public void delete(Role role) {
         final Long id = role.getId();
         validate(role.getId() == null,
                 localizedMessageSource.getMessage("error.role.haveNoId", new Object[]{}));
-        findById(id);
+        isExist(id);
         roleRepository.delete(role);
     }
 
@@ -136,7 +149,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void deleteById(Long id) {
-        findById(id);
+        isExist(id);
         roleRepository.deleteById(id);
     }
 
@@ -144,5 +157,10 @@ public class RoleServiceImpl implements RoleService {
         if (expression) {
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    private void isExist(Long id){
+        validate(!roleRepository.existsById(id),
+                localizedMessageSource.getMessage("error.role.id.notExist", new Object[]{}));
     }
 }

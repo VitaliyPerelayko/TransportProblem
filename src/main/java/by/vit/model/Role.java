@@ -23,7 +23,7 @@ public class Role {
     @Size(min = 3, max = 50, message = "role.name.size")
     private String name;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role(String name) {
