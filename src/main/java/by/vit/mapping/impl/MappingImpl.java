@@ -81,7 +81,7 @@ public class MappingImpl implements Mapping {
         final Road road = new Road();
         road.setDistance(roadRequestDTO.getDistance());
         road.setPoint1(pointService.findById(roadRequestDTO.getPoint1id()));
-        road.setPoint2(pointService.findById(roadRequestDTO.getPoint1id()));
+        road.setPoint2(pointService.findById(roadRequestDTO.getPoint2id()));
         return road;
     }
 

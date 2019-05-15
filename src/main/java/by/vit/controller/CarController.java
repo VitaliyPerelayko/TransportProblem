@@ -68,7 +68,7 @@ public class CarController {
      * @return Response: saved CarDTO ant http status
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_TRANSPORTER') and userServiceImpl.findById(#carRequestDto.transporterId).username.equals(authentication.name))")
+            "(hasRole('ROLE_TRANSPORTER') and #carRequestDto.transporterUsername.equals(authentication.name))")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CarResponseDTO> save(@Valid @RequestBody CarRequestDTO carRequestDto) {
         carRequestDto.setId(null);
@@ -84,8 +84,7 @@ public class CarController {
      * @param id of car in database
      * @return Response: updated CarDTO ant http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_TRANSPORTER') and carServiceImpl.findById(#id).transporter.username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_TRANSPORTER') and #carRequestDto.transporterUsername.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<CarResponseDTO> update(@Valid @RequestBody CarRequestDTO carRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, carRequestDto.getId())) {
@@ -102,8 +101,7 @@ public class CarController {
      * @param id of car
      * @return http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_TRANSPORTER') and carServiceImpl.findById(#id).transporter.username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {

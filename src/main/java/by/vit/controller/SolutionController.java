@@ -56,8 +56,6 @@ public class SolutionController {
      * @param id of solution
      * @return Response: SolutionResponseDTO ant http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<SolutionResponseDTO> getOne(@PathVariable Long id) {
         final SolutionResponseDTO solutionResponseDTO =
@@ -78,14 +76,14 @@ public class SolutionController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SolutionResponseDTO> getSolve(@Valid @RequestBody TaskDTO taskDTO) {
 
-        //String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String username = "kartavy";
 
         Double[] orders = new Double[taskDTO.getOrderList().size()];
         solutionService.setConditions(mapping.mapTaskToPoint(taskDTO),
                 taskDTO.getOrderList().toArray(orders), username);
-        return new ResponseEntity<>(mapping.mapSolutionToSolutionResponseDTO(
-                solutionService.getAndSaveSolution()), HttpStatus.OK);
+        Solution solution = solutionService.findById(solutionService.getAndSaveSolution().getId());
+        return new ResponseEntity<>(mapping.mapSolutionToSolutionResponseDTO(solution), HttpStatus.OK);
     }
 
     /**
@@ -94,8 +92,6 @@ public class SolutionController {
      * @param id of solution
      * @return http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_SUPPLIER') and solutionServiceImpl.findById(#id).supplier.username.equals(authentication.name))")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {

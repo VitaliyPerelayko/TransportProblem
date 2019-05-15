@@ -88,8 +88,7 @@ public class UserController {
      * @param id             of user in database
      * @return Response: updated UserDTO ant http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN')  or #id == authentication.principal.id")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userRequestDto, @PathVariable Long id) {
         if (!Objects.equals(id, userRequestDto.getId())) {
@@ -106,8 +105,7 @@ public class UserController {
      * @param id of user
      * @return http status
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
-            "(userServiceImpl.findById(#id).username.equals(authentication.name))")
+    @PreAuthorize("hasRole('ROLE_ADMIN')  or #id == authentication.principal.id")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) {
