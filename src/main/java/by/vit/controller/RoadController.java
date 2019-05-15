@@ -71,8 +71,8 @@ public class RoadController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<RoadResponseDTO> save(@Valid @RequestBody RoadRequestDTO roadRequestDto) {
-        final Road road = mapping.mapRoadRequestDTOToRoad(roadRequestDto);
-        final RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.save(road));
+        Road road = mapping.mapRoadRequestDTOToRoad(roadRequestDto);
+        RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.save(road));
         return new ResponseEntity<>(RoadDTO, HttpStatus.OK);
     }
 
