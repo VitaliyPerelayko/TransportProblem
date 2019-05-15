@@ -87,7 +87,7 @@ public class RoadServiceImpl implements RoadService {
     public Road findById(RoadId id) {
         Optional<Road> road = roadRepository.findById(isExist(id));
         validate(!(road.isPresent()),
-                localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
+               "error.road.id.notExist");
         return road.get();
     }
 
