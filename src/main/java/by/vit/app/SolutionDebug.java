@@ -33,25 +33,25 @@ public class SolutionDebug {
 
         SolutionDebug solution = applicationContext.getBean("solutionDebug",SolutionDebug.class);
 
-//        Road road = new Road();
-//        road.setPoint1(solution.pointService.findById(1l));
-//        road.setPoint2(solution.pointService.findById(14l));
-//        road.setDistance(2D);
-//
-//        System.out.println(solution.roadService.save(road));
+        Road road = new Road();
+        road.setPoint1(solution.pointService.findById(1l));
+        road.setPoint2(solution.pointService.findById(14l));
+        road.setDistance(2D);
 
-//
-//
- Point [] points = {solution.findByName("Grodno"),
-                solution.findByName("Lida"),
-                solution.findByName("Brest"),
-                solution.findByName("Volkovysk")};
-        Double [] order = {25d,13d,17d};
+        System.out.println(solution.roadService.save(road));
 
-        SolutionService service = solution.solutionService;
 
-        service.setConditions(points,order,"kiiv");
-        service.getAndSaveSolution();
+
+// Point [] points = {solution.findByName("Grodno"),
+//                solution.findByName("Lida"),
+//                solution.findByName("Brest"),
+//                solution.findByName("Volkovysk")};
+//        Double [] order = {25d,13d,17d};
+//
+//        SolutionService service = solution.solutionService;
+//
+//        service.setConditions(points,order,"kiiv");
+//        service.getAndSaveSolution();
 
 
 

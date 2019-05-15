@@ -49,7 +49,9 @@ public class RoadServiceImpl implements RoadService {
      */
     @Override
     public Road save(Road road) {
-
+        validate(road.getId() == null,
+                "error.road.haveNoId");
+        isRoadValid(road);
         return roadRepository.saveAndFlush(road);
     }
 
@@ -62,7 +64,7 @@ public class RoadServiceImpl implements RoadService {
     @Override
     public Road update(Road road) {
         validate(road.getId() == null,
-                localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
+                "error.road.haveNoId");
         isRoadValid(road);
         road.setId(isExist(road.getId()));
         //TODO if it work delete code in comment and delete update method from roadRepository
@@ -129,11 +131,10 @@ public class RoadServiceImpl implements RoadService {
 
 
     private void isRoadValid(Road road){
-        boolean isPointsExists = pointRepository.existsById(road.getPoint1id())&&
-                pointRepository.existsById(road.getPoint2id());
+        boolean isPointsExists = pointRepository.existsById(road.getPoint1().getId())&&
+                pointRepository.existsById(road.getPoint2().getId());
         validate(!isPointsExists,
-                localizedMessageSource.getMessage("error.road.pointsNotExist",
-                        new Object[]{road.getPoint1id(), road.getPoint2id()}));
+                "error.road.pointsNotExist");
     }
 
     private void validate(boolean expression, String errorMessage) {
@@ -145,7 +146,7 @@ public class RoadServiceImpl implements RoadService {
         if (!roadRepository.existsById(id)) {
             RoadId roadId = new RoadId(id.getPoint2Id(), id.getPoint1Id());
             validate(!roadRepository.existsById(roadId),
-                    localizedMessageSource.getMessage("error.road.id.notExist", new Object[]{}));
+                    "error.road.id.notExist");
             return roadId;
         }
         return id;

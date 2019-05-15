@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan(basePackages = "by.vit")
-@Import({DatabaseConfiguration.class, MessagesConfiguration.class})
+@Import({DatabaseConfiguration.class})
 public class AppConfiguration {
 }
