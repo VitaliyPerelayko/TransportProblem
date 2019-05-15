@@ -12,10 +12,7 @@ import by.vit.mapping.Mapping;
 import by.vit.model.*;
 import by.vit.model.solution.Solution;
 import by.vit.model.solution.SolutionCar;
-import by.vit.service.CarModelService;
-import by.vit.service.PointService;
-import by.vit.service.RoleService;
-import by.vit.service.UserService;
+import by.vit.service.*;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +30,18 @@ public class MappingImpl implements Mapping {
     private final PointService pointService;
     private final CarModelService carModelService;
     private final UserService userService;
+    private final RoadService roadService;
 
 
 
     public MappingImpl(Mapper mapper, RoleService userService, PointService pointService,
-                       CarModelService carModelService, UserService userService1) {
+                       CarModelService carModelService, UserService userService1, RoadService roadService) {
         this.mapper = mapper;
         this.roleService = userService;
         this.pointService = pointService;
         this.carModelService = carModelService;
         this.userService = userService1;
+        this.roadService = roadService;
     }
 
     /**
@@ -78,7 +77,12 @@ public class MappingImpl implements Mapping {
      */
     @Override
     public Road mapRoadRequestDTOToRoad(RoadRequestDTO roadRequestDTO){
-        final Road road = new Road();
+        RoadId roadId = new RoadId(roadRequestDTO.getPoint1id(),roadRequestDTO.getPoint2id());
+        if (roadService.isExistById(roadId)){
+            return roadService.findById(roadId);
+        }
+
+        Road road = new Road();
         road.setPoint1(pointService.findById(roadRequestDTO.getPoint1id()));
         road.setPoint2(pointService.findById(roadRequestDTO.getPoint2id()));
         road.setDistance(roadRequestDTO.getDistance());

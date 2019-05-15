@@ -67,4 +67,6 @@ public interface RoadService {
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
      */
     void deleteById(RoadId id);
+
+    boolean isExistById(RoadId id);
 }

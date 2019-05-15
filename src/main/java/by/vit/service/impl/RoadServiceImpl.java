@@ -67,11 +67,6 @@ public class RoadServiceImpl implements RoadService {
                 localizedMessageSource.getMessage("error.road.haveNoId", new Object[]{}));
         isRoadValid(road);
         road.setId(isExist(road.getId()));
-        //TODO if it work delete code in comment and delete update method from roadRepository
-//        RoadId roadId = new RoadId(road.getPoint1id(),road.getPoint2id());
-//        roadId = new RoadId(road.getPoint2id(),road.getPoint1id());
-//        final Road updatedRoad = roadRepository.update(road.getDistance(), roadId1, roadId2);
-//        roadRepository.flush();
         return roadRepository.saveAndFlush(road);
     }
 
@@ -127,6 +122,23 @@ public class RoadServiceImpl implements RoadService {
     @Override
     public void deleteById(RoadId id) {
         roadRepository.deleteById(isExist(id));
+    }
+
+    /**
+     * Returns whether an entity with the given id exists.
+     *
+     * @param id must not be {@literal null}.
+     * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
+     * @throws IllegalArgumentException if {@code id} is {@literal null}.
+     */
+    @Override
+    public boolean isExistById(RoadId id){
+        if (roadRepository.existsById(id)){
+            return true;
+        }else {
+            RoadId roadId = new RoadId(id.getPoint2Id(), id.getPoint1Id());
+            return roadRepository.existsById(roadId);
+        }
     }
 
 
