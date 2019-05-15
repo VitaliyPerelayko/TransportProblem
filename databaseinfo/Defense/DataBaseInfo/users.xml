@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="id">1</field>
+		<field name="name">Iosif</field>
+		<field name="surname">Stalin</field>
+		<field name="phone">+666 66666</field>
+		<field name="e_mail">lichnost@kult.ru</field>
+		<field name="username">ubivator</field>
+		<field name="password">password</field>
+	</row>
+
+	<row>
+		<field name="id">2</field>
+		<field name="name">Lev</field>
+		<field name="surname">Trozki</field>
+		<field name="phone">+666 78921</field>
+		<field name="e_mail">ledorub@kill.ar</field>
+		<field name="username">sidel</field>
+		<field name="password">123</field>
+	</row>
+
+	<row>
+		<field name="id">3</field>
+		<field name="name">Nikita</field>
+		<field name="surname">Khrushchev</field>
+		<field name="phone">+666 98765</field>
+		<field name="e_mail">razveyal@kult.ru</field>
+		<field name="username">kuzya</field>
+		<field name="password">1953</field>
+	</row>
+
+	<row>
+		<field name="id">4</field>
+		<field name="name">Leonid</field>
+		<field name="surname">Breznev</field>
+		<field name="phone">+666 43210</field>
+		<field name="e_mail">vzasos@kiss.ru</field>
+		<field name="username">lips</field>
+		<field name="password">123qwa</field>
+	</row>
+
+	<row>
+		<field name="id">5</field>
+		<field name="name">Leonid</field>
+		<field name="surname">Lenin</field>
+		<field name="phone">+666 97531</field>
+		<field name="e_mail">zavaril@kashu.ru</field>
+		<field name="username">kartavy</field>
+		<field name="password">qwerty</field>
+	</row>
+
+	<row>
+		<field name="id">6</field>
+		<field name="name">Mikhail</field>
+		<field name="surname">Gorbachev</field>
+		<field name="phone">+666 00000</field>
+		<field name="e_mail">razvalil@stranu.ru</field>
+		<field name="username">pere</field>
+		<field name="password">stroyka</field>
+	</row>
+</resultset>

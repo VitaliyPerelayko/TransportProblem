@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="point1_id">1</field>
+		<field name="point2_id">3</field>
+		<field name="distance">33</field>
+	</row>
+
+	<row>
+		<field name="point1_id">2</field>
+		<field name="point2_id">3</field>
+		<field name="distance">55</field>
+	</row>
+
+	<row>
+		<field name="point1_id">3</field>
+		<field name="point2_id">4</field>
+		<field name="distance">33</field>
+	</row>
+
+	<row>
+		<field name="point1_id">3</field>
+		<field name="point2_id">5</field>
+		<field name="distance">38</field>
+	</row>
+
+	<row>
+		<field name="point1_id">5</field>
+		<field name="point2_id">6</field>
+		<field name="distance">52</field>
+	</row>
+
+	<row>
+		<field name="point1_id">6</field>
+		<field name="point2_id">7</field>
+		<field name="distance">170</field>
+	</row>
+
+	<row>
+		<field name="point1_id">7</field>
+		<field name="point2_id">8</field>
+		<field name="distance">150</field>
+	</row>
+
+	<row>
+		<field name="point1_id">8</field>
+		<field name="point2_id">9</field>
+		<field name="distance">54</field>
+	</row>
+
+	<row>
+		<field name="point1_id">2</field>
+		<field name="point2_id">9</field>
+		<field name="distance">61</field>
+	</row>
+
+	<row>
+		<field name="point1_id">1</field>
+		<field name="point2_id">10</field>
+		<field name="distance">81</field>
+	</row>
+
+	<row>
+		<field name="point1_id">10</field>
+		<field name="point2_id">11</field>
+		<field name="distance">76</field>
+	</row>
+
+	<row>
+		<field name="point1_id">11</field>
+		<field name="point2_id">12</field>
+		<field name="distance">85</field>
+	</row>
+
+	<row>
+		<field name="point1_id">12</field>
+		<field name="point2_id">13</field>
+		<field name="distance">49</field>
+	</row>
+
+	<row>
+		<field name="point1_id">13</field>
+		<field name="point2_id">14</field>
+		<field name="distance">130</field>
+	</row>
+
+	<row>
+		<field name="point1_id">14</field>
+		<field name="point2_id">15</field>
+		<field name="distance">250</field>
+	</row>
+
+	<row>
+		<field name="point1_id">15</field>
+		<field name="point2_id">16</field>
+		<field name="distance">140</field>
+	</row>
+
+	<row>
+		<field name="point1_id">16</field>
+		<field name="point2_id">17</field>
+		<field name="distance">160</field>
+	</row>
+
+	<row>
+		<field name="point1_id">7</field>
+		<field name="point2_id">17</field>
+		<field name="distance">150</field>
+	</row>
+
+	<row>
+		<field name="point1_id">7</field>
+		<field name="point2_id">18</field>
+		<field name="distance">200</field>
+	</row>
+
+	<row>
+		<field name="point1_id">7</field>
+		<field name="point2_id">19</field>
+		<field name="distance">220</field>
+	</row>
+
+	<row>
+		<field name="point1_id">19</field>
+		<field name="point2_id">20</field>
+		<field name="distance">80</field>
+	</row>
+
+	<row>
+		<field name="point1_id">18</field>
+		<field name="point2_id">19</field>
+		<field name="distance">79</field>
+	</row>
+
+	<row>
+		<field name="point1_id">18</field>
+		<field name="point2_id">16</field>
+		<field name="distance">180</field>
+	</row>
+
+	<row>
+		<field name="point1_id">17</field>
+		<field name="point2_id">18</field>
+		<field name="distance">120</field>
+	</row>
+
+	<row>
+		<field name="point1_id">2</field>
+		<field name="point2_id">14</field>
+		<field name="distance">270</field>
+	</row>
+
+	<row>
+		<field name="point1_id">8</field>
+		<field name="point2_id">15</field>
+		<field name="distance">310</field>
+	</row>
+
+	<row>
+		<field name="point1_id">8</field>
+		<field name="point2_id">14</field>
+		<field name="distance">170</field>
+	</row>
+
+	<row>
+		<field name="point1_id">9</field>
+		<field name="point2_id">14</field>
+		<field name="distance">150</field>
+	</row>
+
+	<row>
+		<field name="point1_id">6</field>
+		<field name="point2_id">9</field>
+		<field name="distance">100</field>
+	</row>
+
+	<row>
+		<field name="point1_id">15</field>
+		<field name="point2_id">17</field>
+		<field name="distance">140</field>
+	</row>
+</resultset>

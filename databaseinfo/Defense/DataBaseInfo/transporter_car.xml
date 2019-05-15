@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="id">1</field>
+		<field name="car_model_id">1</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">156</field>
+	</row>
+
+	<row>
+		<field name="id">2</field>
+		<field name="car_model_id">2</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">28.25</field>
+	</row>
+
+	<row>
+		<field name="id">3</field>
+		<field name="car_model_id">3</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">138.5</field>
+	</row>
+
+	<row>
+		<field name="id">4</field>
+		<field name="car_model_id">4</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">23</field>
+	</row>
+
+	<row>
+		<field name="id">5</field>
+		<field name="car_model_id">5</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">6</field>
+		<field name="cost_mult">23.7</field>
+	</row>
+
+	<row>
+		<field name="id">6</field>
+		<field name="car_model_id">6</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">9</field>
+		<field name="cost_mult">103.5</field>
+	</row>
+
+	<row>
+		<field name="id">7</field>
+		<field name="car_model_id">7</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">2</field>
+		<field name="cost_mult">24.75</field>
+	</row>
+
+	<row>
+		<field name="id">8</field>
+		<field name="car_model_id">8</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">191</field>
+	</row>
+
+	<row>
+		<field name="id">9</field>
+		<field name="car_model_id">9</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">3</field>
+		<field name="cost_mult">79</field>
+	</row>
+
+	<row>
+		<field name="id">10</field>
+		<field name="car_model_id">10</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">68.5</field>
+	</row>
+
+	<row>
+		<field name="id">11</field>
+		<field name="car_model_id">11</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">2</field>
+		<field name="cost_mult">58</field>
+	</row>
+
+	<row>
+		<field name="id">12</field>
+		<field name="car_model_id">9</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">2</field>
+		<field name="cost_mult">79</field>
+	</row>
+
+	<row>
+		<field name="id">13</field>
+		<field name="car_model_id">7</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">3</field>
+		<field name="cost_mult">24.75</field>
+	</row>
+
+	<row>
+		<field name="id">14</field>
+		<field name="car_model_id">4</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">7</field>
+		<field name="cost_mult">23</field>
+	</row>
+
+	<row>
+		<field name="id">15</field>
+		<field name="car_model_id">3</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">7</field>
+		<field name="cost_mult">138.5</field>
+	</row>
+
+	<row>
+		<field name="id">16</field>
+		<field name="car_model_id">2</field>
+		<field name="transporter_id">2</field>
+		<field name="point_id">7</field>
+		<field name="cost_mult">28</field>
+	</row>
+
+	<row>
+		<field name="id">17</field>
+		<field name="car_model_id">3</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">9</field>
+		<field name="cost_mult">138</field>
+	</row>
+
+	<row>
+		<field name="id">18</field>
+		<field name="car_model_id">8</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">7</field>
+		<field name="cost_mult">190</field>
+	</row>
+
+	<row>
+		<field name="id">19</field>
+		<field name="car_model_id">6</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">1</field>
+		<field name="cost_mult">105</field>
+	</row>
+
+	<row>
+		<field name="id">20</field>
+		<field name="car_model_id">4</field>
+		<field name="transporter_id">5</field>
+		<field name="point_id">4</field>
+		<field name="cost_mult">24</field>
+	</row>
+
+	<row>
+		<field name="id">21</field>
+		<field name="car_model_id">6</field>
+		<field name="transporter_id">6</field>
+		<field name="point_id">2</field>
+		<field name="cost_mult">100</field>
+	</row>
+</resultset>

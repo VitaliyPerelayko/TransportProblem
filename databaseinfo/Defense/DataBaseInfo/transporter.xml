@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="user_id">2</field>
+		<field name="licence">nabor123bukv</field>
+	</row>
+
+	<row>
+		<field name="user_id">5</field>
+		<field name="licence">bukv321nabor</field>
+	</row>
+
+	<row>
+		<field name="user_id">6</field>
+		<field name="licence">blablafoo</field>
+	</row>
+</resultset>

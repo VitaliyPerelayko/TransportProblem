@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="id">1</field>
+		<field name="name">Grodno</field>
+	</row>
+
+	<row>
+		<field name="id">2</field>
+		<field name="name">Volkovysk</field>
+	</row>
+
+	<row>
+		<field name="id">3</field>
+		<field name="name">Skidzel</field>
+	</row>
+
+	<row>
+		<field name="id">4</field>
+		<field name="name">Mosty</field>
+	</row>
+
+	<row>
+		<field name="id">5</field>
+		<field name="name">Shchuchin</field>
+	</row>
+
+	<row>
+		<field name="id">6</field>
+		<field name="name">Lida</field>
+	</row>
+
+	<row>
+		<field name="id">7</field>
+		<field name="name">Minsk</field>
+	</row>
+
+	<row>
+		<field name="id">8</field>
+		<field name="name">Baranovichi</field>
+	</row>
+
+	<row>
+		<field name="id">9</field>
+		<field name="name">Slonim</field>
+	</row>
+
+	<row>
+		<field name="id">10</field>
+		<field name="name">Svisloch</field>
+	</row>
+
+	<row>
+		<field name="id">11</field>
+		<field name="name">Pruzany</field>
+	</row>
+
+	<row>
+		<field name="id">12</field>
+		<field name="name">Brest</field>
+	</row>
+
+	<row>
+		<field name="id">13</field>
+		<field name="name">Kobrin</field>
+	</row>
+
+	<row>
+		<field name="id">14</field>
+		<field name="name">Pinsk</field>
+	</row>
+
+	<row>
+		<field name="id">15</field>
+		<field name="name">Mozyr</field>
+	</row>
+
+	<row>
+		<field name="id">16</field>
+		<field name="name">Gomel</field>
+	</row>
+
+	<row>
+		<field name="id">17</field>
+		<field name="name">Bobruisk</field>
+	</row>
+
+	<row>
+		<field name="id">18</field>
+		<field name="name">Mogilev</field>
+	</row>
+
+	<row>
+		<field name="id">19</field>
+		<field name="name">Orsha</field>
+	</row>
+
+	<row>
+		<field name="id">20</field>
+		<field name="name">Vitebsk</field>
+	</row>
+</resultset>

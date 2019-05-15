@@ -1,0 +1,1465 @@
+{
+	"info": {
+		"_postman_id": "6cfa6098-05a6-47a9-9a8e-99437e2cbfa9",
+		"name": "TransportProplem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "signUP_ROLE_ADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\n\t\"name\": \"Vitaliy\",\n\n\t\"surname\": \"Klichko\",\n\n\t\"phone\": \"+375 29\",\n\n\t\"eMail\": \"klich@mail.ru\",\n\n\t\"rolesName\": [\"ROLE_ADMIN\"],\n\n\t\"username\": \"kiiv\",\n\n\t\"password\": \"123\"\n\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signIn_ROLE_ADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"kiiv\",\n\n\t\"password\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signUp_ROLE_SUPPLIER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\n\t\"name\": \"Yuriy\",\n\n\t\"surname\": \"Vuvunikyan\",\n\n\t\"phone\": \"+375029086\",\n\n\t\"eMail\": \"function@analiz.ru\",\n\n\t\"rolesName\": [\"ROLE_SUPPLIER\"],\n\n\t\"username\": \"hilbert\",\n\n\t\"password\": \"2718281828459045\"\n\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signIn_ROLE_SUPPLIER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"hilbert\",\n\n\t\"password\": \"2718281828459045\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signUp_ROLE_TRANSPORTER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\n\t\"name\": \"Gosha\",\n\n\t\"surname\": \"Kuzenko\",\n\n\t\"phone\": \"+375 29\",\n\n\t\"eMail\": \"kuzenko@mail.ru\",\n\n\t\"rolesName\": [\"ROLE_TRANSPORTER\"],\n\n\t\"username\": \"gosha\",\n\n\t\"password\": \"123qwa\"\n\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signIn_ROLE_TRANSPORTER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"gosha\",\n\n\t\"password\": \"123qwa\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/authentication/signIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"authentication",
+								"signIn"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "car",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveCar_asADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\t\"carModelName\": \"VOLVO FL6\",\n\t\"pointName\": \"Mozyr\",\n\t\"transporterUsername\": \"pere\", \n\t\"cost\": 81\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCar_asADMIN",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars/23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCar_asADMIN",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 24,\n\t\"carModelName\": \"VOLVO FL6\",\n\t\"pointName\": \"Kobrin\",\n\t\"transporterUsername\": \"pere\", \n\t\"cost\": 81\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars/24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars",
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveCar_asTRANSPORTER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\t\"carModelName\": \"VOLVO FL6\",\n\t\"pointName\": \"Mozyr\",\n\t\"transporterUsername\": \"gosha\", \n\t\"cost\": 85\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "point",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/points",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/points/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"points",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\t\"name\": \"Paris\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/points",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 21,\n\t\"name\": \"Novigrad\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/points/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"points",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/points/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"points",
+								"21"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "road",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne/6/9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads/6/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads",
+								"6",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne/9/6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads/9/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads",
+								"9",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"point1id\": 1,\n\t\"point2id\": 14,\n\t\"distance\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"point1id\": 1,\n\t\"point2id\": 14,\n\t\"distance\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads/1/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads",
+								"1",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"point1id\": 1,\n\t\"point2id\": 14,\n\t\"distance\": 55\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roads/1/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roads",
+								"1",
+								"14"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "carModel",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save_asADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\t\"name\": \"GTI\",\n\t\"tonnage\": 150,\n\t\"space\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 12,\n\t\"name\": \"GTI Super\",\n\t\"tonnage\": 150,\n\t\"space\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 12,\n\t\"name\": \"GTI Super\",\n\t\"tonnage\": 150,\n\t\"space\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save_asTRANSPORTER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": null,\n\t\"name\": \"ZAZ ZAZ\",\n\t\"tonnage\": 67,\n\t\"space\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/carModels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"carModels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roles/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": null,\n    \"name\": \"ROLE_GUEST\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"name\": \"ROLE_FOO\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roles/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roles",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/roles/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"roles",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_3_asADMIN",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_asADMIN",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 7,\n    \"name\": \"Marfa\",\n    \"surname\": \"Kulshak\",\n    \"phone\": \"nemaemo\",\n    \"eMail\": \"kakoy@takoy.ru\",\n    \"rolesName\": [\"ROLE_SUPPLIER\"],\n    \"username\": \"marfa\",\n    \"password\": \"marfa\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_asADMIN",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save_asADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": null,\n    \"name\": \"Marfa\",\n    \"surname\": \"Kulshak\",\n    \"phone\": \"nemaemo\",\n    \"eMail\": \"kakoy@takoy.ru\",\n    \"rolesName\": [\"ROLE_SUPPLIER\"],\n    \"username\": \"marfa\",\n    \"password\": \"marfa\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_asUSER",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/users/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"users",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "solution",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/solution",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"solution"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOne_asADMIN",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/solution/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"solution",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_asADMIN",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/solution/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"solution",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSolution_asSUPPLIER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"username\": \"hilbert\",\n\t\n\t\"pointName\":[\"Grodno\",\"Lida\",\"Brest\",\"Volkovysk\"],\n\n\t\"orderList\":[5,6,3]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/TransportProblem-0.0.1/solution",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"TransportProblem-0.0.1",
+								"solution"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

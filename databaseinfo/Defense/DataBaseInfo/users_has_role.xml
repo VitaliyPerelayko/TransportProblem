@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="users_id">1</field>
+		<field name="role_id">1</field>
+	</row>
+
+	<row>
+		<field name="users_id">2</field>
+		<field name="role_id">1</field>
+	</row>
+
+	<row>
+		<field name="users_id">2</field>
+		<field name="role_id">2</field>
+	</row>
+
+	<row>
+		<field name="users_id">3</field>
+		<field name="role_id">3</field>
+	</row>
+
+	<row>
+		<field name="users_id">4</field>
+		<field name="role_id">3</field>
+	</row>
+
+	<row>
+		<field name="users_id">5</field>
+		<field name="role_id">1</field>
+	</row>
+
+	<row>
+		<field name="users_id">5</field>
+		<field name="role_id">3</field>
+	</row>
+
+	<row>
+		<field name="users_id">6</field>
+		<field name="role_id">2</field>
+	</row>
+
+	<row>
+		<field name="users_id" xsi:nil="true" />
+		<field name="role_id" xsi:nil="true" />
+	</row>
+</resultset>

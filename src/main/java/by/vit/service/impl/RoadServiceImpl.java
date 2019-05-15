@@ -131,8 +131,8 @@ public class RoadServiceImpl implements RoadService {
 
 
     private void isRoadValid(Road road){
-        boolean isPointsExists = pointRepository.existsById(road.getPoint1id())&&
-                pointRepository.existsById(road.getPoint2id());
+        boolean isPointsExists = pointRepository.existsById(road.getPoint1().getId())&&
+                pointRepository.existsById(road.getPoint2().getId());
         validate(!isPointsExists,
                 localizedMessageSource.getMessage("error.road.pointsNotExist",
                         new Object[]{road.getPoint1id(), road.getPoint2id()}));

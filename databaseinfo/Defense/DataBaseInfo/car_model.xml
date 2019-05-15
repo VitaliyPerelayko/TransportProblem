@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<resultset statement=""
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<row>
+		<field name="id">1</field>
+		<field name="name">MAZ-5440</field>
+		<field name="tonnage">40</field>
+		<field name="space">40</field>
+	</row>
+
+	<row>
+		<field name="id">2</field>
+		<field name="name">Hyundai Mighty</field>
+		<field name="tonnage">3.5</field>
+		<field name="space">20</field>
+	</row>
+
+	<row>
+		<field name="id">3</field>
+		<field name="name">КамАЗ-65207</field>
+		<field name="tonnage">35</field>
+		<field name="space">40</field>
+	</row>
+
+	<row>
+		<field name="id">4</field>
+		<field name="name">CITROEN JUMPER</field>
+		<field name="tonnage">2</field>
+		<field name="space">8</field>
+	</row>
+
+	<row>
+		<field name="id">5</field>
+		<field name="name">FIAT DUCATO</field>
+		<field name="tonnage">2.2</field>
+		<field name="space">8</field>
+	</row>
+
+	<row>
+		<field name="id">6</field>
+		<field name="name">IVECO EUROCARGO</field>
+		<field name="tonnage">25</field>
+		<field name="space">30</field>
+	</row>
+
+	<row>
+		<field name="id">7</field>
+		<field name="name">IVECO DAILY</field>
+		<field name="tonnage">2.5</field>
+		<field name="space">10</field>
+	</row>
+
+	<row>
+		<field name="id">8</field>
+		<field name="name">IVECO STRALIS</field>
+		<field name="tonnage">50</field>
+		<field name="space">73</field>
+	</row>
+
+	<row>
+		<field name="id">9</field>
+		<field name="name">VOLVO FL6</field>
+		<field name="tonnage">18</field>
+		<field name="space">43</field>
+	</row>
+
+	<row>
+		<field name="id">10</field>
+		<field name="name">ISUZU FORWARD</field>
+		<field name="tonnage">15</field>
+		<field name="space">39</field>
+	</row>
+
+	<row>
+		<field name="id">11</field>
+		<field name="name">Volkswagen Crafter</field>
+		<field name="tonnage">12</field>
+		<field name="space">26</field>
+	</row>
+</resultset>

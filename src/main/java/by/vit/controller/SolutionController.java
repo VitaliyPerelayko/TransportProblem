@@ -4,12 +4,14 @@ import by.vit.dto.request.TaskDTO;
 import by.vit.dto.response.SolutionResponseDTO;
 import by.vit.mapping.Mapping;
 import by.vit.model.solution.Solution;
+import by.vit.security.model.AuthenticationUserDetails;
 import by.vit.service.SolutionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -76,12 +78,9 @@ public class SolutionController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SolutionResponseDTO> getSolve(@Valid @RequestBody TaskDTO taskDTO) {
 
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String username = "kartavy";
-
         Double[] orders = new Double[taskDTO.getOrderList().size()];
         solutionService.setConditions(mapping.mapTaskToPoint(taskDTO),
-                taskDTO.getOrderList().toArray(orders), username);
+                taskDTO.getOrderList().toArray(orders), taskDTO.getUsername());
         Solution solution = solutionService.findById(solutionService.getAndSaveSolution().getId());
         return new ResponseEntity<>(mapping.mapSolutionToSolutionResponseDTO(solution), HttpStatus.OK);
     }

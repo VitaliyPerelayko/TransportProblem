@@ -9,6 +9,11 @@ import java.util.List;
  * Request DTO. Conditions for transport problem.
  */
 public class TaskDTO {
+
+    @NotNull(message = "task.username.notNull")
+    @NotEmpty(message = "task.username.notEmpty")
+    private String username;
+
     /**
      * List of points id.
      * First point is point from which deliver will start.
@@ -28,6 +33,14 @@ public class TaskDTO {
             @NotNull(message = "task.order.notNull")
             @Positive(message = "task.order.positive")
                     Double> orderList;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public List<String> getPointName() {
         return pointName;

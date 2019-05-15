@@ -84,13 +84,13 @@ public class RoadController {
      * @param id2 of point in database
      * @return Response: updated RoadDTO ant http status
      */
-    @RequestMapping(value = "/{id1/{id2}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
     public ResponseEntity<RoadResponseDTO> update(@Valid @RequestBody RoadRequestDTO roadRequestDto,
                                                   @PathVariable Long id1, @PathVariable Long id2) {
         if (!Objects.equals(id1, roadRequestDto.getPoint1id()) || !Objects.equals(id2, roadRequestDto.getPoint2id())) {
             throw new RuntimeException(localizedMessageSource.getMessage("controller.road.unexpectedId", new Object[]{}));
         }
-        final RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.save(
+        final RoadResponseDTO RoadDTO = mapping.mapRoadToRoadResponseDTO(roadService.update(
                 mapping.mapRoadRequestDTOToRoad(roadRequestDto)));
         return new ResponseEntity<>(RoadDTO, HttpStatus.OK);
     }
