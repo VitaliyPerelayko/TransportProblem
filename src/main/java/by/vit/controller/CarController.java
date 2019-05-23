@@ -6,10 +6,9 @@ import by.vit.dto.response.CarResponseDTO;
 import by.vit.mapping.Mapping;
 import by.vit.model.Car;
 import by.vit.service.CarService;
-import org.dozer.Mapper;
+import by.vit.service.PointService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,12 +25,14 @@ public class CarController {
 
     private final Mapping mapping;
     private final CarService carService;
+    private final PointService pointService;
     private final LocalizedMessageSource localizedMessageSource;
 
     public CarController(Mapping mapping, CarService carService,
-                         LocalizedMessageSource localizedMessageSource) {
+                         PointService pointService, LocalizedMessageSource localizedMessageSource) {
         this.mapping = mapping;
         this.carService = carService;
+        this.pointService = pointService;
         this.localizedMessageSource = localizedMessageSource;
     }
 
@@ -43,6 +44,20 @@ public class CarController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<CarResponseDTO>> getAll() {
         final List<Car> cars = carService.findAll();
+        final List<CarResponseDTO> carDTOList = cars.stream()
+                .map(mapping::mapCarToCarResponseDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(carDTOList, HttpStatus.OK);
+    }
+
+    /**
+     * Gets all cars from database by point.
+     *
+     * @return Response: CarDTO ant http status
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<CarResponseDTO>> getAllByPoint(@RequestParam String name) {
+        final List<Car> cars = carService.findAllByPoint(pointService.findByName(name));
         final List<CarResponseDTO> carDTOList = cars.stream()
                 .map(mapping::mapCarToCarResponseDTO)
                 .collect(Collectors.toList());
